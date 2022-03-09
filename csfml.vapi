@@ -31,7 +31,7 @@ namespace sf{
         float y;
         float z;
     }
-    [CCode (cname = "sfColor", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
+    [CCode (cname = "sfColor", has_type_id = false, default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
     [SimpleType]
     public struct Color
     {
@@ -74,6 +74,9 @@ namespace sf{
     [CCode (cname = "sfVideoMode", destroy_function = "", has_type_id = false)]
     [SimpleType]
     public struct VideoMode{
+        public VideoMode yolo(int x, int y){
+            return {x, y};
+        }
         uint width;
         uint height;
         uint bitsPerPixel;
@@ -98,6 +101,75 @@ namespace sf{
 	    public Texture.FromStream(uint32? stream = null, uint32? area = null); //TODO
 	    
 	}
+
+	[CCode (ref_function = "sfCircleShape_create", unref_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
+	public class CircleShape{
+	    [CCode (destroy_function = "sfCircleShape_destroy", cname = "sfCircleShape_create")]
+	    public CircleShape();
+        [CCode (cname = "sfCircleShape_copy")]
+        public CircleShape copy(CircleShape shape);
+        [CCode (cname = "sfCircleShape_setPosition")]
+        public void setPosition(Vector2f position);
+        [CCode (cname = "sfCircleShape_setRotation")]
+        public void setRotation(float angle);
+        [CCode (cname = "sfCircleShape_setScale")]
+        public void setScale(Vector2f scale);
+        [CCode (cname = "sfCircleShape_setOrigin")]
+        public void setOrigin(Vector2f origin);
+        [CCode (cname = "sfCircleShape_getPosition")]
+        public Vector2f getPosition();
+        [CCode (cname = "sfCircleShape_getRotation")]
+        public float getRotation();
+        [CCode (cname = "sfCircleShape_getScale")]
+        public Vector2f getScale();
+        [CCode (cname = "sfCircleShape_getOrigin")]
+        public Vector2f getOrigin();
+        [CCode (cname = "sfCircleShape_move")]
+        public void move(Vector2f offset);
+        [CCode (cname = "sfCircleShape_rotate")]
+        public void rotate(float angle);
+        [CCode (cname = "sfCircleShape_scale")]
+        public void scale(Vector2f factors);
+        /*[CCode (cname = "sfCircleShape_getTransform")]
+        public Transform sfCircleShape_getTransform();
+        [CCode (cname = "sfCircleShape_getInverseTransform")]
+        public Transform sfCircleShape_getInverseTransform();*/
+        [CCode (cname = "sfCircleShape_setTexture")]
+        public void setTexture(Texture texture, bool resetRect);
+        [CCode (cname = "sfCircleShape_setTextureRect")]
+        public void setTextureRect(IntRect rect);
+        [CCode (cname = "sfCircleShape_setFillColor")]
+        public void setFillColor(Color color);
+        [CCode (cname = "sfCircleShape_setOutlineColor")]
+        public void setOutlineColor(Color color);
+        [CCode (cname = "sfCircleShape_setOutlineThickness")]
+        public void setOutlineThickness(float thickness);
+        [CCode (cname = "sfCircleShape_getTexture")]
+        public Texture getTexture();
+        [CCode (cname = "sfCircleShape_getTextureRect")]
+        public IntRect getTextureRect();
+        [CCode (cname = "sfCircleShape_getFillColor")]
+        public Color getFillColor();
+        [CCode (cname = "sfCircleShape_getOutlineColor")]
+        public Color getOutlineColor();
+        [CCode (cname = "sfCircleShape_getOutlineThickness")]
+        public float getOutlineThickness();
+        [CCode (cname = "sfCircleShape_getPointCount")]
+        public size_t getPointCount();
+        [CCode (cname = "sfCircleShape_getPoint")]
+        public Vector2f getPoint(size_t index);
+        [CCode (cname = "sfCircleShape_setRadius")]
+        public void setRadius(float radius);
+        [CCode (cname = "sfCircleShape_getRadius")]
+        public float getRadius();
+        [CCode (cname = "sfCircleShape_setPointCount")]
+        public void setPointCount(size_t count);
+        [CCode (cname = "sfCircleShape_getLocalBounds")]
+        public FloatRect getLocalBounds();
+        [CCode (cname = "sfCircleShape_getGlobalBounds")]
+        public FloatRect getGlobalBounds();
+    }
+
 	/* *****************************     RECTANGLESHAPE     ************************************************/
 	[CCode (unref_function = "sfRectangleShape_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class RectangleShape{
@@ -220,7 +292,7 @@ namespace sf{
     [CCode (ref_function = "sfRenderWindow_create", unref_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h")]
 	public class RenderWindow{
 		[CCode (destroy_function = "sfRenderWindow_destroy", cname = "sfRenderWindow_create")]
-		public RenderWindow(VideoMode mode, string title, sf.WindowStyle flags, ContextSettings? settings = null);
+		public RenderWindow(VideoMode mode, string title, sf.WindowStyle flags = WindowStyle.DefaultStyle, ContextSettings? settings = null);
 		[CCode (destroy_function = "sfRenderWindow_createUnicode", cname = "sfRenderWindow_create")]
 		public RenderWindow.with_unicode(VideoMode mode, uint32 *title, sf.WindowStyle flags, ContextSettings? settings = null);
 		[CCode (cname = "sfRenderWindow_setTitle")]
@@ -228,7 +300,7 @@ namespace sf{
 		[CCode (cname = "sfRenderWindow_close")]
 		public void close();
 		[CCode (cname = "sfRenderWindow_isOpen")]
-		public bool is_open();
+		public bool isOpen();
 		[CCode (cname = "sfRenderWindow_getSettings")]
 		public ContextSettings getSettings();
 		[CCode (cname = "sfRenderWindow_pollEvent")]
@@ -250,11 +322,13 @@ namespace sf{
 		[CCode (cname = "sfRenderWindow_display")]
 	    public void display();
 	    [CCode (cname = "sfRenderWindow_clear")]
-	    public void clear(Color color = {255,255,255});
+	    public void clear(Color color = {0,0,0});
 	    [CCode (cname = "sfRenderWindow_drawSprite")]
 	    public void draw_sprite(Sprite sprite, int ?a = null);
 	    [CCode (cname = "sfRenderWindow_drawShape")]
 	    public void draw_shape(RectangleShape shape, int ?a = null);
+	    [CCode (cname = "sfRenderWindow_drawCircleShape")]
+	    public void draw_circle(CircleShape shape, int ?a = null);
 	    //TODO windowshandle
 	}
 	[CCode (cname = "int", cprefix = "sf", has_type_id = false)]
