@@ -305,8 +305,245 @@ namespace sf{
         [CCode (cname = "sfRectangleShape_getGlobalBounds")]
         public FloatRect getGlobalBounds( );
 	}
-	
-	/* *****************************     SPRITE     ************************************************/
+
+
+	[FLAGS]
+	[CCode (cname = "sfTextStyle", cprefix = "sfText")]
+	public enum TextStyle{
+		Regular,         ///< Regular characters, no style
+		Bold, ///< Bold characters
+		Italic        , ///< Italic characters
+		Underlined    , ///< Underlined characters
+		StrikeThrough   ///< Strike through characters
+	}
+
+
+	[CCode (cname = "sfFontInfo")]
+	[SimpleType]
+	public struct FontInfo
+	{
+		unowned string family;
+	}
+
+	[CCode (cname = "sfGlyph")]
+	public struct Glyph
+	{	
+		float		advance;     ///< Offset to move horizontically to the next character
+		FloatRect	bounds;      ///< Bounding rectangle of the glyph, in coordinates relative to the baseline
+		IntRect		textureRect; ///< Texture coordinates of the glyph inside the font's image
+	}
+
+	[Compact]
+	[CCode (cname = "sfFont", free_function = "sfFont_destroy", cprefix = "sfFont_")]
+	public class Font {
+
+		[CCode (cname = "sfFont_createFromFile")]
+		public Font(string filename);
+		[CCode (cname = "sfFont_createFromFile")]
+		public Font.load_from_file(string filename);
+		[CCode (cname = "sfFont_createFromMemory")]
+		public Font.load_from_memory(void *data, size_t sizeInBytes);
+
+		// sfFont* sfFont_createFromStream(sfInputStream* stream);
+
+		public Font copy();
+
+		public Glyph getGlyph(uint32 codePoint, uint characterSize, bool bold, float outlineThickness);
+
+		public float getKerning(uint32 first, uint32 second, uint characterSize);
+
+		public float getLineSpacing(uint characterSize);
+
+		public float getUnderlinePosition(uint characterSize);
+
+		public float getUnderlineThickness(uint characterSize);
+
+		public Texture getTexture(uint characterSize);
+
+		public FontInfo getInfo();
+	}
+
+
+
+[Compact]
+[CCode (cname = "sfText", free_function = "sfText_destroy", cprefix = "sfText_")]
+public class Text {
+
+	[CCode (cname="sfText_create")]
+	public Text();
+
+	public Text copy();
+
+
+
+	public Vector2f position{
+		[CCode (cname = "sfText_getPosition")]
+		get;
+		[CCode (cname = "sfText_setPosition")]
+		set;
+	}
+	public float rotation{
+		[CCode (cname = "sfText_getRotation")]
+		get;
+		[CCode (cname = "sfText_setRotation")]
+		set;
+	}
+	public Vector2f scale{
+		[CCode (cname = "sfText_getScale")]
+		get;
+		[CCode (cname = "sfText_setScale")]
+		set;
+	}
+	public Vector2f origin{
+		[CCode (cname = "sfText_getOrigin")]
+		get;
+		[CCode (cname = "sfText_setOrigin")]
+		set;
+	}
+	public string @string{
+		[CCode (cname = "sfText_getString")]
+		get;
+		[CCode (cname = "sfText_setString")]
+		set;
+	}
+	public Font font{
+		[CCode (cname = "sfText_getFont")]
+		get;
+		[CCode (cname = "sfText_setFont")]
+		set;
+	}
+	public uint size{
+		[CCode (cname = "sfText_getCharacterSize")]
+		get;
+		[CCode (cname = "sfText_setCharacterSize")]
+		set;
+	}
+	public float linespacing{
+		[CCode (cname = "sfText_getLineSpacing")]
+		get;
+		[CCode (cname = "sfText_setLineSpacing")]
+		set;
+	}
+	public float letterspacing{
+		[CCode (cname = "sfText_getLetterSpacing")]
+		get;
+		[CCode (cname = "sfText_setLetterSpacing")]
+		set;
+	}
+	public uint32 style{
+		[CCode (cname = "sfText_getStyle")]
+		get;
+		[CCode (cname = "sfText_setStyle")]
+		set;
+	}
+	public Color color{
+		[CCode (cname = "sfText_getColor")]
+		get;
+		[CCode (cname = "sfText_setColor")]
+		set;
+	}
+	public Color fillcolor{
+		[CCode (cname = "sfText_getFillColor")]
+		get;
+		[CCode (cname = "sfText_setFillColor")]
+		set;
+	}
+	public Color outlinecolor{
+		[CCode (cname = "sfText_getoutlineColor")]
+		get;
+		[CCode (cname = "sfText_setoutlineColor")]
+		set;
+	}
+	public float outlinethickness{
+		[CCode (cname = "sfText_getoutlinethickness")]
+		get;
+		[CCode (cname = "sfText_setoutlinethickness")]
+		set;
+	}
+
+
+
+	public void setPosition(Vector2f position);
+
+	public void setRotation(float angle);
+
+	public void setScale(Vector2f scale);
+
+	public void setOrigin(Vector2f origin);
+
+	public Vector2f getPosition();
+
+	public float getRotation();
+
+	public Vector2f getScale();
+
+	public Vector2f getOrigin();
+
+	public void move(Vector2f offset);
+
+	public void rotate(float angle);
+
+	public void scaling(Vector2f factors);
+
+	public Transform getTransform();
+
+	public Transform getInverseTransform();
+
+	public void setString(string str);
+
+	public void setUnicodeString(uint32 []str);
+
+	public void setFont(Font font);
+
+	public void setCharacterSize(uint size);
+
+	public void setLineSpacing(float spacingFactor);
+
+	public void setLetterSpacing(float spacingFactor);
+
+	public void setStyle(uint32 style);
+
+	public void setColor(Color color);
+
+	public void setFillColor(Color color);
+
+	public void setOutlineColor(Color color);
+
+	public void setOutlineThickness(float thickness);
+
+	public string getString();
+
+	public uint32* getUnicodeString();
+
+	public Font getFont();
+
+	public uint getCharacterSize();
+
+	public float getLetterSpacing();
+
+	public float getLineSpacing();
+
+	public uint32 getStyle();
+
+	public Color getColor();
+
+	public Color getFillColor();
+
+	public Color getOutlineColor();
+
+	public float getOutlineThickness();
+
+	public Vector2f findCharacterPos(size_t index);
+
+	public FloatRect getLocalBounds();
+
+	public FloatRect getGlobalBounds();
+}
+
+
+
+
+/* *****************************     SPRITE     ************************************************/
 	[CCode (ref_function = "sfSprite_create", unref_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class Sprite{
 	    [CCode (destroy_function = "sfSprite_destroy", cname = "sfSprite_create")]
@@ -397,7 +634,7 @@ namespace sf{
     [CCode (cname = "sfSprite_setTextureRect")]
     public void setTextureRect(IntRect rectangle);
     [CCode (cname = "sfSprite_setColor")]
-    public void sfSprite_setColor(Color color);
+    public void setColor(Color color);
     [CCode (cname = "sfSprite_getTexture")]
     public Texture? getTexture();
     [CCode (cname = "sfSprite_getTextureRect")]
@@ -608,12 +845,6 @@ namespace sf{
 		public Vector2u getSize();
 		[CCode (cname = "sfRenderWindow_setSize")]
 		public void setSize(Vector2u size);
-	
-
-
-
-
-
 		[CCode (cname = "sfRenderWindow_setUnicodeTitle")]
 		void setUnicodeTitle(uint32 []title);
 		[CCode (cname = "sfRenderWindow_setIcon")]
@@ -662,6 +893,12 @@ namespace sf{
 
 
 
+		public bool visible{
+		[CCode (cname = "sfRenderWindow_getVisible")]
+			get;
+		[CCode (cname = "sfRenderWindow_setVisible")]
+			set;
+		}
 
 
 		public Vector2i position{
@@ -730,8 +967,8 @@ namespace sf{
 
 [CCode (cname = "sfRenderWindow_drawSprite")]
 public void drawSprite(Sprite object, RenderStates? states = null);
-// [CCode (cname = "sfRenderWindow_drawText")]
-// public void drawText(Text object, RenderStates? states = null);
+[CCode (cname = "sfRenderWindow_drawText")]
+public void drawText(Text object, RenderStates? states = null);
 // [CCode (cname = "sfRenderWindow_drawShape")]
 // public void drawShape(Shape object, RenderStates? states = null);
 [CCode (cname = "sfRenderWindow_drawCircleShape")]
