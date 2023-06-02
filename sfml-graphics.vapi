@@ -136,17 +136,47 @@ namespace sf{
 
     }
     /* *****************************     TEXTURE     ************************************************/
-    [CCode (ref_function = "sfTexture_create", unref_function = "sfTexture_destroy", cheader_filename = "SFML/Graphics.h")]
+    [CCode (ref_function = "sfTexture_create", unref_function = "sfTexture_destroy", cprefix="sfTexture_", cheader_filename = "SFML/Graphics.h")]
 	public class Texture{
-	    [CCode (destroy_function = "sfTexture_destroy", cname = "sfTexture_create")]
+	    [CCode (cname = "sfTexture_copy")]
+		Texture copy();
+
+	    [CCode (cname = "sfTexture_create")]
 	    public Texture(uint width, uint height);
-	    [CCode (destroy_function = "sfTexture_destroy", cname = "sfTexture_createFromFile")]
-	    public Texture.from_file(string filename, uint32? a=null);//TODO
-	    [CCode (destroy_function = "sfTexture_destroy", cname = "sfTexture_createFromMemory ")]
-	    public Texture.FromMemory(void* data, size_t sizeInBytes, uint32? area = null);//TODO
-	    [CCode (destroy_function = "sfTexture_destroy", cname = "sfTexture_createFromStream ")]
-	    public Texture.FromStream(uint32? stream = null, uint32? area = null); //TODO
-	    
+	    [CCode (cname = "sfTexture_createFromFile")]
+	    public Texture.fromFile(string filename, IntRect? area = null);
+	    [CCode (cname = "sfTexture_createSrgbFromFile")]
+	    public Texture.fromSrgvFromFile(string filename, IntRect? area = null);
+	    [CCode (cname = "sfTexture_createFromMemory")]
+	    public Texture.fromMemory(void* data, size_t sizeInBytes, IntRect? area = null);
+		[CCode (cname = "sfTexture_createSrgbFromMemory")]
+		public Texture.fromSrgbFromMemory(void* data, size_t sizeInBytes, IntRect? area = null);
+	    [CCode (cname = "sfTexture_createFromStream")]
+	    public Texture.fromStream(uint32? stream = null, IntRect? area = null); //TODO
+	   	//TODO Texture* sfTexture_createSrgbFromStream(sfInputStream* stream, const sfIntRect* area);
+		// [CCode (cname = "sfTexture_createFromImage")]
+		// public Texture.fromImage(Image image, IntRect? area = null);
+		// [CCode (cname = "sfTexture_createSrgbFromImage")]
+		// public Texture.fromSrgbFromImage(Image image, IntRect? area = null);
+
+		Vector2u getSize();
+		// Image copyToImage();
+		void updateFromPixels(uint8 []pixels, uint width, uint height, uint x, uint y);
+		void updateFromTexture(Texture source, uint x, uint y);
+		// void updateFromImage(Image image, uint x, uint y);
+		// void updateFromWindow(Window window, uint x, uint y);
+		void updateFromRenderWindow(RenderWindow renderWindow, uint x, uint y);
+		void setSmooth(bool smooth);
+		bool isSmooth();
+		bool isSrgb();
+		void setRepeated(bool repeated);
+		bool isRepeated();
+		bool generateMipmap();
+		void swap(Texture with);
+		uint getNativeHandle();
+		// void bind(TextureCoordinateType type);
+		[CCode (cname = "sfTexture_getMaximumSize")]
+		public static uint getMaximumSize();
 	}
 
 	[CCode (ref_function = "sfCircleShape_create", unref_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
@@ -241,11 +271,11 @@ namespace sf{
         public void rotate(float angle);
         [CCode (cname = "sfCircleShape_scale")]
         public void scaling(Vector2f factors);
-        /*[CCode (cname = "sfCircleShape_getTransform")]
+        [CCode (cname = "sfCircleShape_getTransform")]
         public Transform sfCircleShape_getTransform();
         [CCode (cname = "sfCircleShape_getInverseTransform")]
-        public Transform sfCircleShape_getInverseTransform();*/
-        [CCode (cname = "sfCircleShape_setTexture")]
+        public Transform sfCircleShape_getInverseTransform();
+        [CCode (cname = "sfCircleShape_getTexture")]
         public void setTexture(Texture texture, bool resetRect);
         [CCode (cname = "sfCircleShape_setTextureRect")]
         public void setTextureRect(IntRect rect);
@@ -256,7 +286,7 @@ namespace sf{
         [CCode (cname = "sfCircleShape_setOutlineThickness")]
         public void setOutlineThickness(float thickness);
         [CCode (cname = "sfCircleShape_getTexture")]
-        public Texture getTexture();
+        public unowned Texture getTexture();
         [CCode (cname = "sfCircleShape_getTextureRect")]
         public IntRect getTextureRect();
         [CCode (cname = "sfCircleShape_getFillColor")]
@@ -280,6 +310,44 @@ namespace sf{
         [CCode (cname = "sfCircleShape_getGlobalBounds")]
         public FloatRect getGlobalBounds();
     }
+
+	[Compact]
+	[CCode (cname = "sfConvexShape", free_function = "sfConvexShape_destroy", cprefix = "sfConvexShape_")]
+	public class ConvexShape{
+		[CCode (cname = "sfConvexShape_create")]
+		public ConvexShape();
+		public ConvexShape copy();
+		public void setPosition(Vector2f position);
+		public void setRotation(float angle);
+		public void setScale(Vector2f scale);
+		public void setOrigin(Vector2f origin);
+		public Vector2f getPosition();
+		public float getRotation();
+		public Vector2f getScale();
+		public Vector2f getOrigin();
+		public void move(Vector2f offset);
+		public void rotate(float angle);
+		public void scale(Vector2f factors);
+		public Transform getTransform();
+		public Transform getInverseTransform();
+		public void setTexture(Texture texture, bool resetRect);
+		public void setTextureRect(IntRect rect);
+		public void setFillColor(Color color);
+		public void setOutlineColor(Color color);
+		public void setOutlineThickness(float thickness);
+		public unowned Texture getTexture();
+		public IntRect getTextureRect();
+		public Color getFillColor();
+		public Color getOutlineColor();
+		public float getOutlineThickness();
+		public size_t getPointCount();
+		public Vector2f getPoint(size_t index);
+		public void setPointCount(size_t count);
+		public void setPoint(size_t index, Vector2f point);
+		public FloatRect getLocalBounds();
+		public FloatRect getGlobalBounds();
+	}
+
 
 	[Compact]
 	[CCode (cname = "sfView", free_function = "sfView_destroy", cprefix = "sfView_")]
