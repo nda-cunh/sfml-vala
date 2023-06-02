@@ -281,6 +281,111 @@ namespace sf{
         public FloatRect getGlobalBounds();
     }
 
+	[Compact]
+	[CCode (cname = "sfView", free_function = "sfView_destroy", cprefix = "sfView_")]
+	public class View {
+		[CCode (cname = "sfView_create")]
+		public View();
+		[CCode (cname = "sfView_createFromRect")]
+		public View.fromRect(FloatRect rectangle);
+
+		View copy();
+
+		void setCenter(Vector2f center);
+
+		void setSize(Vector2f size);
+
+		void setRotation(float angle);
+
+		void setViewport(FloatRect viewport);
+
+		void reset(FloatRect rectangle);
+
+		Vector2f getCenter();
+
+		Vector2f getSize();
+
+		float getRotation();
+
+		FloatRect getViewport();
+
+		void move(Vector2f offset);
+
+		void rotate(float angle);
+
+		void zoom(float factor);
+
+	}
+
+
+	[Compact]
+	[CCode (cname = "sfRenderTexture", free_function = "sfRenderTexture_destroy", cprefix = "sfRenderTexture_")]
+	public class RenderTexture {
+	[CCode (cname = "sfRenderTexture_create")]
+	public RenderTexture(uint width, uint height, bool depthBuffer);
+	[CCode (cname = "sfRenderTexture_createWithSettings")]
+	public RenderTexture.withSettings(uint width, uint height, ContextSettings settings);
+
+	Vector2u getSize();
+
+	bool setActive(bool active);
+
+	void display();
+
+	void clear(Color color);
+
+	void setView(View view);
+
+	unowned View getView();
+
+	unowned View getDefaultView();
+
+	IntRect getViewport(View view);
+
+	Vector2f mapPixelToCoords(Vector2i point, View view);
+
+	Vector2i mapCoordsToPixel(Vector2f point, View view);
+
+	void drawSprite(Sprite object, RenderStates states);
+	void drawText(Text object, RenderStates states);
+	// void drawShape(Shape object, RenderStates states);
+	void drawCircleShape(CircleShape object, RenderStates states);
+	// void drawConvexShape(ConvexShape object, RenderStates states);
+	void drawRectangleShape(RectangleShape object, RenderStates states);
+	// void drawVertexArray(VertexArray object, RenderStates states);
+	// void drawVertexBuffer(VertexBuffer object, RenderStates states);
+
+	// void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates states);
+
+	// void drawPrimitives(Vertex vertices, size_t vertexCount,PrimitiveType type, RenderStates states);
+
+	void pushGLStates();
+
+	void popGLStates();
+
+	void resetGLStates();
+
+	unowned Texture getTexture();
+
+	uint getMaximumAntialiasingLevel();
+
+	void setSmooth(bool smooth);
+
+	bool isSmooth();
+
+	void setRepeated(bool repeated);
+
+	bool isRepeated();
+
+	bool generateMipmap();
+
+}
+
+
+
+
+
+
 	/* *****************************     RECTANGLESHAPE     ************************************************/
 	[CCode (unref_function = "sfRectangleShape_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class RectangleShape{
@@ -288,6 +393,57 @@ namespace sf{
 	    public RectangleShape();
         [CCode (cname = "sfRectangleShape_copy")]
         public RectangleShape* copy();
+
+
+		public Vector2f position{
+			[CCode (cname = "sfRectangleShape_getPosition")]
+			get;
+			[CCode (cname = "sfRectangleShape_setPosition")]
+			set;
+		}
+		public float rotation{
+			[CCode (cname = "sfRectangleShape_getRotation")]
+			get;
+			[CCode (cname = "sfRectangleShape_setRotation")]
+			set;
+		}
+		public Vector2f scale{
+			[CCode (cname = "sfRectangleShape_getScale")]
+			get;
+			[CCode (cname = "sfRectangleShape_setScale")]
+			set;
+		}
+		public Vector2f origin{
+			[CCode (cname = "sfRectangleShape_getOrigin")]
+			get;
+			[CCode (cname = "sfRectangleShape_setOrigin")]
+			set;
+		}
+		public IntRect textureRect{
+			[CCode (cname = "sfRectangleShape_getTextureRect")]
+			get;
+			[CCode (cname = "sfRectangleShape_setTextureRect")]
+			set;
+		}
+		public Color prite_setColor{
+			[CCode (cname = "sfRectangleShape_getColor")]
+			get;
+			[CCode (cname = "sfRectangleShape_setColor")]
+			set;
+		}
+		public FloatRect localBounds{
+			[CCode (cname = "sfRectangleShape_getLocalBounds")]
+			get;
+			[CCode (cname = "sfRectangleShape_setLocalBounds")]
+			set;
+		}
+		public FloatRect globalBounds{
+			[CCode (cname = "sfRectangleShape_getGlobalBounds")]
+			get;
+			[CCode (cname = "sfRectangleShape_setGlobalBounds")]
+			set;
+		}
+
         [CCode (cname = "sfRectangleShape_setPosition")]
         public void setPosition(Vector2f position);
         [CCode (cname = "sfRectangleShape_setRotation")]
@@ -309,7 +465,7 @@ namespace sf{
         [CCode (cname = "sfRectangleShape_rotate")]
         public void rotate(float angle);
         [CCode (cname = "sfRectangleShape_scale")]
-        public void scale(Vector2f factors);
+        public void scaling(Vector2f factors);
         //[CCode (cname = "sfRectangleShape_getTransform")]
         //TODO public Transform getTransform();
         //[CCode (cname = "sfRectangleShape_getInverseTransform")]
@@ -407,6 +563,7 @@ namespace sf{
 
 
 
+
 [Compact]
 [CCode (cname = "sfText", free_function = "sfText_destroy", cprefix = "sfText_")]
 public class Text {
@@ -415,8 +572,6 @@ public class Text {
 	public Text();
 
 	public Text copy();
-
-
 
 	public Vector2f position{
 		[CCode (cname = "sfText_getPosition")]
@@ -643,8 +798,6 @@ public class Text {
 	}
 
 
-
-
 	[CCode (cname = "sfSprite_setTexture")]
 	public void setTexture(Texture texture, bool resetRect = false);
 	[CCode (cname = "sfSprite_setPosition")]
@@ -669,16 +822,16 @@ public class Text {
     public void rotate(float angle);
     [CCode (cname = "sfSprite_scale")]
     public void scaling(Vector2f factors);
-    //[CCode (cname = "sfSprite_getTransform")]
-    //TODO public Transform getTransform();
-    //[CCode (cname = "sfSprite_getInverseTransform")]
-    //TODO public Transform getInverseTransform();
+    [CCode (cname = "sfSprite_getTransform")]
+    public Transform getTransform();
+    [CCode (cname = "sfSprite_getInverseTransform")]
+    public Transform getInverseTransform();
     [CCode (cname = "sfSprite_setTextureRect")]
     public void setTextureRect(IntRect rectangle);
     [CCode (cname = "sfSprite_setColor")]
     public void setColor(Color color);
     [CCode (cname = "sfSprite_getTexture")]
-    public Texture? getTexture();
+    public unowned Texture getTexture();
     [CCode (cname = "sfSprite_getTextureRect")]
     public IntRect getTextureRect();
     [CCode (cname = "sfSprite_getColor")]
@@ -696,87 +849,46 @@ public class Text {
 	[CCode (cname = "sfShader", free_function = "sfShader_destroy", cprefix="sfShader_")]
 	public class Shader {
 		public static bool isAvailable();
-
 		public static bool isGeometryAvailable();
-// 
 		public static Shader createFromFile(string vertexShaderFilename, string geometryShaderFilename, string fragmentShaderFilename);
-// 
 		public static Shader createFromMemory(string vertexShader, string geometryShader, string fragmentShader);
-
 		// public static Shader createFromStream(sfInputStream vertexShaderStream, sfInputStream geometryShaderStream, sfInputStream fragmentShaderStream);
-
-
 		public void setFloatUniform(string name, float x);
-
 		// public void setVec2Uniform(string name, sfGlslVec2 vector);
-// 
 		// public void setVec3Uniform(string name, sfGlslVec3 vector);
-// 
 		// public void setVec4Uniform(string name, sfGlslVec4 vector);
-
 		public void setColorUniform(string name, Color color);
-
 		public void setIntUniform(string name, int x);
-
 		// public void setIvec2Uniform(string name, sfGlslIvec2 vector);
-// 
 		// public void setIvec3Uniform(string name, sfGlslIvec3 vector);
-// 
 		// public void setIvec4Uniform(string name, sfGlslIvec4 vector);
-
 		public void setIntColorUniform(string name, Color color);
-
 		public void setBoolUniform(string name, bool x);
-// 
 		// public void setBvec2Uniform(string name, sfGlslBvec2 vector);
-// 
 		// public void setBvec3Uniform(string name, sfGlslBvec3 vector);
-// 
 		// public void setBvec4Uniform(string name, sfGlslBvec4 vector);
-// 
 		// public void setMat3Uniform(string name, sfGlslMat3 matrix);
-// 
 		// public void setMat4Uniform(string name, sfGlslMat4 matrix);
-
 		public void setTextureUniform(string name, Texture texture);
-
 		public void setCurrentTextureUniform(string name);
-
 		public void setFloatUniformArray(string name, float scalarArray, size_t length);
-// 
 		// public void setVec2UniformArray(string name, sfGlslVec2 vectorArray, size_t length);
-// 
 		// public void setVec3UniformArray(string name, sfGlslVec3 vectorArray, size_t length);
-// 
 		// public void setVec4UniformArray(string name, sfGlslVec4 vectorArray, size_t length);
-// 
 		// public void setMat3UniformArray(string name, sfGlslMat3 matrixArray, size_t length);
-// 
 		// public void setMat4UniformArray(string name, sfGlslMat4 matrixArray, size_t length);
-
 		public void setFloatParameter(string name, float x);
-
 		public void setFloat2Parameter(string name, float x, float y);
-
 		public void setFloat3Parameter(string name, float x, float y, float z);
-
 		public void setFloat4Parameter(string name, float x, float y, float z, float w);
-
 		public void setVector2Parameter(string name, Vector2f vector);
-
 		public void setVector3Parameter(string name, Vector3f vector);
-
 		public void setColorParameter(string name, Color color);
-
 		public void setTransformParameter(string name, Transform transform);
-
 		public void setTextureParameter(string name, Texture texture);
-
 		public void setCurrentTextureParameter(string name);
-
-		public uint getNativeHandle(Shader shader);
-
-		public void bind(Shader shader);
+		public uint getNativeHandle();
+		public void bind();
 	}
 
 
@@ -809,10 +921,6 @@ public class Text {
 
 
 	}
-
-
-
-
 
 
 
@@ -1056,18 +1164,8 @@ public void drawRectangleShape(RectangleShape object, RenderStates? states = nul
         uint32 attributeFlags;    ///< The attribute flags to create the context with
         bool sRgbCapable;       ///< Whether the context framebuffer is sRGB capable
     }
-    /*              //TODO context
-public Context* sfContext_create(void);
-
-public void sfContext_destroy(sfContext* context);
-
-public sfBool sfContext_setActive(sfContext* context, sfBool active);
-
-public sfContextSettings sfContext_getSettings(const sfContext* context);
-
-public sfUint64 sfContext_getActiveContextId();*/
-
-    /* *****************************    EVENT    ************************************************/
+   
+/* *****************************    EVENT    ************************************************/
     [CCode (cname = "int", cprefix = "sfKey", has_type_id = false)]
     public enum KeyCode
     {
