@@ -1,3 +1,24 @@
+public sf.Vector2f Vector2f(float x, float y){
+	return {x, y};
+}
+
+public sf.Vector2i Vector2i(int x, int y){
+	return {x, y};
+}
+
+public sf.Vector2u Vector2u(uint x, uint y){
+	return {x, y};
+}
+
+public sf.Vector3f Vector3f(float x, float y, float z){
+	return {x, y, z};
+}
+
+public sf.VideoMode VideoMode(int width, int height){
+	return {width, height};
+}
+
+
 [CCode (cheader_filename = "SFML/Graphics.h")]
 namespace sf{
     /* ****************************  VECTOR2-3 Color rect  *************************************/
@@ -32,19 +53,40 @@ namespace sf{
         float z;
     }
     [CCode (cname = "sfColor", has_type_id = false, default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
-    [SimpleType]
+	[SimpleType]
     public struct Color
     {
+		[CCode (cname = "sfColor_fromRGB")]
+		public Color(uint8 red, uint8 green, uint8 blue);
+		[CCode (cname = "sfColor_fromRGB")]
+		public Color.from_RGB(uint8 red, uint8 green, uint8 blue);
+		[CCode (cname = "sfColor_fromRGBA")]
+		public Color.from_RGBA(uint8 red, uint8 green, uint8 blue, uint8 alpha);
+		[CCode (cname = "sfWhite")]
+		public static const Color White;       ///< White predefined color
+		[CCode (cname = "sfRed")]
+		public static const Color Red;         ///< Red predefined color
+		[CCode (cname ="sfGreen")]
+		public static const Color Green;       ///< Green predefined color
+		[CCode (cname ="sfBlue")]
+		public static const Color Blue;        ///< Blue predefined color
+		[CCode (cname ="sfYellow")]
+		public static const Color Yellow;      ///< Yellow predefined color
+		[CCode (cname ="sfMagenta")]
+		public static const Color Magenta;     ///< Magenta predefined color
+		[CCode (cname ="sfCyan")]
+		public static const Color Cyan;        ///< Cyan predefined color
+		[CCode (cname ="sfTransparent")]
+		public static const Color Transparent;
         uint8 r;
         uint8 g;
         uint8 b;
         uint8 a;
         
     }
-    [CCode (cname = "sfColor_fromRGB")]
-    public Color Color_RGB(uint8 red, uint8 green, uint8 blue);
+	
     
-    [CCode (cname = "sfFloatRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfFloatRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
     [SimpleType]
     public struct FloatRect
     {
