@@ -2,6 +2,37 @@
 
 vala binding of project SFML
 
+Graphics:
+- [X] BlendMode.h
+- [X] CircleShape.h
+- [X] Color.h
+- [X] ConvexShape.h
+- [X] Export.h
+- [X] Font.h
+- [X] FontInfo.h
+- [ ] Glsl.h
+- [X] Glyph.h
+- [ ] Image.h
+- [ ] PrimitiveType.h
+- [X] Rect.h
+- [X] RectangleShape.h
+- [X] RenderStates.h
+- [X] RenderTexture.h
+- [X] RenderWindow.h
+- [X] Shader.h
+- [ ] Shape.h
+- [X] Sprite.h
+- [X] Text.h
+- [X] Texture.h
+- [X] Transform.h
+- [ ] Transformable.h
+- [X] Types.h
+- [ ] Vertex.h
+- [ ] VertexArray.h
+- [ ] VertexBuffer.h
+- [X] View.h
+
+
 Exemple:
 
 ```vala
