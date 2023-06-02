@@ -464,6 +464,12 @@ namespace sf{
         public RectangleShape* copy();
 
 
+		public Vector2f size{
+			[CCode (cname = "sfRectangleShape_getSize")]
+			get;
+			[CCode (cname = "sfRectangleShape_setSize")]
+			set;
+		}
 		public Vector2f position{
 			[CCode (cname = "sfRectangleShape_getPosition")]
 			get;
@@ -494,7 +500,7 @@ namespace sf{
 			[CCode (cname = "sfRectangleShape_setTextureRect")]
 			set;
 		}
-		public Color prite_setColor{
+		public Color color{
 			[CCode (cname = "sfRectangleShape_getColor")]
 			get;
 			[CCode (cname = "sfRectangleShape_setColor")]
@@ -562,7 +568,7 @@ namespace sf{
         [CCode (cname = "sfRectangleShape_getPointCount")]
         public size_t getPointCount();
         [CCode (cname = "sfRectangleShape_getPoint")]
-        public Vector2f etPoint(size_t index);
+        public Vector2f setPoint(size_t index);
         [CCode (cname = "sfRectangleShape_setSize")]
         public void setSize(Vector2f size);
         [CCode (cname = "sfRectangleShape_getSize")]
