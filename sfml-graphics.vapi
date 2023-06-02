@@ -154,16 +154,16 @@ namespace sf{
 	    [CCode (cname = "sfTexture_createFromStream")]
 	    public Texture.fromStream(uint32? stream = null, IntRect? area = null); //TODO
 	   	//TODO Texture* sfTexture_createSrgbFromStream(sfInputStream* stream, const sfIntRect* area);
-		// [CCode (cname = "sfTexture_createFromImage")]
-		// public Texture.fromImage(Image image, IntRect? area = null);
-		// [CCode (cname = "sfTexture_createSrgbFromImage")]
-		// public Texture.fromSrgbFromImage(Image image, IntRect? area = null);
+		[CCode (cname = "sfTexture_createFromImage")]
+		public Texture.fromImage(Image image, IntRect? area = null);
+		[CCode (cname = "sfTexture_createSrgbFromImage")]
+		public Texture.fromSrgbFromImage(Image image, IntRect? area = null);
 
 		Vector2u getSize();
-		// Image copyToImage();
+		Image copyToImage();
 		void updateFromPixels(uint8 []pixels, uint width, uint height, uint x, uint y);
 		void updateFromTexture(Texture source, uint x, uint y);
-		// void updateFromImage(Image image, uint x, uint y);
+		void updateFromImage(Image image, uint x, uint y);
 		// void updateFromWindow(Window window, uint x, uint y);
 		void updateFromRenderWindow(RenderWindow renderWindow, uint x, uint y);
 		void setSmooth(bool smooth);
@@ -179,9 +179,10 @@ namespace sf{
 		public static uint getMaximumSize();
 	}
 
-	[CCode (ref_function = "sfCircleShape_create", unref_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
+	[Compact]
+	[CCode (cname = "sfCircleShape", free_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class CircleShape{
-	    [CCode (destroy_function = "sfCircleShape_destroy", cname = "sfCircleShape_create")]
+	    [CCode (cname = "sfCircleShape_create")]
 	    public CircleShape();
         [CCode (cname = "sfCircleShape_copy")]
         public CircleShape copy(CircleShape shape);
@@ -521,23 +522,23 @@ namespace sf{
         [CCode (cname = "sfRectangleShape_setOrigin")]
         public void setOrigin(Vector2f origin);
         [CCode (cname = "sfRectangleShape_getPosition")]
-        public Vector2f? getPosition();
+        public Vector2f getPosition();
         [CCode (cname = "sfRectangleShape_getRotation")]
         public float getRotation();
         [CCode (cname = "sfRectangleShape_getScale")]
-        public Vector2f? getScale();
+        public Vector2f getScale();
         [CCode (cname = "sfRectangleShape_getOrigin")]
-        public Vector2f? getOrigin();
+        public Vector2f getOrigin();
         [CCode (cname = "sfRectangleShape_move")]
         public void move(Vector2f offset);
         [CCode (cname = "sfRectangleShape_rotate")]
         public void rotate(float angle);
         [CCode (cname = "sfRectangleShape_scale")]
         public void scaling(Vector2f factors);
-        //[CCode (cname = "sfRectangleShape_getTransform")]
-        //TODO public Transform getTransform();
-        //[CCode (cname = "sfRectangleShape_getInverseTransform")]
-        //TODO public Transform getInverseTransform();
+        [CCode (cname = "sfRectangleShape_getTransform")]
+        public Transform getTransform();
+        [CCode (cname = "sfRectangleShape_getInverseTransform")]
+        public Transform getInverseTransform();
         [CCode (cname = "sfRectangleShape_setTexture")]
         public void setTexture(Texture texture, bool resetRect);
         [CCode (cname = "sfRectangleShape_setTextureRect")]
@@ -805,65 +806,85 @@ public class Text {
 	public FloatRect getGlobalBounds();
 }
 
+	[Compact]
+	[CCode (cname = "sfImage", free_function = "sfImage_destroy", cprefix="sfImage_")]
+	public class Image{
+		public Image(uint width, uint height);
+		public Image.fromColor(uint width, uint height, Color color);
+		public Image.fromPixels(uint width, uint height, uint8* pixels);
+		public Image.fromFile(string filename);
+		public Image.fromMemory(void* data, size_t size);
+		// public Image.FromStream(sfInputStream* stream);
+		public Image copy();
 
-
+		public bool saveToFile(string filename);
+		public Vector2u getSize(Image image);
+		public void createMaskFromColor(Color color, uint8 alpha);
+		public void copyImage(Image source, uint destX, uint destY, IntRect sourceRect, bool applyAlpha);
+		public void setPixel(uint x, uint y, Color color);
+		public Color getPixel(uint x, uint y);
+		public uint8 []getPixelsPtr();
+		public void flipHorizontally();
+		public void flipVertically();
+	}
 
 /* *****************************     SPRITE     ************************************************/
-	[CCode (ref_function = "sfSprite_create", unref_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
+	[Compact]
+	[CCode (cname = "sfSprite", free_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class Sprite{
-	    [CCode (destroy_function = "sfSprite_destroy", cname = "sfSprite_create")]
+	    [CCode (cname = "sfSprite_create")]
 	    public Sprite();
-    [CCode (cname = "sfSprite_copy")]
-    public Sprite? copy();
+		[CCode (cname = "sfSprite_copy")]
+		public Sprite copy();
 
-	public Vector2f position{
-		[CCode (cname = "sfSprite_getPosition")]
-		get;
-		[CCode (cname = "sfSprite_setPosition")]
-		set;
-	}
-	public float rotation{
-		[CCode (cname = "sfSprite_getRotation")]
-		get;
-		[CCode (cname = "sfSprite_setRotation")]
-		set;
-	}
-	public Vector2f scale{
-		[CCode (cname = "sfSprite_getScale")]
-		get;
-		[CCode (cname = "sfSprite_setScale")]
-		set;
-	}
-	public Vector2f origin{
-		[CCode (cname = "sfSprite_getOrigin")]
-		get;
-		[CCode (cname = "sfSprite_setOrigin")]
-		set;
-	}
-	public IntRect textureRect{
-		[CCode (cname = "sfSprite_getTextureRect")]
-		get;
-		[CCode (cname = "sfSprite_setTextureRect")]
-		set;
-	}
-	public Color prite_setColor{
-		[CCode (cname = "sfSprite_getColor")]
-		get;
-		[CCode (cname = "sfSprite_setColor")]
-		set;
-	}
-	public FloatRect localBounds{
-		[CCode (cname = "sfSprite_getLocalBounds")]
-		get;
-		[CCode (cname = "sfSprite_setLocalBounds")]
-		set;
-	}
-	public FloatRect globalBounds{
-		[CCode (cname = "sfSprite_getGlobalBounds")]
-		get;
-		[CCode (cname = "sfSprite_setGlobalBounds")]
-		set;
-	}
+		public Vector2f position{
+			[CCode (cname = "sfSprite_getPosition")]
+			get;
+			[CCode (cname = "sfSprite_setPosition")]
+			set;
+		}
+		public float rotation{
+			[CCode (cname = "sfSprite_getRotation")]
+			get;
+			[CCode (cname = "sfSprite_setRotation")]
+			set;
+		}
+		public Vector2f scale{
+			[CCode (cname = "sfSprite_getScale")]
+			get;
+			[CCode (cname = "sfSprite_setScale")]
+			set;
+		}
+		public Vector2f origin{
+			[CCode (cname = "sfSprite_getOrigin")]
+			get;
+			[CCode (cname = "sfSprite_setOrigin")]
+			set;
+		}
+		public IntRect textureRect{
+			[CCode (cname = "sfSprite_getTextureRect")]
+			get;
+			[CCode (cname = "sfSprite_setTextureRect")]
+			set;
+		}
+		public Color color{
+			[CCode (cname = "sfSprite_getColor")]
+			get;
+			[CCode (cname = "sfSprite_setColor")]
+			set;
+		}
+		public FloatRect localBounds{
+			[CCode (cname = "sfSprite_getLocalBounds")]
+			get;
+			[CCode (cname = "sfSprite_setLocalBounds")]
+			set;
+		}
+		public FloatRect globalBounds{
+			[CCode (cname = "sfSprite_getGlobalBounds")]
+			get;
+			[CCode (cname = "sfSprite_setGlobalBounds")]
+			set;
+		}
 
 
 	[CCode (cname = "sfSprite_setTexture")]
