@@ -1092,16 +1092,16 @@ public class Text {
 		[CCode (cname = "sfRenderWindow_getKeyRepeatEnabled")]
 		bool getKeyRepeatEnabled();
 		
-		// [CCode (cname = "sfRenderWindow_setView")]
-		// void setView(sfView view);
-		// [CCode (cname = "sfRenderWindow_sfView ")]
-		// sfView getView();
-		// [CCode (cname = "sfRenderWindow_getDefaultView")]
-		// sfView getDefaultView();
-// [CCode (cname = "sfRenderWindow_getViewport")]
-	// IntRect getViewport(View view);
-// [CCode (cname = "sfRenderWindow_mapPixelToCoords")]
-	// Vector2f mapPixelToCoords(Vector2i point, View view);
+		[CCode (cname = "sfRenderWindow_setView")]
+		void setView(View view);
+		[CCode (cname = "sfRenderWindow_sfView ")]
+		View getView();
+		[CCode (cname = "sfRenderWindow_getDefaultView")]
+		View getDefaultView();
+		[CCode (cname = "sfRenderWindow_getViewport")]
+		IntRect getViewport(View view);
+		[CCode (cname = "sfRenderWindow_mapPixelToCoords")]
+		Vector2f mapPixelToCoords(Vector2i point, View view);
 		// TODO void setMouseCursor(sfCursor cursor);
 // [CCode (cname = "sfRenderWindow_mapCoordsToPixel")]
 		// Vector2i mapCoordsToPixel(Vector2f point, sfView view);
@@ -1176,29 +1176,23 @@ public class Text {
 	    public void display();
 	    [CCode (cname = "sfRenderWindow_clear")]
 	    public void clear(Color color = {0,0,0});
-	    // [CCode (cname = "sfRenderWindow_drawSprite")]
-	    // public void draw_sprite(Sprite sprite, int ?a = null);
-	    // [CCode (cname = "sfRenderWindow_drawShape")]
-	    // public void draw_shape(RectangleShape shape, int ?a = null);
-	    // [CCode (cname = "sfRenderWindow_drawCircleShape")]
-	    // public void draw_circle(CircleShape shape, int ?a = null);
 
-[CCode (cname = "sfRenderWindow_drawSprite")]
-public void drawSprite(Sprite object, RenderStates? states = null);
-[CCode (cname = "sfRenderWindow_drawText")]
-public void drawText(Text object, RenderStates? states = null);
-// [CCode (cname = "sfRenderWindow_drawShape")]
-// public void drawShape(Shape object, RenderStates? states = null);
-[CCode (cname = "sfRenderWindow_drawCircleShape")]
-public void drawCircleShape(CircleShape object, RenderStates? states = null);
-// [CCode (cname = "sfRenderWindow_drawConvexShape")]
-// public void drawConvexShape(ConvexShape object, RenderStates? states = null);
-[CCode (cname = "sfRenderWindow_drawRectangleShape")]
-public void drawRectangleShape(RectangleShape object, RenderStates? states = null);
-// [CCode (cname = "sfRenderWindow_drawVertexArray")]
-// public void drawVertexArray(VertexArray object, RenderStates? states = null);
-// [CCode (cname = "sfRenderWindow_drawVertexBuffer")]
-// public void drawVertexBuffer(VertexBuffer object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawSprite")]
+		public void drawSprite(Sprite object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawText")]
+		public void drawText(Text object, RenderStates? states = null);
+		// [CCode (cname = "sfRenderWindow_drawShape")]
+		// public void drawShape(Shape object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawCircleShape")]
+		public void drawCircleShape(CircleShape object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawConvexShape")]
+		public void drawConvexShape(ConvexShape object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawRectangleShape")]
+		public void drawRectangleShape(RectangleShape object, RenderStates? states = null);
+		// [CCode (cname = "sfRenderWindow_drawVertexArray")]
+		// public void drawVertexArray(VertexArray object, RenderStates? states = null);
+		// [CCode (cname = "sfRenderWindow_drawVertexBuffer")]
+		// public void drawVertexBuffer(VertexBuffer object, RenderStates? states = null);
 
 
 
