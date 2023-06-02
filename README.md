@@ -12,7 +12,7 @@ Graphics:
 - [X] FontInfo.h
 - [ ] Glsl.h
 - [X] Glyph.h
-- [ ] Image.h
+- [X] Image.h
 - [ ] PrimitiveType.h
 - [X] Rect.h
 - [X] RectangleShape.h
