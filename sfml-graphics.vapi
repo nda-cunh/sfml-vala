@@ -21,8 +21,15 @@ public sf.VideoMode VideoMode(int width, int height){
 
 [CCode (cheader_filename = "SFML/Graphics.h")]
 namespace sf{
+  
+	/*******************************************************************************************\
+	|*******************************************************************************************|
+	|*****************                        [System]                        ******************|
+	|*******************************************************************************************|
+	|*******************************************************************************************|
+	\*******************************************************************************************/
+
     /* ****************************  VECTOR2-3 Color rect  *************************************/
-    
     [CCode (cname = "sfVector2i", has_type_id = false, cheader_filename = "SFML/System.h")]
     [SimpleType]
     public struct Vector2i
@@ -112,31 +119,31 @@ namespace sf{
         [CCode (cname = "sfIntRect_intersects")]
         public bool intersects(IntRect rect, IntRect? intersection = null);
     }
-    /* *****************************   VIDEO MODE   ************************************************/
-    
-	[CCode (cname = "sfVideoMode", destroy_function = "", has_type_id = false)]
-    [SimpleType]
-    public struct VideoMode{
-		[CCode (cname = "my_static_constructor_VIDEOMODE")]
-		public static VideoMode VideoMode(uint x, uint y){
-			return {x, y};
-		}
 
-		[CCode (cname = "my_static_constructor_VIDEOMODE")]
-		public VideoMode(uint x, uint y);
-		uint width;
-        uint height;
-        uint bitsPerPixel;
-        [CCode (cname = "sfVideoMode_getDesktopMode")]
-        public VideoMode getDesktopMode();
-        [CCode (cname = "sfVideoMode_getFullscreenModes")]
-        public VideoMode* getFullscreenModes(size_t* count);
-        [CCode (cname = "sfVideoMode_isValid")]
-        public bool isValid(VideoMode mode);
+	[CCode (cname = "sfPrimitiveType", cprefix = "sf")]
+	public enum PrimitiveType
+	{
+		Points,        ///< List of individual points
+		Lines,         ///< List of individual lines
+		LineStrip,     ///< List of connected lines, a point uses the previous point to form a line
+		Triangles,     ///< List of individual triangles
+		TriangleStrip, ///< List of connected triangles, a point uses the two previous points to form a triangle
+		TriangleFan,   ///< List of connected triangles, a point uses the common center and the previous point to form a triangle
+		Quads,         ///< List of individual quads
+	}
 
-    }
+	/*******************************************************************************************\
+	|*******************************************************************************************|
+	|*****************                       [Graphics]                       ******************|
+	|*******************************************************************************************|
+	|*******************************************************************************************|
+	\*******************************************************************************************/
+
+
+
     /* *****************************     TEXTURE     ************************************************/
-    [CCode (ref_function = "sfTexture_create", unref_function = "sfTexture_destroy", cprefix="sfTexture_", cheader_filename = "SFML/Graphics.h")]
+	[Compact]
+    [CCode (free_function = "sfTexture_destroy", cprefix="sfTexture_", cheader_filename = "SFML/Graphics.h")]
 	public class Texture{
 	    [CCode (cname = "sfTexture_copy")]
 		Texture copy();
@@ -178,6 +185,29 @@ namespace sf{
 		[CCode (cname = "sfTexture_getMaximumSize")]
 		public static uint getMaximumSize();
 	}
+	
+	[Compact]
+	[CCode (cname = "sfTransformable", free_function = "sfTransformable_destroy", cprefix= "Transformable_", cheader_filename = "SFML/Graphics.h")]
+	public class Transformable {
+		[CCode (cname = "sfTransformable_create")]
+		public Transformable();
+		public Transformable copy();
+		public void destroy();
+		public void setPosition(Vector2f position);
+		public void setRotation(float angle);
+		public void setScale(Vector2f scale);
+		public void setOrigin(Vector2f origin);
+		public Vector2f getPosition();
+		public float getRotation();
+		public Vector2f getScale();
+		public Vector2f getOrigin();
+		public void move(Vector2f offset);
+		public void rotate(float angle);
+		public void scale(Vector2f factors);
+		public Transform getTransform();
+		public Transform getInverseTransform();
+	}
+
 
 	[Compact]
 	[CCode (cname = "sfCircleShape", free_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
@@ -639,178 +669,178 @@ namespace sf{
 
 
 
-[Compact]
-[CCode (cname = "sfText", free_function = "sfText_destroy", cprefix = "sfText_")]
-public class Text {
+	[Compact]
+	[CCode (cname = "sfText", free_function = "sfText_destroy", cprefix = "sfText_")]
+	public class Text {
 
-	[CCode (cname="sfText_create")]
-	public Text();
+		[CCode (cname="sfText_create")]
+		public Text();
 
-	public Text copy();
+		public Text copy();
 
-	public Vector2f position{
-		[CCode (cname = "sfText_getPosition")]
-		get;
-		[CCode (cname = "sfText_setPosition")]
-		set;
+		public Vector2f position{
+			[CCode (cname = "sfText_getPosition")]
+			get;
+			[CCode (cname = "sfText_setPosition")]
+			set;
+		}
+		public float rotation{
+			[CCode (cname = "sfText_getRotation")]
+			get;
+			[CCode (cname = "sfText_setRotation")]
+			set;
+		}
+		public Vector2f scale{
+			[CCode (cname = "sfText_getScale")]
+			get;
+			[CCode (cname = "sfText_setScale")]
+			set;
+		}
+		public Vector2f origin{
+			[CCode (cname = "sfText_getOrigin")]
+			get;
+			[CCode (cname = "sfText_setOrigin")]
+			set;
+		}
+		public string @string{
+			[CCode (cname = "sfText_getString")]
+			get;
+			[CCode (cname = "sfText_setString")]
+			set;
+		}
+		public unowned Font font{
+			[CCode (cname = "sfText_getFont")]
+			get;
+			[CCode (cname = "sfText_setFont")]
+			set;
+		}
+		public uint size{
+			[CCode (cname = "sfText_getCharacterSize")]
+			get;
+			[CCode (cname = "sfText_setCharacterSize")]
+			set;
+		}
+		public float linespacing{
+			[CCode (cname = "sfText_getLineSpacing")]
+			get;
+			[CCode (cname = "sfText_setLineSpacing")]
+			set;
+		}
+		public float letterspacing{
+			[CCode (cname = "sfText_getLetterSpacing")]
+			get;
+			[CCode (cname = "sfText_setLetterSpacing")]
+			set;
+		}
+		public uint32 style{
+			[CCode (cname = "sfText_getStyle")]
+			get;
+			[CCode (cname = "sfText_setStyle")]
+			set;
+		}
+		public Color color{
+			[CCode (cname = "sfText_getColor")]
+			get;
+			[CCode (cname = "sfText_setColor")]
+			set;
+		}
+		public Color fillcolor{
+			[CCode (cname = "sfText_getFillColor")]
+			get;
+			[CCode (cname = "sfText_setFillColor")]
+			set;
+		}
+		public Color outlinecolor{
+			[CCode (cname = "sfText_getoutlineColor")]
+			get;
+			[CCode (cname = "sfText_setoutlineColor")]
+			set;
+		}
+		public float outlinethickness{
+			[CCode (cname = "sfText_getoutlinethickness")]
+			get;
+			[CCode (cname = "sfText_setoutlinethickness")]
+			set;
+		}
+
+
+
+		public void setPosition(Vector2f position);
+
+		public void setRotation(float angle);
+
+		public void setScale(Vector2f scale);
+
+		public void setOrigin(Vector2f origin);
+
+		public Vector2f getPosition();
+
+		public float getRotation();
+
+		public Vector2f getScale();
+
+		public Vector2f getOrigin();
+
+		public void move(Vector2f offset);
+
+		public void rotate(float angle);
+
+		public void scaling(Vector2f factors);
+
+		public Transform getTransform();
+
+		public Transform getInverseTransform();
+
+		public void setString(string str);
+
+		public void setUnicodeString(uint32 []str);
+
+		public void setFont(unowned Font font);
+
+		public void setCharacterSize(uint size);
+
+		public void setLineSpacing(float spacingFactor);
+
+		public void setLetterSpacing(float spacingFactor);
+
+		public void setStyle(uint32 style);
+
+		public void setColor(Color color);
+
+		public void setFillColor(Color color);
+
+		public void setOutlineColor(Color color);
+
+		public void setOutlineThickness(float thickness);
+
+		public string getString();
+
+		public uint32* getUnicodeString();
+
+		public unowned Font getFont();
+
+		public uint getCharacterSize();
+
+		public float getLetterSpacing();
+
+		public float getLineSpacing();
+
+		public uint32 getStyle();
+
+		public Color getColor();
+
+		public Color getFillColor();
+
+		public Color getOutlineColor();
+
+		public float getOutlineThickness();
+
+		public Vector2f findCharacterPos(size_t index);
+
+		public FloatRect getLocalBounds();
+
+		public FloatRect getGlobalBounds();
 	}
-	public float rotation{
-		[CCode (cname = "sfText_getRotation")]
-		get;
-		[CCode (cname = "sfText_setRotation")]
-		set;
-	}
-	public Vector2f scale{
-		[CCode (cname = "sfText_getScale")]
-		get;
-		[CCode (cname = "sfText_setScale")]
-		set;
-	}
-	public Vector2f origin{
-		[CCode (cname = "sfText_getOrigin")]
-		get;
-		[CCode (cname = "sfText_setOrigin")]
-		set;
-	}
-	public string @string{
-		[CCode (cname = "sfText_getString")]
-		get;
-		[CCode (cname = "sfText_setString")]
-		set;
-	}
-	public Font font{
-		[CCode (cname = "sfText_getFont")]
-		get;
-		[CCode (cname = "sfText_setFont")]
-		set;
-	}
-	public uint size{
-		[CCode (cname = "sfText_getCharacterSize")]
-		get;
-		[CCode (cname = "sfText_setCharacterSize")]
-		set;
-	}
-	public float linespacing{
-		[CCode (cname = "sfText_getLineSpacing")]
-		get;
-		[CCode (cname = "sfText_setLineSpacing")]
-		set;
-	}
-	public float letterspacing{
-		[CCode (cname = "sfText_getLetterSpacing")]
-		get;
-		[CCode (cname = "sfText_setLetterSpacing")]
-		set;
-	}
-	public uint32 style{
-		[CCode (cname = "sfText_getStyle")]
-		get;
-		[CCode (cname = "sfText_setStyle")]
-		set;
-	}
-	public Color color{
-		[CCode (cname = "sfText_getColor")]
-		get;
-		[CCode (cname = "sfText_setColor")]
-		set;
-	}
-	public Color fillcolor{
-		[CCode (cname = "sfText_getFillColor")]
-		get;
-		[CCode (cname = "sfText_setFillColor")]
-		set;
-	}
-	public Color outlinecolor{
-		[CCode (cname = "sfText_getoutlineColor")]
-		get;
-		[CCode (cname = "sfText_setoutlineColor")]
-		set;
-	}
-	public float outlinethickness{
-		[CCode (cname = "sfText_getoutlinethickness")]
-		get;
-		[CCode (cname = "sfText_setoutlinethickness")]
-		set;
-	}
-
-
-
-	public void setPosition(Vector2f position);
-
-	public void setRotation(float angle);
-
-	public void setScale(Vector2f scale);
-
-	public void setOrigin(Vector2f origin);
-
-	public Vector2f getPosition();
-
-	public float getRotation();
-
-	public Vector2f getScale();
-
-	public Vector2f getOrigin();
-
-	public void move(Vector2f offset);
-
-	public void rotate(float angle);
-
-	public void scaling(Vector2f factors);
-
-	public Transform getTransform();
-
-	public Transform getInverseTransform();
-
-	public void setString(string str);
-
-	public void setUnicodeString(uint32 []str);
-
-	public void setFont(Font font);
-
-	public void setCharacterSize(uint size);
-
-	public void setLineSpacing(float spacingFactor);
-
-	public void setLetterSpacing(float spacingFactor);
-
-	public void setStyle(uint32 style);
-
-	public void setColor(Color color);
-
-	public void setFillColor(Color color);
-
-	public void setOutlineColor(Color color);
-
-	public void setOutlineThickness(float thickness);
-
-	public string getString();
-
-	public uint32* getUnicodeString();
-
-	public Font getFont();
-
-	public uint getCharacterSize();
-
-	public float getLetterSpacing();
-
-	public float getLineSpacing();
-
-	public uint32 getStyle();
-
-	public Color getColor();
-
-	public Color getFillColor();
-
-	public Color getOutlineColor();
-
-	public float getOutlineThickness();
-
-	public Vector2f findCharacterPos(size_t index);
-
-	public FloatRect getLocalBounds();
-
-	public FloatRect getGlobalBounds();
-}
 
 	[Compact]
 	[CCode (cname = "sfImage", free_function = "sfImage_destroy", cprefix="sfImage_")]
@@ -833,6 +863,47 @@ public class Text {
 		public void flipHorizontally();
 		public void flipVertically();
 	}
+
+
+	[Compact]
+	[CCode (cname = "sfShape", free_function = "sfShape_destroy", cprefix="sfShape_", cheader_filename = "SFML/Graphics.h")]
+	public class Shape{
+		[CCode (cname = "sfShapeGetPointCountCallback")]
+		public delegate size_t GetPointCountDelegate (void* data);
+		[CCode (cname = "sfShapeGetPointCallback")]
+		public delegate Vector2f GetPointDelegate(size_t len, void* data); 
+		[CCode (cname = "sfShape_create")]
+		public Shape(GetPointCountDelegate getPointCount, GetPointDelegate getPoint, void* userData);
+		public void setPosition(Vector2f position);
+		public void setRotation(float angle);
+		public void setScale(Vector2f scale);
+		public void setOrigin(Vector2f origin);
+		public Vector2f getPosition();
+		public float getRotation();
+		public Vector2f getScale();
+		public Vector2f getOrigin();
+		public void move(Vector2f offset);
+		public void rotate(float angle);
+		public void scale(Vector2f factors);
+		public unowned Transform getTransform();
+		public unowned Transform getInverseTransform();
+		public void setTexture(Texture texture, bool resetRect);
+		public void setTextureRect(IntRect rect);
+		public void setFillColor(Color color);
+		public void setOutlineColor(Color color);
+		public void setOutlineThickness(float thickness);
+		public unowned Texture getTexture();
+		public IntRect getTextureRect();
+		public Color getFillColor();
+		public Color getOutlineColor();
+		public float getOutlineThickness();
+		public size_t getPointCount();
+		public Vector2f getPoint(size_t index);
+		public FloatRect getLocalBounds();
+		public FloatRect getGlobalBounds();
+		public void update();
+	}
+
 
 /* *****************************     SPRITE     ************************************************/
 	[Compact]
@@ -986,22 +1057,14 @@ public class Text {
 		public void bind();
 	}
 
-
-
-
 	[SimpleType]
 	[CCode(cname = "sfTransform", cprefix="sfTransform_")]
 	public struct Transform {
 		public float matrix[9];
-
-
-
 		public Transform *Identity;
-
 		public static Transform fromMatrix(float a00, float a01, float a02,
 				float a10, float a11, float a12,
 				float a20, float a21, float a22);
-
 		public void getMatrix(float matrix);
 		public Transform getInverse(Transform transform);
 		public Vector2f transformPoint(Vector2f point);
@@ -1017,14 +1080,66 @@ public class Text {
 
 	}
 
+	[CCode (cname = "sfVertex")]
+    [SimpleType]
+	public struct Vertex
+	{
+		Vector2f position;  ///< Position of the vertex
+		Color    color;     ///< Color of the vertex
+		Vector2f texCoords; ///< Coordinates of the texture's pixel to map to the vertex
+	}
 
+	[Compact]
+    [CCode (free_function = "sfVertexArray_destroy", cprefix="sfVertexArray_", cheader_filename = "SFML/Graphics.h")]
+	public class VertexArray {
+		[CCode (cname = "sfVertexArray_create")]
+		public VertexArray();
+
+		public owned VertexArray copy();
+		public void destroy();
+		public size_t getVertexCount();
+		public Vertex getVertex(size_t index);
+		public void clear();
+		public void resize(size_t vertexCount);
+		public void append(Vertex vertex);
+		public void setPrimitiveType(PrimitiveType type);
+		public PrimitiveType getPrimitiveType();
+		public FloatRect getBounds();
+	}
+	[CCode (cname = "sfVertexBufferUsage", cprefix= "sfVertexBuffer")]
+	public enum VertexBufferUsage
+	{
+		Stream,  ///< Constantly changing data
+		Dynamic, ///< Occasionally changing data
+		Static   ///< Rarely changing data
+	}
+
+	[Compact]
+    [CCode (free_function = "sfVertexBuffer_destroy", cprefix="sfVertexBuffer_", cheader_filename = "SFML/Graphics.h")]
+	public class VertexBuffer {
+	
+		public VertexBuffer(uint vertexCount, PrimitiveType type, VertexBufferUsage usage);
+		public VertexBuffer copy();
+		public void destroy();
+		public uint getVertexCount();
+		public bool update(Vertex vertices, uint vertexCount, uint offset);
+		public bool updateFromVertexBuffer(VertexBuffer other);
+		public void swap(VertexBuffer source);
+		public uint getNativeHandle();
+		public void setPrimitiveType(PrimitiveType type);
+		public PrimitiveType getPrimitiveType();
+		public void setUsage(VertexBufferUsage usage);
+		public VertexBufferUsage getUsage();
+		public void bind();
+		public bool isAvailable();
+}
 
 	[CCode (cname = "sfRenderStates")]
 	public struct RenderStates{
-		BlendMode      blendMode; ///< Blending mode
-		Transform      transform; ///< Transform
-		Texture texture;   ///< Texture
-		Shader  shader;    ///< Shader
+		BlendMode		blendMode; ///< Blending mode
+		Transform		transform; ///< Transform
+		Texture			texture;   ///< Texture
+		Shader			shader;    ///< Shader
 
 		[CCode (cname = "sfRenderStates_default")]
 		public static RenderStates @default();
@@ -1064,79 +1179,44 @@ public class Text {
 		public BlendEquation alphaEquation; ///< Blending equation for the alpha channel
 	}
 
-    [CCode (ref_function = "sfRenderWindow_create", unref_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h")]
+	[Compact]
+    [CCode (free_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h", cprefix = "sfRenderWindow_")]
 	public class RenderWindow{
 		[CCode (destroy_function = "sfRenderWindow_destroy", cname = "sfRenderWindow_create")]
 		public RenderWindow(VideoMode mode, string title, sf.WindowStyle flags = WindowStyle.DefaultStyle, ContextSettings? settings = null);
 		[CCode (destroy_function = "sfRenderWindow_createUnicode", cname = "sfRenderWindow_create")]
 		public RenderWindow.with_unicode(VideoMode mode, uint32 *title, sf.WindowStyle flags, ContextSettings? settings = null);
-		[CCode (cname = "sfRenderWindow_setTitle")]
 		public void set_title(string title);
-		[CCode (cname = "sfRenderWindow_close")]
 		public void close();
-		[CCode (cname = "sfRenderWindow_isOpen")]
 		public bool isOpen();
-		[CCode (cname = "sfRenderWindow_getSettings")]
 		public ContextSettings getSettings();
-		[CCode (cname = "sfRenderWindow_pollEvent")]
 		public bool pollEvent(out sf.Event event);
-		[CCode (cname = "sfRenderWindow_pollEvent")]
 		public bool waitEvent(out sf.Event event);
-		[CCode (cname = "sfRenderWindow_getPosition")]
 		public Vector2i getPosition();
-		[CCode (cname = "sfRenderWindow_setPosition")]
 		public void setPosition(Vector2i position);
-		[CCode (cname = "sfRenderWindow_getSize")]
 		public Vector2u getSize();
-		[CCode (cname = "sfRenderWindow_setSize")]
 		public void setSize(Vector2u size);
-		[CCode (cname = "sfRenderWindow_setUnicodeTitle")]
-		void setUnicodeTitle(uint32 []title);
-		[CCode (cname = "sfRenderWindow_setIcon")]
-		void setIcon(uint width, uint height,  uint8 []pixels);
-		[CCode (cname = "sfRenderWindow_setVisible")]
-		void setVisible(bool visible);
-		[CCode (cname = "sfRenderWindow_setVerticalSyncEnabled")]
-		void setVerticalSyncEnabled(bool enabled);
-		[CCode (cname = "sfRenderWindow_setMouseCursorVisible")]
-		void setMouseCursorVisible(bool show);
-		[CCode (cname = "sfRenderWindow_setMouseCursorGrabbed")]
-		void setMouseCursorGrabbed(bool grabbed);
-		[CCode (cname = "sfRenderWindow_setKeyRepeatEnabled")]
-		void setKeyRepeatEnabled(bool enabled);
-		
-
-		[CCode (cname = "sfRenderWindow_getUnicodeTitle")]
-		uint32 []getUnicodeTitle();
-		[CCode (cname = "sfRenderWindow_getVisible")]
-		bool getVisible();
-		[CCode (cname = "sfRenderWindow_getVerticalSyncEnabled")]
-		bool getVerticalSyncEnabled();
-		[CCode (cname = "sfRenderWindow_getMouseCursorVisible")]
-		bool getMouseCursorVisible();
-		[CCode (cname = "sfRenderWindow_getMouseCursorGrabbed")]
-		bool getMouseCursorGrabbed();
-		[CCode (cname = "sfRenderWindow_getKeyRepeatEnabled")]
-		bool getKeyRepeatEnabled();
-		
-		[CCode (cname = "sfRenderWindow_setView")]
-		void setView(View view);
-		[CCode (cname = "sfRenderWindow_sfView ")]
-		View getView();
-		[CCode (cname = "sfRenderWindow_getDefaultView")]
-		View getDefaultView();
-		[CCode (cname = "sfRenderWindow_getViewport")]
-		IntRect getViewport(View view);
-		[CCode (cname = "sfRenderWindow_mapPixelToCoords")]
-		Vector2f mapPixelToCoords(Vector2i point, View view);
+		public void setUnicodeTitle(uint32 []title);
+		public void setIcon(uint width, uint height,  uint8 []pixels);
+		public void setVisible(bool visible);
+		public void setVerticalSyncEnabled(bool enabled);
+		public void setMouseCursorVisible(bool show);
+		public void setMouseCursorGrabbed(bool grabbed);
+		public void setKeyRepeatEnabled(bool enabled);
+		public uint32 []getUnicodeTitle();
+		public bool getVisible();
+		public bool getVerticalSyncEnabled();
+		public bool getMouseCursorVisible();
+		public bool getMouseCursorGrabbed();
+		public bool getKeyRepeatEnabled();
+		public void setView(View view);
+		public View getView();
+		public View getDefaultView();
+		public IntRect getViewport(View view);
+		public Vector2f mapPixelToCoords(Vector2i point, View view);
 		// TODO void setMouseCursor(sfCursor cursor);
 // [CCode (cname = "sfRenderWindow_mapCoordsToPixel")]
 		// Vector2i mapCoordsToPixel(Vector2f point, sfView view);
-
-
-
-
-
 
 		public bool visible{
 		[CCode (cname = "sfRenderWindow_getVisible")]
@@ -1144,7 +1224,6 @@ public class Text {
 		[CCode (cname = "sfRenderWindow_setVisible")]
 			set;
 		}
-
 
 		public Vector2i position{
 			[CCode (cname = "sfRenderWindow_getPosition")]
@@ -1208,54 +1287,286 @@ public class Text {
 		public void drawSprite(Sprite object, RenderStates? states = null);
 		[CCode (cname = "sfRenderWindow_drawText")]
 		public void drawText(Text object, RenderStates? states = null);
-		// [CCode (cname = "sfRenderWindow_drawShape")]
-		// public void drawShape(Shape object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawShape")]
+		public void drawShape(Shape object, RenderStates? states = null);
 		[CCode (cname = "sfRenderWindow_drawCircleShape")]
 		public void drawCircleShape(CircleShape object, RenderStates? states = null);
 		[CCode (cname = "sfRenderWindow_drawConvexShape")]
 		public void drawConvexShape(ConvexShape object, RenderStates? states = null);
 		[CCode (cname = "sfRenderWindow_drawRectangleShape")]
 		public void drawRectangleShape(RectangleShape object, RenderStates? states = null);
-		// [CCode (cname = "sfRenderWindow_drawVertexArray")]
-		// public void drawVertexArray(VertexArray object, RenderStates? states = null);
-		// [CCode (cname = "sfRenderWindow_drawVertexBuffer")]
-		// public void drawVertexBuffer(VertexBuffer object, RenderStates? states = null);
-
-
-
-	    //TODO windowshandle
+		[CCode (cname = "sfRenderWindow_drawVertexArray")]
+		public void drawVertexArray(VertexArray object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawVertexBuffer")]
+		public void drawVertexBuffer(VertexBuffer object, RenderStates? states = null);
 	}
-	[CCode (cname = "int", cprefix = "sf", has_type_id = false)]
-    public enum WindowStyle
-    {
-        None,
-        Titlebar,
-        Resize,
-        Close,
-        Fullscreen,
-        DefaultStyle
+
+    
+	/*******************************************************************************************\
+	|*******************************************************************************************|
+	|*****************                        [Window]                        ******************|
+	|*******************************************************************************************|
+	|*******************************************************************************************|
+	\*******************************************************************************************/
+
+	[CCode (cprefix="sfClipboard_", cheader_filename = "SFML/Window.h")]
+	namespace ClipBoard{
+		public string getString();
+		public uint32 []getUnicodeString();
+		public void setString(string text);
+		public void setUnicodeString(uint32 []text);
+	}
+
+	[Compact]
+    [CCode (free_function = "sfContext_destroy", cprefix="sfContext_", cheader_filename = "SFML/Window.h")]
+	public class Context {
+		[CCode (cname = "sfContext_create")]
+		public Context();
+
+		public delegate void GlFunctionPointer();
+		
+		public static bool isExtensionAvailable(string name);
+		public static unowned GlFunctionPointer getFunction(string name);
+		public static uint64 getActiveContextId();
+		public bool setActive(bool active);
+		public unowned ContextSettings getSettings();
+	}
+
+	[CCode (cname = "sfCursorType", cprefix = "sfCursor")]
+	public enum CursorType {
+		Arrow,                  ///< Arrow cursor (default)
+		ArrowWait,              ///< Busy arrow cursor
+		Wait,                   ///< Busy cursor
+		Text,                   ///< I-beam, cursor when hovering over a field allowing text entry
+		Hand,                   ///< Pointing hand cursor
+		SizeHorizontal,         ///< Horizontal double arrow cursor
+		SizeVertical,           ///< Vertical double arrow cursor
+		SizeTopLeftBottomRight, ///< Double arrow cursor going from top-left to bottom-right
+		SizeBottomLeftTopRight, ///< Double arrow cursor going from bottom-left to top-right
+		SizeAll,                ///< Combination of SizeHorizontal and SizeVertical
+		Cross,                  ///< Crosshair cursor
+		Help,                   ///< Help cursor
+		NotAllowed              ///< Action not allowed cursor
+	}
+
+	[Compact]
+    [CCode (free_function = "sfCursor_destroy", cheader_filename = "SFML/Window.h")]
+	public class Cursor {
+		[CCode (cname = "sfCursor_createFromPixels")]
+		public Cursor.fromPixels(uint8 []pixels, Vector2u size, Vector2u hotspot);
+		[CCode (cname = "sfCursor_createFromSystem")]
+		public Cursor.fromSystem(CursorType type);
+	}
+	
+
+
+	///////////////////////////////////////////////////////////////
+	//							EVENT							//
+	/////////////////////////////////////////////////////////////
+
+
+	[CCode (cname = "sfEventType", cprefix = "sfEvt")]
+    public enum EventType {
+		Closed,                 ///< The window requested to be closed (no data)
+		Resized,                ///< The window was resized (data in event.size)
+		LostFocus,              ///< The window lost the focus (no data)
+		GainedFocus,            ///< The window gained the focus (no data)
+		TextEntered,            ///< A character was entered (data in event.text)
+		KeyPressed,             ///< A key was pressed (data in event.key)
+		KeyReleased,            ///< A key was released (data in event.key)
+		MouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
+		MouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
+		MouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
+		MouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
+		MouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
+		MouseEntered,           ///< The mouse cursor entered the area of the window (no data)
+		MouseLeft,              ///< The mouse cursor left the area of the window (no data)
+		JoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
+		JoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
+		JoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
+		JoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
+		JoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
+		TouchBegan,             ///< A touch event began (data in event.touch)
+		TouchMoved,             ///< A touch moved (data in event.touch)
+		TouchEnded,             ///< A touch event ended (data in event.touch)
+		SensorChanged,          ///< A sensor value changed (data in event.sensor)
+	}
+
+    [CCode (cname = "sfKeyEvent")]
+    [SimpleType]
+    public struct	KeyEvent{
+		EventType	type;
+        KeyCode		code;
+		bool		alt;
+        bool		control;
+        bool		shift;
+        bool		system;
     }
-    [CCode (cname = "int", cprefix = "sf", has_type_id = false)]
-    public enum ContextAttribute
+
+    [CCode (cname = "sfTextEvent")]
+    [SimpleType]
+    public struct TextEvent{
+        EventType	type;
+		uint32		unicode;
+	}
+
+	[CCode (cname = "sfMouseMoveEvent")]
+	[SimpleType]
+	public struct MouseMoveEvent{
+		sf.EventType	type;
+		int				x;
+		int				y;
+	}
+
+	[CCode (cname = "sfMouseButtonEvent")]
+	[SimpleType]
+	public struct MouseButtonEvent
+	{
+		EventType	type;
+		MouseButton	button;
+		int			x;
+		int			y;
+	}
+
+	[CCode (cname = "sfMouseWheelEvent")]
+	[SimpleType]
+	public struct MouseWheelEvent
+	{
+		EventType	type;
+		int			delta;
+		int			x;
+		int			y;
+	}
+
+    [CCode (cname = "sfMouseWheelScrollEvent")]
+    [SimpleType]
+    public struct MouseWheelScrollEvent
     {
-        ContextDefault,
-        ContextCore,
-        ContextDebug
+        EventType 	type;
+        MouseWheel	wheel;
+        float		delta;
+        int			x;
+        int			y;
     }
-    [CCode (cname = "sfContextSettings", has_type_id = false)]
-    public struct ContextSettings
+	
+	[CCode (cname = "sfJoystickMoveEvent")]
+	[SimpleType]
+	public struct JoystickMoveEvent
+	{
+	    EventType		type;
+	    uint			joystickId;
+	    JoystickAxis	axis;
+	    float			position;
+	}
+
+	[CCode (cname = "sfJoystickButtonEvent")]
+	[SimpleType]
+	public struct JoystickButtonEvent
+	{
+	    EventType	type;
+	    uint		joystickId;
+	    uint		button;
+	}
+	
+	[CCode (cname = "sfJoystickConnectEvent")]
+	[SimpleType]
+	public struct JoystickConnectEvent
+	{
+	    EventType		type;
+	    uint			joystickId;
+	}
+	
+	[CCode (cname = "sfSizeEvent")]
+	[SimpleType]
+	public struct SizeEvent
+	{
+	    EventType type;
+	    uint width;
+	    uint height;
+	}
+    
+	[CCode (cname = "sfTouchEvent")]
+    [SimpleType]
+    public struct TouchEvent
     {
-        uint depthBits;         ///< Bits of the depth buffer
-        uint stencilBits;       ///< Bits of the stencil buffer
-        uint antialiasingLevel; ///< Level of antialiasing
-        uint majorVersion;      ///< Major number of the context version to create
-        uint minorVersion;      ///< Minor number of the context version to create
-        uint32 attributeFlags;    ///< The attribute flags to create the context with
-        bool sRgbCapable;       ///< Whether the context framebuffer is sRGB capable
+        EventType	type;
+        uint		finger;
+        int			x;
+        int			y;
     }
-   
-/* *****************************    EVENT    ************************************************/
-    [CCode (cname = "int", cprefix = "sfKey", has_type_id = false)]
+
+    [CCode (cname = "sfSensorEvent")]
+    [SimpleType]
+    public struct SensorEvent
+    {
+        EventType	type;
+        SensorType	sensorType;
+        float		 x;
+        float		 y;
+        float		 z;
+    }
+    
+	[CCode (cname = "sfEvent", cprefix="sf", default_value ="{-42}")]
+	[SimpleType]
+	public struct Event{
+		EventType             type;             ///< Type of the event
+		SizeEvent             size;             ///< Size event parameters
+		KeyEvent              key;              ///< Key event parameters
+		TextEvent             text;             ///< Text event parameters
+		MouseMoveEvent        mouseMove;        ///< Mouse move event parameters
+		MouseButtonEvent      mouseButton;      ///< Mouse button event parameters
+		MouseWheelEvent       mouseWheel;       ///< Mouse wheel event parameters (deprecated)
+		MouseWheelScrollEvent mouseWheelScroll; ///< Mouse wheel event parameters
+		JoystickMoveEvent     joystickMove;     ///< Joystick move event parameters
+		JoystickButtonEvent   joystickButton;   ///< Joystick button event parameters
+		JoystickConnectEvent  joystickConnect;  ///< Joystick (dis)connect event parameters
+		TouchEvent            touch;            ///< Touch events parameters
+		SensorEvent           sensor;           ///< Sensor event parameters
+	}
+	[CCode (cname = "sfJoystickCount")]
+	public const int JoystickCount;
+	[CCode (cname = "sfJoystickButtonCount")]
+    public const int JoystickButtonCount;
+	[CCode (cname = "sfJoystickAxisCount")]
+    public const int JoystickAxisCount;
+	[CCode (cname = "sfJoystickAxis", cprefix = "sfJoystick")]
+	public enum JoystickAxis
+	{
+		X,    ///< The X axis
+		Y,    ///< The Y axis
+		Z,    ///< The Z axis
+		R,    ///< The R axis
+		U,    ///< The U axis
+		V,    ///< The V axis
+		PovX, ///< The X axis of the point-of-view hat
+		PovY  ///< The Y axis of the point-of-view hat
+	}
+	[CCode (cprefix = "sfKeyboard_")]
+    namespace Keyboard {
+		public bool isKeyPressed(KeyCode key);
+		public void setVirtualKeyboardVisible(bool visible);
+	}
+
+	[CCode (cprefix = "sfJoystick_")]
+    namespace Joystick {
+		public bool isConnected(uint joystick);
+		public uint getButtonCount(uint joystick);
+		public bool hasAxis(uint joystick, JoystickAxis axis);
+		public bool isButtonPressed(uint joystick, uint button);
+		public float getAxisPosition(uint joystick, JoystickAxis axis);
+		public JoystickIdentification getIdentification(uint joystick);
+		public void update();
+	}
+    
+	[CCode (cname = "sfJoystickIdentification")]
+    public struct JoystickIdentification
+    {
+        string	name;
+        uint	vendorId;
+        uint	productId;
+    }
+    
+	[CCode (cname = "sfKeyCode", cprefix = "sfKey")]
     public enum KeyCode
     {
         Unknown = -1, ///< Unhandled 
@@ -1368,220 +1679,33 @@ public class Text {
         SemiColon = Semicolon,    ///< \deprecated Use Semicolon instead
         Return    = Enter
     }
-    [CCode (cname = "sfKeyboard_isKeyPressed")]
-    public bool keyboard_isKeyPressed(KeyCode key);
-    [CCode (cname = "sfKeyboard_setVirtualKeyboardVisible")]
-    public void keyboard_setVirtualKeyboardVisible(bool visible);
-    [CCode (cname = "int", cprefix = "sfEvt", has_type_id = false)]
-    public enum EventType {
-        Closed,
-        Resized,
-        LostFocus,
-        GainedFocus,
-        TextEntered,
-        KeyPressed,
-        KeyReleased,
-        MouseWheelMoved,
-        MouseWheelScrolled,
-        MouseButtonPressed,
-        MouseButtonReleased,
-        MouseMoved,
-        MouseEntered,
-        MouseLeft,
-        JoystickButtonPressed,
-        JoystickButtonReleased,
-        JoystickMoved,
-        JoystickConnected,
-        JoystickDisconnected,
-        TouchBegan,
-        TouchMoved,
-        TouchEnded,
-        SensorChanged,
-        Count
-    }
-    [CCode (cname = "sfKeyEvent", has_type_id = false)]
-    [SimpleType]
-    public struct KeyEvent{
-        sf.EventType type;
-        uint32   code;//TODO
-        bool      alt;
-        bool      control;
-        bool      shift;
-        bool      system;
-    }
-    [CCode (cname = "sfTextEvent", has_type_id = false)]
-    [SimpleType]
-    public struct TextEvent{
-        sf.EventType type;
-        uint32 unicode;
-    }
-    [CCode (cname = "sfMouseMoveEvent", has_type_id = false)]
-    [SimpleType]
-    public struct MouseMoveEvent{
-        sf.EventType type;
-        int x;
-        int y;
-    }
-    [CCode (cname = "sfMouseButtonEvent", has_type_id = false)]
-    [SimpleType]
-    public struct MouseButtonEvent
-    {
-        EventType   type;
-        //TODO MouseButton button;
-        int x;
-        int y;
-    }
-    [CCode (cname = "sfMouseWheelEvent", has_type_id = false)]
-    [SimpleType]
-    public struct MouseWheelEvent
-    {
-        EventType type;
-        int delta;
-        int x;
-        int y;
-    }
-    [CCode (cname = "sfMouseWheelScrollEvent", has_type_id = false)]
-    [SimpleType]
-    public struct MouseWheelScrollEvent
-    {
-        EventType  type;
-        //TODO MouseWheel wheel;
-        float delta;
-        int x;
-        int y;
-    }
 
-    [CCode (cname = "int", cprefix = "sfCursor", has_type_id = false)]
-    public enum CursorType
-    {
-        Arrow,                  ///< Arrow cursor (default)
-        ArrowWait,              ///< Busy arrow cursor
-        Wait,                   ///< Busy cursor
-        Text,                   ///< I-beam, cursor when hovering over a field allowing text entry
-        Hand,                   ///< Pointing hand cursor
-        SizeHorizontal,         ///< Horizontal double arrow cursor
-        SizeVertical,           ///< Vertical double arrow cursor
-        SizeTopLeftBottomRight, ///< Double arrow cursor going from top-left to bottom-right
-        SizeBottomLeftTopRight, ///< Double arrow cursor going from bottom-left to top-right
-        SizeAll,                ///< Combination of SizeHorizontal and SizeVertical
-        Cross,                  ///< Crosshair cursor
-        Help,                   ///< Help cursor
-        NotAllowed              ///< Action not allowed cursor
-    }
-    
-    [CCode (cname = "int", cprefix = "sfJoystick", has_type_id = false)]
-    public enum JoystickAxis
-    {
-        X,    ///< The X axis
-        Y,    ///< The Y axis
-        Z,    ///< The Z axis
-        R,    ///< The R axis
-        U,    ///< The U axis
-        V,    ///< The V axis
-        PovX, ///< The X axis of the point-of-view hat
-        PovY  ///< The Y axis of the point-of-view hat
-    }
-
-    [CCode (cname = "sfJoystick_isConnected")]
-    public bool Joystick_isConnected(uint joystick);
-    [CCode (cname = "sfJoystick_getButtonCount")]
-    public uint Joystick_getButtonCount(uint joystick);
-    [CCode (cname = "sfJoystick_hasAxis")]
-    public bool Joystick_hasAxis(uint joystick, JoystickAxis axis);
-    [CCode (cname = "sfJoystick_isButtonPressed")]
-    public bool Joystick_isButtonPressed(uint joystick, uint button);
-    [CCode (cname = "sfJoystick_getAxisPosition")]
-    public float Joystick_getAxisPosition(uint joystick, JoystickAxis axis);
-    [CCode (cname = "sfJoystick_getIdentification")]
-    public JoystickIdentification Joystick_getIdentification(uint joystick);
-    [CCode (cname = "sfJoystick_update")]
-    public void Joystick_update();
-        
-    [CCode (cname = "sfJoystickIdentification")]
-    public struct JoystickIdentification
-    {
-        string name;
-        uint vendorId;
-        uint productId;
-    }
-    [CCode (cname = "sfJoystickMoveEvent", has_type_id = false)]
-    [SimpleType]
-    public struct JoystickMoveEvent
-    {
-        EventType    type;
-        uint   joystickId;
-        //TODO sfJoystickAxis axis;
-        float position;
-    }
-    [CCode (cname = "sfJoystickButtonEvent", has_type_id = false)]
-    [SimpleType]
-    public struct JoystickButtonEvent
-    {
-        EventType type;
-        uint joystickId;
-        uint button;
-    }
-    [CCode (cname = "sfJoystickConnectEvent", has_type_id = false)]
-    [SimpleType]
-    public struct JoystickConnectEvent
-    {
-        EventType type;
-        uint joystickId;
-    }
-    [CCode (cname = "sfSizeEvent", has_type_id = false)]
-    public struct SizeEvent
-    {
-        EventType type;
-        uint width;
-        uint height;
-    }
-    [CCode (cname = "sfTouchEvent", has_type_id = false)]
-    [SimpleType]
-    public struct TouchEvent
-    {
-        EventType type;
-        uint finger;
-        int x;
-        int y;
-    }
-    [CCode (cname = "sfSensorEvent", has_type_id = false)]
-    [SimpleType]
-    public struct SensorEvent
-    {
-        EventType type;
-        //TODO SensorType sensorType;
-        float x;
-        float y;
-        float z;
-    }
-    [CCode (cname = "int", cprefix = "sfMouse", has_type_id = false)]
+    [CCode (cname = "sfMouseButton", cprefix = "sfMouse")]
     public enum MouseButton
     {
         Left,       ///< The left mouse button
         Right,      ///< The right mouse button
         Middle,     ///< The middle (wheel) mouse button
-        Button1,   ///< The first extra mouse button
+		Button1,   ///< The first extra mouse button
         Button2,   ///< The second extra mouse button
         ButtonCount ///< Keep last -- the total number of mouse buttons
     }
 
-    [CCode (cname = "int", has_type_id = false)]
+    [CCode (cname = "sfMouseWheel", cprefix = "sfMouse")]
     public enum MouseWheel
     {
-        [CCode (cname = "sfMouseVerticalWheel", has_type_id = false)]
         Vertical,
-        [CCode (cname = "sfMouseHorizontalWheel", has_type_id = false)]
         Horizontal
     }
+
+	[CCode (cprefix = "sfMouse_")]
+	namespace Mouse {
+		public bool isButtonPressed(MouseButton button);
+		public Vector2i getPosition(RenderWindow relativeTo);
+		public void setPosition(Vector2i position, RenderWindow relativeTo);
+	}
     
-    [CCode (cname = "sfMouse_isButtonPressed")]
-    public bool Mouse_isButtonPressed(MouseButton button);
-    [CCode (cname = "sfMouse_getPosition")]
-    public Vector2i? Mouse_getPosition(ref RenderWindow relativeTo);
-    [CCode (cname = "sfMouse_setPosition")]
-    public void Mouse_setPosition(Vector2i position, ref RenderWindow relativeTo);
-    
-    [CCode (cname = "int", cprefix = "sfSensor", has_type_id = false)]
+[CCode (cname = "sfSensorType", cprefix = "sfSensor")]
     public enum SensorType
     {
         Accelerometer,    ///< Measures the raw acceleration (m/s^2)
@@ -1592,36 +1716,98 @@ public class Text {
         Orientation,      ///< Measures the absolute 3D orientation (degrees)
         Count             ///< Keep last -- the total number of sensor types
     }
-    [CCode (cname = "sfSensor_isAvailable")]
-    public bool? Sensor_isAvailable(SensorType sensor);
-    [CCode (cname = "sfSensor_setEnabled")]
-    public void Sensor_setEnabled(SensorType sensor, bool enabled);
-    [CCode (cname = "sfSensor_getValue")]
-    public Vector3f? Sensor_getValue(SensorType sensor);
-    [CCode (cname = "sfTouch_isDown")]
-    public bool? Touch_isDown(uint finger);
-    [CCode (cname = "sfTouch_getPosition")]
-    public Vector2i? Touch_getPosition(uint finger, ref RenderWindow relativeTo);
+
+[CCode (cprefix = "sfSensor_")]
+	namespace Sensor {
+		public bool isAvailable(SensorType sensor);
+		public void setEnabled(SensorType sensor, bool enabled);
+		public Vector3f getValue(SensorType sensor);
+	}
     
-    [CCode (cname = "sfEvent", default_value ="{-42}")]
+	[CCode (cprefix = "sfTouch_")]
+	namespace Touch {
+		public bool isDown(uint finger);
+		public Vector2i getPosition(uint finger, RenderWindow relativeTo);
+	}
+	
+	[CCode (cname = "sfVideoMode", cheader_filename = "SFML/Window.h")]
     [SimpleType]
-    public struct Event{
-        [CCode (cname = "type")]
-        public EventType type;
-        [CCode (cname = "size")]
-        public SizeEvent size;
-        [CCode (cname = "key")]
-        public KeyEvent key;
-        [CCode (cname = "text")]
-        public TextEvent text;
-        public MouseMoveEvent        mouseMove;
-        public MouseButtonEvent      mouseButton;
-        public MouseWheelEvent       mouseWheel;
-        public MouseWheelScrollEvent mouseWheelScroll;
-        public JoystickMoveEvent     joystickMove;
-        public JoystickButtonEvent   joystickButton;
-        public JoystickConnectEvent  joystickConnect;
-        public TouchEvent            touch;
-        public SensorEvent           sensor;
+    public struct VideoMode{
+		uint width;
+        uint height;
+        uint bitsPerPixel;
+        [CCode (cname = "sfVideoMode_getDesktopMode")]
+        public VideoMode getDesktopMode();
+        [CCode (cname = "sfVideoMode_getFullscreenModes")]
+        public unowned VideoMode getFullscreenModes(ref size_t count);
+        [CCode (cname = "sfVideoMode_isValid")]
+        public bool isValid(VideoMode mode);
+
     }
+
+	[CCode (cname = "sfWindowStyle", cprefix = "sf")]
+    public enum WindowStyle
+    {
+        None,
+        Titlebar,
+        Resize,
+        Close,
+        Fullscreen,
+        DefaultStyle
+    }
+    [CCode (cname = "sfContextAttribute", cprefix = "sfContext")]
+    public enum ContextAttribute
+    {
+        Default,
+        Core,
+        Debug
+    }
+    [CCode (cname = "sfContextSettings")]
+    public struct ContextSettings
+    {
+        uint depthBits;         ///< Bits of the depth buffer
+        uint stencilBits;       ///< Bits of the stencil buffer
+        uint antialiasingLevel; ///< Level of antialiasing
+        uint majorVersion;      ///< Major number of the context version to create
+        uint minorVersion;      ///< Minor number of the context version to create
+        uint32 attributeFlags;    ///< The attribute flags to create the context with
+        bool sRgbCapable;       ///< Whether the context framebuffer is sRGB capable
+    }
+
+	[Compact]
+    [CCode (free_function = "sfCursor_destroy", cheader_filename = "SFML/Window.h")]
+	[CCode (cname = "sfWindow_create")]
+	create(sfVideoMode mode, string title, uint32 style, sfContextSettings* settings);
+	[CCode (cname = "sfWindow_createUnicode")]
+	createUnicode(sfVideoMode mode, uint32* title, uint32 style, sfContextSettings* settings);
+	[CCode (cname = "isfWindow_createFromHandle")]
+	createFromHandle(sfWindowHandle handle, sfContextSettings* settings);
+
+		public void destroy();
+		public void close();
+		public bool isOpen();
+		public unowned ContextSettings getSettings();
+		public bool pollEvent(out Event event);
+		public bool waitEvent(out Event event);
+		public Vector2i getPosition();
+		public void setPosition(Vector2i position);
+		public Vector2u getSize();
+		public void setSize(Vector2u size);
+		public void setTitle(string title);
+		public void setUnicodeTitle(uint32 []title);
+		public void setIcon(uint width, uint height, uint8* pixels);
+		public void setVisible(bool visible);
+		public void setVerticalSyncEnabled(bool enabled);
+		public void setMouseCursorVisible(bool visible);
+		public void setMouseCursorGrabbed(bool grabbed);
+		public void setMouseCursor(Cursor cursor);
+		public void setKeyRepeatEnabled(bool enabled);
+		public void setFramerateLimit(uint limit);
+		public void setJoystickThreshold(float threshold);
+		public bool setActive(bool active);
+		public void requestFocus();
+		public bool hasFocus();
+		public void display();
+		public WindowHandle getSystemHandle();	
+}
 }
