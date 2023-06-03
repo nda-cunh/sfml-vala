@@ -34,9 +34,9 @@ using sf;
 
 void main()
 {
-    var window = new RenderWindow({200,200}, "SFML works!");
+    var window = new RenderWindow(VideoMode(200, 200), "SFML works!");
     var circle = new CircleShape();
-    circle.setFillColor({50,255,0});
+    circle.setFillColor(Color.Green);
     circle.setRadius(100);
 
     while (window.isOpen())
@@ -49,7 +49,7 @@ void main()
         }
 
         window.clear();
-        window.draw_circle(circle);
+        circle.draw(window);
         window.display();
     }
 }
