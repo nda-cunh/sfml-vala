@@ -12,7 +12,7 @@ Window:
 - [X] Finish 
 
 Audio:
-- [ ] Export
+- [X] Export
 - [ ] Listener
 - [ ] Music
 - [ ] Sound
@@ -21,7 +21,7 @@ Audio:
 - [ ] SoundRecorder
 - [ ] SoundStatus
 - [ ] SoundStream
-- [ ] Types
+- [X] Types
 
 Network:
     Not planned and useless in vala
