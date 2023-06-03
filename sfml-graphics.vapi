@@ -59,7 +59,7 @@ namespace sf{
         float y;
         float z;
     }
-    [CCode (cname = "sfColor", has_type_id = false, default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
+    [CCode (cname = "sfColor", default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
 	[SimpleType]
     public struct Color
     {
@@ -69,21 +69,23 @@ namespace sf{
 		public Color.from_RGB(uint8 red, uint8 green, uint8 blue);
 		[CCode (cname = "sfColor_fromRGBA")]
 		public Color.from_RGBA(uint8 red, uint8 green, uint8 blue, uint8 alpha);
+		[CCode (cname = "sfBlack")]
+		public static const Color Black;       ///< White predefined color
 		[CCode (cname = "sfWhite")]
 		public static const Color White;       ///< White predefined color
 		[CCode (cname = "sfRed")]
 		public static const Color Red;         ///< Red predefined color
-		[CCode (cname ="sfGreen")]
+		[CCode (cname = "sfGreen")]
 		public static const Color Green;       ///< Green predefined color
-		[CCode (cname ="sfBlue")]
+		[CCode (cname = "sfBlue")]
 		public static const Color Blue;        ///< Blue predefined color
-		[CCode (cname ="sfYellow")]
+		[CCode (cname = "sfYellow")]
 		public static const Color Yellow;      ///< Yellow predefined color
-		[CCode (cname ="sfMagenta")]
+		[CCode (cname = "sfMagenta")]
 		public static const Color Magenta;     ///< Magenta predefined color
-		[CCode (cname ="sfCyan")]
+		[CCode (cname = "sfCyan")]
 		public static const Color Cyan;        ///< Cyan predefined color
-		[CCode (cname ="sfTransparent")]
+		[CCode (cname = "sfTransparent")]
 		public static const Color Transparent;
         uint8 r;
         uint8 g;
@@ -1180,43 +1182,14 @@ namespace sf{
 	}
 
 	[Compact]
-    [CCode (free_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h", cprefix = "sfRenderWindow_")]
-	public class RenderWindow{
-		[CCode (destroy_function = "sfRenderWindow_destroy", cname = "sfRenderWindow_create")]
-		public RenderWindow(VideoMode mode, string title, sf.WindowStyle flags = WindowStyle.DefaultStyle, ContextSettings? settings = null);
-		[CCode (destroy_function = "sfRenderWindow_createUnicode", cname = "sfRenderWindow_create")]
-		public RenderWindow.with_unicode(VideoMode mode, uint32 *title, sf.WindowStyle flags, ContextSettings? settings = null);
-		public void set_title(string title);
-		public void close();
-		public bool isOpen();
-		public ContextSettings getSettings();
-		public bool pollEvent(out sf.Event event);
-		public bool waitEvent(out sf.Event event);
-		public Vector2i getPosition();
-		public void setPosition(Vector2i position);
-		public Vector2u getSize();
-		public void setSize(Vector2u size);
-		public void setUnicodeTitle(uint32 []title);
-		public void setIcon(uint width, uint height,  uint8 []pixels);
-		public void setVisible(bool visible);
-		public void setVerticalSyncEnabled(bool enabled);
-		public void setMouseCursorVisible(bool show);
-		public void setMouseCursorGrabbed(bool grabbed);
-		public void setKeyRepeatEnabled(bool enabled);
-		public uint32 []getUnicodeTitle();
-		public bool getVisible();
-		public bool getVerticalSyncEnabled();
-		public bool getMouseCursorVisible();
-		public bool getMouseCursorGrabbed();
-		public bool getKeyRepeatEnabled();
-		public void setView(View view);
-		public View getView();
-		public View getDefaultView();
-		public IntRect getViewport(View view);
-		public Vector2f mapPixelToCoords(Vector2i point, View view);
-		// TODO void setMouseCursor(sfCursor cursor);
-// [CCode (cname = "sfRenderWindow_mapCoordsToPixel")]
-		// Vector2i mapCoordsToPixel(Vector2f point, sfView view);
+    [CCode (free_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h,SFML/Graphics.h", cprefix = "sfRenderWindow_")]
+	public class RenderWindow {
+		[CCode (cname = "sfRenderWindow_create")]
+		public RenderWindow(VideoMode mode, string title, WindowStyle style = WindowStyle.DefaultStyle, ContextSettings? settings = null);
+		[CCode (cname = "sfRenderWindow_createUnicode")]
+		public RenderWindow.createUnicode(VideoMode mode, uint32 []title, uint32 style, ContextSettings? settings = null);
+		[CCode (cname = "sfRenderWindow_createFromHandle")]
+		public RenderWindow.createFromHandle(WindowHandle handle, ContextSettings? settings = null);
 
 		public bool visible{
 		[CCode (cname = "sfRenderWindow_getVisible")]
@@ -1265,41 +1238,58 @@ namespace sf{
 			[CCode (cname = "sfRenderWindow_hasFocus")]
 			get;
 		}
-		//TODO
-		// CSFML_GRAPHICS_API sfContextSettings sfRenderWindow_getSettings(const sfRenderWindow* renderWindow);
 
-		[CCode (cname = "sfRenderWindow_setFramerateLimit")]
+		public void close();
+		public bool isOpen();
+		public unowned ContextSettings getSettings();
+		public bool pollEvent(out Event event);
+		public bool waitEvent(out Event event);
+		public Vector2i getPosition();
+		public void setPosition(Vector2i position);
+		public Vector2u getSize();
+		public void setSize(Vector2u size);
+		public void setTitle(string title);
+		public void setUnicodeTitle(uint32 []title);
+		public void setIcon(uint width, uint height, uint8 []pixels);
+		public void setVisible(bool visible);
+		public void setVerticalSyncEnabled(bool enabled);
+		public void setMouseCursorVisible(bool show);
+		public void setMouseCursorGrabbed(bool grabbed);
+		public void setMouseCursor(Cursor cursor);
+		public void setKeyRepeatEnabled(bool enabled);
 		public void setFramerateLimit(uint limit);
-		[CCode (cname = "sfRenderWindow_setJoystickThreshold")]
-		public void setJoystickThreshold(float threshold);	
-		[CCode (cname = "sfRenderWindow_setActive")]
+		public void setJoystickThreshold(float threshold);
 		public bool setActive(bool active);
-		[CCode (cname = "sfRenderWindow_requestFocus")]
 		public void requestFocus();
-		[CCode (cname = "sfRenderWindow_hasFocus")]
 		public bool hasFocus();
-		[CCode (cname = "sfRenderWindow_display")]
-	    public void display();
-	    [CCode (cname = "sfRenderWindow_clear")]
-	    public void clear(Color color = {0,0,0});
-
-		[CCode (cname = "sfRenderWindow_drawSprite")]
+		public void display();
+		public WindowHandle getSystemHandle();
+		public void clear(Color color = Color.Black);
+		public void setView(View view);
+		public unowned View getView();
+		public unowned View getDefaultView();
+		public IntRect getViewport(View view);
+		public Vector2f mapPixelToCoords(Vector2i point, View view);
+		public Vector2i mapCoordsToPixel(Vector2f point, View view);
 		public void drawSprite(Sprite object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawText")]
 		public void drawText(Text object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawShape")]
 		public void drawShape(Shape object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawCircleShape")]
 		public void drawCircleShape(CircleShape object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawConvexShape")]
 		public void drawConvexShape(ConvexShape object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawRectangleShape")]
 		public void drawRectangleShape(RectangleShape object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawVertexArray")]
 		public void drawVertexArray(VertexArray object, RenderStates? states = null);
-		[CCode (cname = "sfRenderWindow_drawVertexBuffer")]
 		public void drawVertexBuffer(VertexBuffer object, RenderStates? states = null);
+		public void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates? states = null);
+		public void drawPrimitives(Vertex vertices, size_t vertexCount, PrimitiveType type, RenderStates? states = null);
+		public void pushGLStates();
+		public void popGLStates();
+		public void resetGLStates();
+		[Deprecated]
+		public Image capture();
 	}
+
+
+
 
     
 	/*******************************************************************************************\
@@ -1776,12 +1766,13 @@ namespace sf{
 
 	[Compact]
     [CCode (free_function = "sfCursor_destroy", cheader_filename = "SFML/Window.h")]
-	[CCode (cname = "sfWindow_create")]
-	create(sfVideoMode mode, string title, uint32 style, sfContextSettings* settings);
-	[CCode (cname = "sfWindow_createUnicode")]
-	createUnicode(sfVideoMode mode, uint32* title, uint32 style, sfContextSettings* settings);
-	[CCode (cname = "isfWindow_createFromHandle")]
-	createFromHandle(sfWindowHandle handle, sfContextSettings* settings);
+	public class Window {
+		[CCode (cname = "sfWindow_create")]
+		public Window(VideoMode mode, string title, uint32 style, ContextSettings? settings = null);
+		[CCode (cname = "sfWindow_createUnicode")]
+		public Window.withUnicode(VideoMode mode, uint32 []title, uint32 style, ContextSettings? settings = null);
+		[CCode (cname = "isfWindow_createFromHandle")]
+		public Window.fromHandle(WindowHandle handle, ContextSettings? settings = null);
 
 		public void destroy();
 		public void close();
@@ -1809,5 +1800,9 @@ namespace sf{
 		public bool hasFocus();
 		public void display();
 		public WindowHandle getSystemHandle();	
-}
+	}
+	[CCode (cname = "sfWindowHandle")]
+	[SimpleType]
+	public struct WindowHandle {
+	}
 }
