@@ -4,11 +4,9 @@ vala binding of project SFML
 
 Graphics:
 - [X] Finish 
+
 System:
-- [ ] InputStream
-- [X] Types
-- [X] Vector2
-- [X] Vector3
+- [X] Finish 
 
 Window:
 - [X] Finish 

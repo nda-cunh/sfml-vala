@@ -19,6 +19,7 @@ public sf.VideoMode VideoMode(int width, int height){
 }
 
 
+
 [CCode (cheader_filename = "SFML/Graphics.h")]
 namespace sf{
   
@@ -122,6 +123,21 @@ namespace sf{
         public bool intersects(IntRect rect, IntRect? intersection = null);
     }
 
+	public delegate int64 InputStreamReadFunc(void* data, int64 size, void* userData);
+	public delegate int64 InputStreamSeekFunc(int64 position, void* userData);
+	public delegate int64 InputStreamTellFunc(void* userData);
+	public delegate int64 InputStreamGetSizeFunc(void* userData);
+
+	[CCode (cname = "sfInputStream")]
+	public struct InputStream
+	{
+		InputStreamReadFunc    read;     ///< Function to read data from the stream
+		InputStreamSeekFunc    seek;     ///< Function to set the current read position
+		InputStreamTellFunc    tell;     ///< Function to get the current read position
+		InputStreamGetSizeFunc getSize;  ///< Function to get the total number of bytes in the stream
+		void*                    userData; ///< User data that will be passed to the callbacks
+	}
+
 	[CCode (cname = "sfPrimitiveType", cprefix = "sf")]
 	public enum PrimitiveType
 	{
@@ -169,7 +185,8 @@ namespace sf{
 		public Texture.fromSrgbFromMemory(void* data, size_t sizeInBytes, IntRect? area = null);
 	    [CCode (cname = "sfTexture_createFromStream")]
 	    public Texture.fromStream(uint32? stream = null, IntRect? area = null);
-	   	//TODO Texture* sfTexture_createSrgbFromStream(sfInputStream* stream, const sfIntRect* area);
+		[CCode (cname = "sfTexture_createSrgbFromStream")]
+	   	public Texture.fromSrgbFromStream(InputStream stream, IntRect area);
 		[CCode (cname = "sfTexture_createFromImage")]
 		public Texture.fromImage(Image image, IntRect? area = null);
 		[CCode (cname = "sfTexture_createSrgbFromImage")]
@@ -185,8 +202,8 @@ namespace sf{
 		void setSmooth(bool smooth);
 		bool isSmooth();
 		bool isSrgb();
-		void setRepeated(bool repeated);
 		bool isRepeated();
+		void setRepeated(bool repeated);
 		bool generateMipmap();
 		void swap(Texture with);
 		uint getNativeHandle();
@@ -202,9 +219,8 @@ namespace sf{
 		public Transformable();
 
 		public Transformable copy();
-		
 
-
+		// Attribut
 		public Vector2f position {
         	[CCode (cname = "sfTransformable_getPosition")]
 			get;
@@ -317,7 +333,7 @@ namespace sf{
 			set;
 		}
 
-		[CCode (cname = "sfRenderWindow_drawCircle", instance_pos = 1.2)]
+		[CCode (cname = "sfRenderWindow_drawCircleShape", instance_pos = 1.2)]
 		public void draw(RenderWindow window, RenderStates? state = null);
 		
 		[CCode (cname = "sfCircleShape_setPosition")]
@@ -873,7 +889,7 @@ namespace sf{
 		public Image.fromPixels(uint width, uint height, uint8* pixels);
 		public Image.fromFile(string filename);
 		public Image.fromMemory(void* data, size_t size);
-		// public Image.FromStream(sfInputStream* stream);
+		public Image.FromStream(InputStream stream);
 		public Image copy();
 
 		public bool saveToFile(string filename);
@@ -1189,11 +1205,15 @@ namespace sf{
 	[Compact]
 	[CCode (cname = "sfShader", free_function = "sfShader_destroy", cprefix="sfShader_")]
 	public class Shader {
+		[CCode (cname = "sfShader_createFromFile")]
+		public Shader.FromFile(string vertexShaderFilename, string geometryShaderFilename, string fragmentShaderFilename);
+		[CCode (cname = "sfShader_createFromMemory")]
+		public Shader.FromMemory(string vertexShader, string geometryShader, string fragmentShader);
+		[CCode (cname = "sfShader_createFromStream")]
+		public Shader.FromStream(InputStream vertexShaderStream, InputStream geometryShaderStream, InputStream fragmentShaderStream);
+		
 		public static bool isAvailable();
 		public static bool isGeometryAvailable();
-		public static Shader createFromFile(string vertexShaderFilename, string geometryShaderFilename, string fragmentShaderFilename);
-		public static Shader createFromMemory(string vertexShader, string geometryShader, string fragmentShader);
-		// public static Shader createFromStream(sfInputStream vertexShaderStream, sfInputStream geometryShaderStream, sfInputStream fragmentShaderStream);
 		public void setFloatUniform(string name, float x);
 		public void setVec2Uniform(string name, GlslVec2 vector);
 		public void setVec3Uniform(string name, GlslVec3 vector);
@@ -1236,7 +1256,7 @@ namespace sf{
 	[CCode(cname = "sfTransform", cprefix="sfTransform_")]
 	public struct Transform {
 		public float matrix[9];
-		public Transform *Identity;
+		public Transform* Identity;
 		public static Transform fromMatrix(float a00, float a01, float a02,
 				float a10, float a11, float a12,
 				float a20, float a21, float a22);
@@ -1835,11 +1855,15 @@ namespace sf{
         F15,          ///< The F15 
         Pause,        ///< The Pause 
         Count,      ///< Keep last -- the total number of board s
-        // Deprecated values:
-        Dash      = Hyphen,       ///< \deprecated Use Hyphen instead
+        [Deprecated]
+		Dash      = Hyphen,       ///< \deprecated Use Hyphen instead
+        [Deprecated]
         Back      = Backspace,    ///< \deprecated Use Backspace instead
+        [Deprecated]
         BackSlash = Backslash,    ///< \deprecated Use Backslash instead
+        [Deprecated]
         SemiColon = Semicolon,    ///< \deprecated Use Semicolon instead
+        [Deprecated]
         Return    = Enter
     }
 
