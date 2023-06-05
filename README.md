@@ -12,16 +12,7 @@ Window:
 - [X] Finish 
 
 Audio:
-- [X] Export
-- [ ] Listener
-- [ ] Music
-- [ ] Sound
-- [ ] SoundBuffer
-- [ ] SoundBufferRecorder
-- [ ] SoundRecorder
-- [ ] SoundStatus
-- [ ] SoundStream
-- [X] Types
+- [X] Finish 
 
 Network:
     Not planned and useless in vala
