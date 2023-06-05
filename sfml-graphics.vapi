@@ -2170,9 +2170,6 @@ namespace sf{
 		string getDevice();
 	}
 
-
-
-
 	[Compact]
 	[CCode (free_function = "sfSoundRecorder_destroy", cprefix="sfSoundRecorder_", cheader_filename = "SFML/Audio.h")]
 	public class SoundRecorder {
