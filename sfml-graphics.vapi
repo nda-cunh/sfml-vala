@@ -52,28 +52,28 @@ namespace sf{
 
     /* ****************************  VECTOR2-3 Color rect  *************************************/
 
-	[CCode (cname = "sfVector2i", has_type_id = false, cheader_filename = "SFML/System.h")]
+	[CCode (cname = "sfVector2i", cheader_filename = "SFML/System.h")]
     [SimpleType]
     public struct Vector2i
     {
         int x;
         int y;
     }
-    [CCode (cname = "sfVector2u", has_type_id = false, cheader_filename = "SFML/System.h")]
+    [CCode (cname = "sfVector2u", cheader_filename = "SFML/System.h")]
     [SimpleType]
     public struct Vector2u
     {
         uint x;
         uint y;
     }
-    [CCode (cname = "sfVector2f", has_type_id = false, cheader_filename = "SFML/System.h")]
+    [CCode (cname = "sfVector2f", cheader_filename = "SFML/System.h")]
     [SimpleType]
     public struct Vector2f
     {
         float x;
         float y;
     }
-    [CCode (cname = "sfVector3f", has_type_id = false, cheader_filename = "SFML/System.h")]
+    [CCode (cname = "sfVector3f", cheader_filename = "SFML/System.h")]
     [SimpleType]
     public struct Vector3f
     {
@@ -212,6 +212,13 @@ namespace sf{
 		public Texture.fromImage(Image image, IntRect? area = null);
 		[CCode (cname = "sfTexture_createSrgbFromImage")]
 		public Texture.fromSrgbFromImage(Image image, IntRect? area = null);
+		
+		public Vector2u size {
+			[CCode (cname = "sfTexture_getSize")]
+			get;
+			[CCode (cname = "sfTexture_setSize")]
+			set;
+		} 
 		
 		Vector2u getSize();
 		Image copyToImage();
@@ -1034,13 +1041,13 @@ namespace sf{
 		[CCode (cname = "sfSprite_copy")]
 		public Sprite copy();
 
-
 		// Attribut 
 		public Vector2f size{
-			[CCode (cname = "sfSprite_getSize")]
-			get;
-			[CCode (cname = "sfSprite_setSize")]
-			set;
+			get {
+				unowned Texture tex;
+				tex = this.texture;
+				return {tex.size.x, tex.size.y};
+			}
 		}
 		public Vector2f position{
 			[CCode (cname = "sfSprite_getPosition")]
@@ -1090,13 +1097,29 @@ namespace sf{
 			[CCode (cname = "sfSprite_setGlobalBounds")]
 			set;
 		}
+		public unowned Texture texture{
+			[CCode (cname = "sfSprite_getTexture")]
+			get;
+			set{
+				setTexture(value);
+			}
+			
+		}
+		public float angle{
+			[CCode (cname = "sfSprite_setRotation")]
+			set;
+			[CCode (cname = "sfSprite_getRotation")]
+			get;
+		}
+		
+		[CCode (cname = "sfSprite_setTexture")]
+		public void setTexture(Texture texture, bool resetRect = false);
+		
 
 
 		[CCode (cname = "sfRenderWindow_drawSprite", instance_pos = 1.2)]
 		public void draw(RenderWindow window, RenderStates? state = null);
 
-		[CCode (cname = "sfSprite_setTexture")]
-		public void setTexture(Texture texture, bool resetRect = false);
 		[CCode (cname = "sfSprite_setPosition")]
 		public void setPosition(Vector2f position);
 		[CCode (cname = "sfSprite_setRotation")]
@@ -1134,9 +1157,9 @@ namespace sf{
 		[CCode (cname = "sfSprite_getColor")]
 		public Color getColor();
 		[CCode (cname = "sfSprite_getLocalBounds")]
-		public FloatRect getLocalBounds();
+		public unowned FloatRect getLocalBounds();
 		[CCode (cname = "sfSprite_getGlobalBounds")]
-		public FloatRect getGlobalBounds();
+		public unowned FloatRect getGlobalBounds();
 
 	}
 	[CCode (cname = "sfGlslVec2")]
