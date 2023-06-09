@@ -92,23 +92,23 @@ namespace sf{
 		[CCode (cname = "sfColor_fromRGBA")]
 		public Color.from_RGBA(uint8 red, uint8 green, uint8 blue, uint8 alpha);
 		[CCode (cname = "sfBlack")]
-		public static const Color Black;       ///< White predefined color
+		public const Color Black;       ///< White predefined color
 		[CCode (cname = "sfWhite")]
-		public static const Color White;       ///< White predefined color
+		public const Color White;       ///< White predefined color
 		[CCode (cname = "sfRed")]
-		public static const Color Red;         ///< Red predefined color
+		public const Color Red;         ///< Red predefined color
 		[CCode (cname = "sfGreen")]
-		public static const Color Green;       ///< Green predefined color
+		public const Color Green;       ///< Green predefined color
 		[CCode (cname = "sfBlue")]
-		public static const Color Blue;        ///< Blue predefined color
+		public const Color Blue;        ///< Blue predefined color
 		[CCode (cname = "sfYellow")]
-		public static const Color Yellow;      ///< Yellow predefined color
+		public const Color Yellow;      ///< Yellow predefined color
 		[CCode (cname = "sfMagenta")]
-		public static const Color Magenta;     ///< Magenta predefined color
+		public const Color Magenta;     ///< Magenta predefined color
 		[CCode (cname = "sfCyan")]
-		public static const Color Cyan;        ///< Cyan predefined color
+		public const Color Cyan;        ///< Cyan predefined color
 		[CCode (cname = "sfTransparent")]
-		public static const Color Transparent;
+		public const Color Transparent;
         uint8 r;
         uint8 g;
         uint8 b;
@@ -714,7 +714,7 @@ namespace sf{
 	}
 
 
-	[FLAGS]
+	[Flags]
 	[CCode (cname = "sfTextStyle", cprefix = "sfText")]
 	public enum TextStyle{
 		Regular,         ///< Regular characters, no style
@@ -877,7 +877,7 @@ namespace sf{
 		public Transform getInverseTransform();
 		public void setString(string str);
 		public void setUnicodeString(uint32 []str);
-		public void setFont(unowned Font font);
+		public void setFont(Font font);
 		public void setCharacterSize(uint size);
 		public void setLineSpacing(float spacingFactor);
 		public void setLetterSpacing(float spacingFactor);
@@ -1311,7 +1311,7 @@ namespace sf{
 		[CCode (cname = "sfVertexArray_create")]
 		public VertexArray();
 
-		public owned VertexArray copy();
+		public VertexArray copy();
 		public void destroy();
 		public size_t getVertexCount();
 		public Vertex getVertex(size_t index);
@@ -1498,7 +1498,7 @@ namespace sf{
 		public void pushGLStates();
 		public void popGLStates();
 		public void resetGLStates();
-		[Deprecated]
+		[Version (deprecated = true, replacement = "")]
 		public Image capture();
 	}
 
@@ -1876,15 +1876,15 @@ namespace sf{
         F15,          ///< The F15 
         Pause,        ///< The Pause 
         Count,      ///< Keep last -- the total number of board s
-        [Deprecated]
+        [Version (deprecated = true, replacement = "Hyphen")]
 		Dash      = Hyphen,       ///< \deprecated Use Hyphen instead
-        [Deprecated]
+        [Version (deprecated = true, replacement = "Backspace")]
         Back      = Backspace,    ///< \deprecated Use Backspace instead
-        [Deprecated]
+        [Version (deprecated = true, replacement = "Backslash")]
         BackSlash = Backslash,    ///< \deprecated Use Backslash instead
-        [Deprecated]
+        [Version (deprecated = true, replacement = "Semicolon")]
         SemiColon = Semicolon,    ///< \deprecated Use Semicolon instead
-        [Deprecated]
+        [Version (deprecated = true, replacement = "Enter")]
         Return    = Enter
     }
 
