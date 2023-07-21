@@ -189,7 +189,8 @@ namespace sf{
 	}
 
 	[Compact]
-    [CCode (free_function = "sfTexture_destroy", cprefix="sfTexture_", cheader_filename = "SFML/Graphics.h")]
+	[Immutable]
+    [CCode (cname="sfTexture", copy_function="sfTexture_copy", free_function = "sfTexture_destroy", cprefix="sfTexture_", cheader_filename = "SFML/Graphics.h")]
 	public class Texture{
 	    [CCode (cname = "sfTexture_copy")]
 		Texture copy();
@@ -216,8 +217,6 @@ namespace sf{
 		public Vector2u size {
 			[CCode (cname = "sfTexture_getSize")]
 			get;
-			[CCode (cname = "sfTexture_setSize")]
-			set;
 		} 
 		
 		Vector2u getSize();
@@ -1456,7 +1455,7 @@ namespace sf{
 			[CCode (cname = "sfRenderWindow_setSize")]
 			set;
 		}
-		public string title{
+		public unowned string title{
 			[CCode (cname = "sfRenderWindow_getTitle")]
 			get;
 			[CCode (cname = "sfRenderWindow_setTitle")]
@@ -1495,6 +1494,7 @@ namespace sf{
 		public Vector2u getSize();
 		public void setSize(Vector2u size);
 		public void setTitle(string title);
+		public unowned string getTitle();
 		public void setUnicodeTitle(uint32 []title);
 		public void setIcon(uint width, uint height, uint8 []pixels);
 		public void setVisible(bool visible);
@@ -1509,7 +1509,7 @@ namespace sf{
 		public void requestFocus();
 		public bool hasFocus();
 		public void display();
-		public WindowHandle getSystemHandle();
+		public unowned WindowHandle getSystemHandle();
 		public void clear(Color color = Color.Black);
 		public void setView(View view);
 		public unowned View getView();
