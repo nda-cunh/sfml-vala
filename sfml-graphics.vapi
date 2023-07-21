@@ -910,18 +910,26 @@ namespace sf{
 	}
 
 	[Compact]
-	[CCode (cname = "sfImage", free_function = "sfImage_destroy", cprefix="sfImage_")]
+	[Immutable]
+	[CCode (copy_function = "sfImage_copy", cname = "sfImage", free_function = "sfImage_destroy", cprefix="sfImage_")]
 	public class Image{
+		[CCode (cname = "sfImage_create")]
 		public Image(uint width, uint height);
+		[CCode (cname = "sfImage_createFromColor")]
 		public Image.fromColor(uint width, uint height, Color color);
+		[CCode (cname = "sfImage_createFromPixels")]
 		public Image.fromPixels(uint width, uint height, uint8* pixels);
+		[CCode (cname = "sfImage_createFromFile")]
 		public Image.fromFile(string filename);
+		[CCode (cname = "sfImage_createFromMemory")]
 		public Image.fromMemory(void* data, size_t size);
+		[CCode (cname = "sfImage_createFromStream")]
 		public Image.FromStream(InputStream stream);
+		[CCode (cname = "sfImage_copy")]
 		public Image copy();
 
 		public bool saveToFile(string filename);
-		public Vector2u getSize(Image image);
+		public Vector2u getSize();
 		public void createMaskFromColor(Color color, uint8 alpha);
 		public void copyImage(Image source, uint destX, uint destY, IntRect sourceRect, bool applyAlpha);
 		public void setPixel(uint x, uint y, Color color);
