@@ -773,7 +773,8 @@ namespace sf{
 
 
 	[Compact]
-	[CCode (cname = "sfText", free_function = "sfText_destroy", cprefix = "sfText_")]
+	[Immutable]
+	[CCode (cname = "sfText", copy_function="sfText_copy", free_function = "sfText_destroy", cprefix = "sfText_")]
 	public class Text {
 
 		[CCode (cname="sfText_create")]
@@ -805,7 +806,7 @@ namespace sf{
 			[CCode (cname = "sfText_setOrigin")]
 			set;
 		}
-		public string @string{
+		public unowned string @string{
 			[CCode (cname = "sfText_getString")]
 			get;
 			[CCode (cname = "sfText_setString")]
@@ -893,7 +894,7 @@ namespace sf{
 		public void setFillColor(Color color);
 		public void setOutlineColor(Color color);
 		public void setOutlineThickness(float thickness);
-		public string getString();
+		public unowned string getString();
 		public uint32* getUnicodeString();
 		public unowned Font getFont();
 		public uint getCharacterSize();
