@@ -2,23 +2,10 @@
 
 vala binding of project SFML
 
-Graphics:
-- [X] Finish 
-
-System:
-- [X] Finish 
-
-Window:
-- [X] Finish 
-
-Audio:
-- [X] Finish 
-
-Network:
-    Not planned and useless in vala
-
 
 Exemple:
+
+<img src="readme/sfml.png">
 
 ```vala
 using sf;
@@ -45,3 +32,9 @@ void main()
     }
 }
 ```
+
+
+simple snake in sfml-vala here:
+https://gitlab.com/nda-cunh/snake-sfml
+
+<img src="readme/snake.png">
