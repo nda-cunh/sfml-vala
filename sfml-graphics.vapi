@@ -1,3 +1,4 @@
+
 public sf.Vector2f Vector2f(float x, float y){
 	return {x, y};
 }
@@ -1053,70 +1054,106 @@ namespace sf{
 
 
 /* *****************************     SPRITE     ************************************************/
+/**
+ * Class representing a sprite, which is an object that can be drawn to the screen
+ *
+ * A sprite is a graphical object that can be drawn to the screen. It has a texture,
+ * which is the image that is displayed, and a position, which determines where the
+ * sprite is drawn. Sprites can also be rotated, scaled, and have their color changed.
+ */
 	[Compact]
 	[CCode (cname = "sfSprite", free_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class Sprite{
+	/**
+     * Construct a new Sprite object.
+     */
 	    [CCode (cname = "sfSprite_create")]
 	    public Sprite();
+	/**
+     * Create a copy of the current Sprite object.
+     *
+     * @return A copy of the current Sprite object.
+     */
 		[CCode (cname = "sfSprite_copy")]
 		public Sprite copy();
 
-		// Attribut 
-		public Vector2f size{
-			get {
-				unowned Texture tex;
-				tex = this.texture;
-				return {tex.size.x, tex.size.y};
-			}
-		}
+		/**
+		* Get or set the position of the Sprite object.
+		*/
 		public Vector2f position{
 			[CCode (cname = "sfSprite_getPosition")]
 			get;
 			[CCode (cname = "sfSprite_setPosition")]
 			set;
 		}
+
+		/**
+		* Get or set the orientation of the Sprite object.
+		*/
 		public float rotation{
 			[CCode (cname = "sfSprite_getRotation")]
 			get;
 			[CCode (cname = "sfSprite_setRotation")]
 			set;
 		}
+
+		/**
+		* Get or set the current scale of the Sprite object.
+		*/
 		public Vector2f scale{
 			[CCode (cname = "sfSprite_getScale")]
 			get;
 			[CCode (cname = "sfSprite_setScale")]
 			set;
 		}
+		/**
+		* Get or set the origin of the Sprite object.
+		*/
 		public Vector2f origin{
 			[CCode (cname = "sfSprite_getOrigin")]
 			get;
 			[CCode (cname = "sfSprite_setOrigin")]
 			set;
 		}
+		/**
+		* Get or set the textureRect of the Sprite object.
+		*/
 		public IntRect textureRect{
 			[CCode (cname = "sfSprite_getTextureRect")]
 			get;
 			[CCode (cname = "sfSprite_setTextureRect")]
 			set;
 		}
+		/**
+		* Get or set the color of the Sprite object.
+		*/
 		public Color color{
 			[CCode (cname = "sfSprite_getColor")]
 			get;
 			[CCode (cname = "sfSprite_setColor")]
 			set;
 		}
+		/**
+		* Get or set the localbounds of the Sprite object.
+		*/
 		public FloatRect localBounds{
 			[CCode (cname = "sfSprite_getLocalBounds")]
 			get;
 			[CCode (cname = "sfSprite_setLocalBounds")]
 			set;
 		}
+		/**
+		* Get or set the globalbounds of the Sprite object.
+		*/
 		public FloatRect globalBounds{
 			[CCode (cname = "sfSprite_getGlobalBounds")]
 			get;
 			[CCode (cname = "sfSprite_setGlobalBounds")]
 			set;
 		}
+		/**
+		* Get or set the texture of the Sprite object.
+		*/
 		public unowned Texture texture{
 			[CCode (cname = "sfSprite_getTexture")]
 			get;
@@ -1125,62 +1162,192 @@ namespace sf{
 			}
 			
 		}
+		/**
+		* Get or set the angle of the Sprite object.
+		*/
 		public float angle{
 			[CCode (cname = "sfSprite_setRotation")]
 			set;
 			[CCode (cname = "sfSprite_getRotation")]
 			get;
 		}
-		
+		/**
+		* Set the texture of the sprite.
+		*
+		* @param texture The texture to set.
+		* @param resetRect Whether to reset the texture rectangle to the size of the new texture.
+		*/
 		[CCode (cname = "sfSprite_setTexture")]
 		public void setTexture(Texture texture, bool resetRect = false);
-		
 
-
+		/**
+		* Draw the sprite to the render window.
+		*
+		* @param window The render window to draw to.
+		* @param state The render states to use for drawing.
+		*/
 		[CCode (cname = "sfRenderWindow_drawSprite", instance_pos = 1.2)]
 		public void draw(RenderWindow window, RenderStates? state = null);
 
+		/**
+		* Set the position of the sprite.
+		*
+		* @param position The new position of the sprite.
+		*/
 		[CCode (cname = "sfSprite_setPosition")]
 		public void setPosition(Vector2f position);
+
+		/**
+		* Set the rotation of the sprite.
+		*
+		* @param angle The new rotation of the sprite, in degrees.
+		*/
 		[CCode (cname = "sfSprite_setRotation")]
 		public void setRotation(float angle);
+
+		/**
+		* Set the scale of the sprite.
+		*
+		* @param scale The new scale of the sprite.
+		*/
 		[CCode (cname = "sfSprite_setScale")]
 		public void setScale(Vector2f scale);
+
+		/**
+		* Set the origin of the sprite.
+		*
+		* @param origin The new origin of the sprite.
+		*/
 		[CCode (cname = "sfSprite_setOrigin")]
 		public void setOrigin(Vector2f origin);
+
+		/**
+		* Get the position of the sprite.
+		*
+		* @return The position of the sprite, or null if the sprite has no position.
+		*/
 		[CCode (cname = "sfSprite_getPosition")]
 		public Vector2f ?getPosition();
+
+		/**
+		* Get the rotation of the sprite.
+		*
+		* @return The rotation of the sprite, in degrees.
+		*/
 		[CCode (cname = "sfSprite_getRotation")]
 		public float getRotation();
+
+		/**
+		* Get the scale of the sprite.
+		*
+		* @return The scale of the sprite, or null if the sprite has no scale.
+		*/
 		[CCode (cname = "sfSprite_getScale")]
 		public Vector2f ?getScale();
+
+		/**
+		* Get the origin of the sprite.
+		*
+		* @return The origin of the sprite, or null if the sprite has no origin.
+		*/
 		[CCode (cname = "sfSprite_getOrigin")]
 		public Vector2f ?getOrigin();
+
+		/**
+		* Move the sprite by a given offset.
+		*
+		* @param offset The offset to move the sprite by.
+		*/
 		[CCode (cname = "sfSprite_move")]
 		public void move(Vector2f offset);
+
+		/**
+		* Rotate the sprite by a given angle.
+		*
+		* @param angle The angle to rotate the sprite by, in degrees.
+		*/
 		[CCode (cname = "sfSprite_rotate")]
 		public void rotate(float angle);
+
+		/**
+		* Scale the sprite by a given set of factors.
+		*
+		* @param factors The factors to scale the sprite by.
+		*/
 		[CCode (cname = "sfSprite_scale")]
 		public void scaling(Vector2f factors);
+
+		/**
+		* Get the transform of the sprite.
+		*
+		* @return The transform of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getTransform")]
 		public Transform getTransform();
+
+		/**
+		* Get the inverse transform of the sprite.
+		*
+		* @return The inverse transform of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getInverseTransform")]
 		public Transform getInverseTransform();
+
+		/**
+		* Set the texture rectangle of the sprite.
+		*
+		* @param rectangle The new texture rectangle of the sprite.
+		*/
 		[CCode (cname = "sfSprite_setTextureRect")]
 		public void setTextureRect(IntRect rectangle);
+
+		/**
+		* Set the color of the sprite.
+		*
+		* @param color The new color of the sprite.
+		*/
 		[CCode (cname = "sfSprite_setColor")]
 		public void setColor(Color color);
+
+		/**
+		* Get the texture of the sprite.
+		*
+		* @return The texture of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getTexture")]
 		public unowned Texture getTexture();
+
+		/**
+		* Get the texture rectangle of the sprite.
+		*
+		* @return The texture rectangle of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getTextureRect")]
 		public IntRect getTextureRect();
+
+		/**
+		* Get the color of the sprite.
+		*
+		* @return The color of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getColor")]
 		public Color getColor();
+
+		/**
+		* Get the local bounds of the sprite.
+		*
+		* @return The local bounds of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getLocalBounds")]
 		public unowned FloatRect getLocalBounds();
+
+		/**
+		* Get the global bounds of the sprite.
+		*
+		* @return The global bounds of the sprite.
+		*/
 		[CCode (cname = "sfSprite_getGlobalBounds")]
 		public unowned FloatRect getGlobalBounds();
-
 	}
 	[CCode (cname = "sfGlslVec2")]
 		public struct GlslVec2{
