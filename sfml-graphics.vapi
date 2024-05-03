@@ -118,17 +118,25 @@ namespace sf{
 	
     
 	[CCode (cname = "sfFloatRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
-    [SimpleType]
+	[SimpleType]
     public struct FloatRect
     {
         public float left;
         public float top;
         public float width;
         public float height;
+
         [CCode (cname = "sfFloatRect_contains")]
-        public bool contains(float x, float y);
-        [CCode (cname = "sfFloatRect_intersects")]
-        public bool intersects(FloatRect rect, FloatRect? intersection = null);
+        static bool static_contains (FloatRect *rect, float x, float y);
+		[CCode (cname = "sfFloatRect_intersects")]
+        static bool static_intersects (FloatRect *rect1, FloatRect *rect2, FloatRect? intersection = null);
+
+		public bool contains (float x, float y) {
+			return FloatRect.static_contains(&this, x, y);
+		}
+		public bool intersects (FloatRect rect, FloatRect? intersection = null) {
+			return FloatRect.static_intersects(&this, &rect, intersection);
+		}
     }
     [CCode (cname = "sfIntRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
     [SimpleType]
@@ -139,9 +147,16 @@ namespace sf{
         public int width;
         public int height;
         [CCode (cname = "sfIntRect_contains")]
-        public bool contains(int x, int y);
+        static bool static_contains(IntRect *rect, int x, int y);
         [CCode (cname = "sfIntRect_intersects")]
-        public bool intersects(IntRect rect, IntRect? intersection = null);
+        static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersection = null);
+
+		public bool contains (int x, int y) {
+			return IntRect.static_contains(&this, x, y);
+		}
+		public bool intersects (IntRect rect, IntRect? intersection = null) {
+			return IntRect.static_intersects(&this, &rect, intersection);
+		}
     }
 
 	public delegate int64 InputStreamReadFunc(void* data, int64 size, void* userData);
@@ -570,7 +585,6 @@ namespace sf{
 		void drawShape(Shape object, RenderStates states);
 		void drawCircleShape(CircleShape object, RenderStates states);
 		void drawConvexShape(ConvexShape object, RenderStates states);
-		void drawRectangleShape(RectangleShape object, RenderStates states);
 		void drawVertexArray(VertexArray object, RenderStates states);
 		void drawVertexBuffer(VertexBuffer object, RenderStates states);
 		void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates states);
@@ -589,11 +603,9 @@ namespace sf{
 
 
 
-
-
-
 	/* *****************************     RECTANGLESHAPE     ************************************************/
-	[CCode (unref_function = "sfRectangleShape_destroy", cheader_filename = "SFML/Graphics.h")]
+	[Compact]
+	[CCode (free_function = "sfRectangleShape_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class RectangleShape{
 	    [CCode (destroy_function = "sfRectangleShape_destroy", cname = "sfRectangleShape_create")]
 	    public RectangleShape();
@@ -638,9 +650,9 @@ namespace sf{
 			set;
 		}
 		public Color color{
-			[CCode (cname = "sfRectangleShape_getColor")]
+			[CCode (cname = "sfRectangleShape_getFillColor")]
 			get;
-			[CCode (cname = "sfRectangleShape_setColor")]
+			[CCode (cname = "sfRectangleShape_setFillColor")]
 			set;
 		}
 		public FloatRect localBounds{
@@ -712,11 +724,11 @@ namespace sf{
         [CCode (cname = "sfRectangleShape_setSize")]
         public void setSize(Vector2f size);
         [CCode (cname = "sfRectangleShape_getSize")]
-        public Vector2f getSize( );
+        public Vector2f getSize();
         [CCode (cname = "sfRectangleShape_getLocalBounds")]
-        public FloatRect getLocalBounds( );
+        public FloatRect getLocalBounds();
         [CCode (cname = "sfRectangleShape_getGlobalBounds")]
-        public FloatRect getGlobalBounds( );
+        public FloatRect getGlobalBounds();
 	}
 
 
@@ -1483,6 +1495,12 @@ namespace sf{
 			[CCode (cname = "sfRenderWindow_hasFocus")]
 			get;
 		}
+		public uint fps{
+			[CCode (cname = "sfRenderWindow_setFramerateLimit")]
+			set;
+			[CCode (cname = "sfRenderWindow_getFramerateLimit")]
+			get;
+		}
 
 		public void close();
 		public bool isOpen();
@@ -1805,119 +1823,119 @@ namespace sf{
 	[CCode (cname = "sfKeyCode", cprefix = "sfKey")]
     public enum KeyCode
     {
-        Unknown = -1, ///< Unhandled 
-        A,            ///< The A 
-        B,            ///< The B 
-        C,            ///< The C 
-        D,            ///< The D 
-        E,            ///< The E 
-        F,            ///< The F 
-        G,            ///< The G 
-        H,            ///< The H 
-        I,            ///< The I 
-        J,            ///< The J 
-        K,            ///< The K 
-        L,            ///< The L 
-        M,            ///< The M 
-        N,            ///< The N 
-        O,            ///< The O 
-        P,            ///< The P 
-        Q,            ///< The Q 
-        R,            ///< The R 
-        S,            ///< The S 
-        T,            ///< The T 
-        U,            ///< The U 
-        V,            ///< The V 
-        W,            ///< The W 
-        X,            ///< The X 
-        Y,            ///< The Y 
-        Z,            ///< The Z 
-        Num0,         ///< The 0 
-        Num1,         ///< The 1 
-        Num2,         ///< The 2 
-        Num3,         ///< The 3 
-        Num4,         ///< The 4 
-        Num5,         ///< The 5 
-        Num6,         ///< The 6 
-        Num7,         ///< The 7 
-        Num8,         ///< The 8 
-        Num9,         ///< The 9 
-        Escape,       ///< The Escape 
-        LControl,     ///< The left Control 
-        LShift,       ///< The left Shift 
-        LAlt,         ///< The left Alt 
-        LSystem,      ///< The left OS specific : window (Windows and Linux), apple (MacOS X), ...
-        RControl,     ///< The right Control 
-        RShift,       ///< The right Shift 
-        RAlt,         ///< The right Alt 
-        RSystem,      ///< The right OS specific : window (Windows and Linux), apple (MacOS X), ...
-        Menu,         ///< The Menu 
-        LBracket,     ///< The [ 
-        RBracket,     ///< The ] 
-        Semicolon,    ///< The ; 
-        Comma,        ///< The , 
-        Period,       ///< The . 
-        Quote,        ///< The ' 
-        Slash,        ///< The / 
-        Backslash,    ///< The \ 
-        Tilde,        ///< The ~ 
-        Equal,        ///< The = 
-        Hyphen,       ///< The -  (hyphen)
-        Space,        ///< The Space 
-        Enter,        ///< The Enter/Return 
-        Backspace,    ///< The Backspace 
-        Tab,          ///< The Tabulation 
-        PageUp,       ///< The Page up 
-        PageDown,     ///< The Page down 
-        End,          ///< The End 
-        Home,         ///< The Home 
-        Insert,       ///< The Insert 
-        Delete,       ///< The Delete 
-        Add,          ///< The + 
-        Subtract,     ///< The -  (minus, usually from numpad)
-        Multiply,     ///< The * 
-        Divide,       ///< The / 
-        Left,         ///< Left arrow
-        Right,        ///< Right arrow
-        Up,           ///< Up arrow
-        Down,         ///< Down arrow
-        Numpad0,      ///< The numpad 0 
-        Numpad1,      ///< The numpad 1 
-        Numpad2,      ///< The numpad 2 
-        Numpad3,      ///< The numpad 3 
-        Numpad4,      ///< The numpad 4 
-        Numpad5,      ///< The numpad 5 
-        Numpad6,      ///< The numpad 6 
-        Numpad7,      ///< The numpad 7 
-        Numpad8,      ///< The numpad 8 
-        Numpad9,      ///< The numpad 9 
-        F1,           ///< The F1 
-        F2,           ///< The F2 
-        F3,           ///< The F3 
-        F4,           ///< The F4 
-        F5,           ///< The F5 
-        F6,           ///< The F6 
-        F7,           ///< The F7 
-        F8,           ///< The F8 
-        F9,           ///< The F8 
-        F10,          ///< The F10 
-        F11,          ///< The F11 
-        F12,          ///< The F12 
-        F13,          ///< The F13 
-        F14,          ///< The F14 
-        F15,          ///< The F15 
-        Pause,        ///< The Pause 
-        Count,      ///< Keep last -- the total number of board s
+        Unknown = -1, // Unhandled 
+        A,            // The A 
+        B,            // The B 
+        C,            // The C 
+        D,            // The D 
+        E,            // The E 
+        F,            // The F 
+        G,            // The G 
+        H,            // The H 
+        I,            // The I 
+        J,            // The J 
+        K,            // The K 
+        L,            // The L 
+        M,            // The M 
+        N,            // The N 
+        O,            // The O 
+        P,            // The P 
+        Q,            // The Q 
+        R,            // The R 
+        S,            // The S 
+        T,            // The T 
+        U,            // The U 
+        V,            // The V 
+        W,            // The W 
+        X,            // The X 
+        Y,            // The Y 
+        Z,            // The Z 
+        Num0,         // The 0 
+        Num1,         // The 1 
+        Num2,         // The 2 
+        Num3,         // The 3 
+        Num4,         // The 4 
+        Num5,         // The 5 
+        Num6,         // The 6 
+        Num7,         // The 7 
+        Num8,         // The 8 
+        Num9,         // The 9 
+        Escape,       // The Escape 
+        LControl,     // The left Control 
+        LShift,       // The left Shift 
+        LAlt,         // The left Alt 
+        LSystem,      // The left OS specific : window (Windows and Linux), apple (MacOS X), ...
+        RControl,     // The right Control 
+        RShift,       // The right Shift 
+        RAlt,         // The right Alt 
+        RSystem,      // The right OS specific : window (Windows and Linux), apple (MacOS X), ...
+        Menu,         // The Menu 
+        LBracket,     // The [ 
+        RBracket,     // The ] 
+        Semicolon,    // The ; 
+        Comma,        // The , 
+        Period,       // The . 
+        Quote,        // The ' 
+        Slash,        // The / 
+        Backslash,    // The \ 
+        Tilde,        // The ~ 
+        Equal,        // The = 
+        Hyphen,       // The -  (hyphen)
+        Space,        // The Space 
+        Enter,        // The Enter/Return 
+        Backspace,    // The Backspace 
+        Tab,          // The Tabulation 
+        PageUp,       // The Page up 
+        PageDown,     // The Page down 
+        End,          // The End 
+        Home,         // The Home 
+        Insert,       // The Insert 
+        Delete,       // The Delete 
+        Add,          // The + 
+        Subtract,     // The -  (minus, usually from numpad)
+        Multiply,     // The * 
+        Divide,       // The / 
+        Left,         // Left arrow
+        Right,        // Right arrow
+        Up,           // Up arrow
+        Down,         // Down arrow
+        Numpad0,      // The numpad 0 
+        Numpad1,      // The numpad 1 
+        Numpad2,      // The numpad 2 
+        Numpad3,      // The numpad 3 
+        Numpad4,      // The numpad 4 
+        Numpad5,      // The numpad 5 
+        Numpad6,      // The numpad 6 
+        Numpad7,      // The numpad 7 
+        Numpad8,      // The numpad 8 
+        Numpad9,      // The numpad 9 
+        F1,           // The F1 
+        F2,           // The F2 
+        F3,           // The F3 
+        F4,           // The F4 
+        F5,           // The F5 
+        F6,           // The F6 
+        F7,           // The F7 
+        F8,           // The F8 
+        F9,           // The F8 
+        F10,          // The F10 
+        F11,          // The F11 
+        F12,          // The F12 
+        F13,          // The F13 
+        F14,          // The F14 
+        F15,          // The F15 
+        Pause,        // The Pause 
+        Count,
         [Version (deprecated = true, replacement = "Hyphen")]
-		Dash      = Hyphen,       ///< \deprecated Use Hyphen instead
+		Dash,
         [Version (deprecated = true, replacement = "Backspace")]
-        Back      = Backspace,    ///< \deprecated Use Backspace instead
+        Back,
         [Version (deprecated = true, replacement = "Backslash")]
-        BackSlash = Backslash,    ///< \deprecated Use Backslash instead
+        BackSlash,
         [Version (deprecated = true, replacement = "Semicolon")]
-        SemiColon = Semicolon,    ///< \deprecated Use Semicolon instead
+        SemiColon,
         [Version (deprecated = true, replacement = "Enter")]
-        Return    = Enter
+        Return
     }
 
     [CCode (cname = "sfMouseButton", cprefix = "sfMouse")]
@@ -2236,13 +2254,5 @@ namespace sf{
 		Paused,  ///< Sound / music is paused
 		Playing  ///< Sound / music is playing
 	}
-
-
-
-
-
-
-
-
-
 }
+
