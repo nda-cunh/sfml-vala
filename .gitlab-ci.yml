@@ -6,6 +6,7 @@ pages:
     - pacman -Sy valadoc libgee --noconfirm
     - valadoc sfml-graphics.vapi --deps --use-svg-images --package-name=sfml -o public
     - echo "Pages deployment job at ${CI_PAGES_URL}"
+    - echo "Pages deployment job at ${CI_PAGES_URL}"
   
   artifacts:
     paths:
