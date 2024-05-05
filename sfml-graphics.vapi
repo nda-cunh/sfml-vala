@@ -1,21 +1,21 @@
 
-public sf.Vector2f Vector2f(float x, float y){
+public inline sf.Vector2f Vector2f(float x, float y){
 	return {x, y};
 }
 
-public sf.Vector2i Vector2i(int x, int y){
+public inline sf.Vector2i Vector2i(int x, int y){
 	return {x, y};
 }
 
-public sf.Vector2u Vector2u(uint x, uint y){
+public inline sf.Vector2u Vector2u(uint x, uint y){
 	return {x, y};
 }
 
-public sf.Vector3f Vector3f(float x, float y, float z){
+public inline sf.Vector3f Vector3f(float x, float y, float z){
 	return {x, y, z};
 }
 
-public sf.VideoMode VideoMode(int width, int height){
+public inline sf.VideoMode VideoMode(int width, int height){
 	return {width, height};
 }
 
