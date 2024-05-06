@@ -1573,11 +1573,11 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	[CCode (cname = "sfVertexBufferUsage", cprefix= "sfVertexBuffer")]
 	public enum VertexBufferUsage
 	{
-		/**  Constantly changing data */
+		/** Constantly changing data */
 		Stream,
-		/**  Occasionally changing data */
+		/** Occasionally changing data */
 		Dynamic,
-		/**  Rarely changing data */
+		/** Rarely changing data */
 		Static
 	}
 
