@@ -4,7 +4,7 @@ pages:
   stage: deploy
   script:
     - pacman -Sy valadoc libgee --noconfirm
-    - valadoc sfml-graphics.vapi --deps --use-svg-images --package-name=sfml -o public
+    - valadoc -o public --package-name=sfml sfml.vapi --use-svg-images --importdir documentation/sfml --import sfml --force
     - echo "Pages deployment job at ${CI_PAGES_URL}"
   
   artifacts:
