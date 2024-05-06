@@ -1,0 +1,285 @@
+
+/**
+ * Graphical text that can be drawn to a render target
+ *
+ *
+ *
+ * {{images/graphics-text-draw.png}}
+ *
+ * {{{
+ * var font = new Font.fromFile("../data/Arial.ttf");
+ * var text = new Text(font) {
+ *     string = "Hello !",
+ *     color = Color.Red;
+ * };
+ *
+ * text.draw (window);
+ *
+ * }}}
+ *
+ */
+sf.Text
+
+/**
+ * propery for character size.
+ *
+ * @see setCharacterSize
+ * @see getCharacterSize
+ */
+sf.Text.size
+
+/**
+ * Construct the text from a font.
+ *
+ * Note that if the used font is a bitmap font, it is not scalable, thus not all requested sizes will be available to use. This needs to be taken into consideration when setting the character size. If you need to display text of a certain size, make sure the corresponding bitmap font that supports that size is used.
+ *
+ * @param font the default font
+ */
+
+
+sf.Text.Text
+/**
+ * draw the sprite on the window
+ * @param window to draw
+ */
+sf.Text.draw
+
+sf.Text.setPosition
+sf.Text.setRotation
+sf.Text.setScale
+sf.Text.setOrigin
+sf.Text.getPosition
+sf.Text.getRotation
+sf.Text.getScale
+sf.Text.getOrigin
+sf.Text.move
+sf.Text.rotate
+sf.Text.scaling
+sf.Text.getTransform
+
+
+/**
+* get the inverse of the combined transform of the object
+* 
+* @return Inverse of the combined transformations applied to the object
+* @see sf.Text.getTransform
+*/
+sf.Text.getInverseTransform
+
+
+/**
+* Set the text's string.
+* 
+* {{{
+* var text = new Text(font);
+* text.setString("hello");
+* }}}
+* 
+* @param str new string
+* @see sf.Text.getString
+*/ 
+sf.Text.setString
+
+
+sf.Text.setUnicodeString
+
+
+/** 
+ * Set the text's font.
+ * 
+ * The font argument refers to a font that must exist as long as the text uses it. Indeed, the text doesn't store its own copy of the font, but rather keeps a pointer to the one that you passed to this function. If the font is destroyed and the text tries to use it, the behavior is undefined.
+ * 
+ * @param font New font
+ * @see sf.Text.getFont
+ */ 
+sf.Text.setFont
+
+
+/**
+ * Set the character size.
+ * 
+ * The default size is 30.
+ * 
+ * Note that if the used font is a bitmap font, it is not scalable, thus not all requested sizes will be available to use. This needs to be taken into consideration when setting the character size. If you need to display text of a certain size, make sure the corresponding bitmap font that supports that size is used.
+ * 
+ * @param size New character size, in pixels
+ * @see getCharacterSize
+ */
+sf.Text.setCharacterSize
+
+
+
+/** 
+ * Set the line spacing factor.
+ * 
+ * The default spacing between lines is defined by the font. This method enables you to set a factor for the spacing between lines. By default the line spacing factor is 1.
+ * 
+ * @param spacingFactor New line spacing factor
+ * @see getLineSpacing
+ */
+sf.Text.setLineSpacing
+
+
+/** 
+ * Set the letter spacing factor.
+ * 
+ * The default spacing between letters is defined by the font. This factor doesn't directly apply to the existing spacing between each character, it rather adds a fixed space between them which is calculated from the font metrics and the character size. Note that factors below 1 (including negative numbers) bring characters closer to each other. By default the letter spacing factor is 1.
+ * 
+ * @param spacingFactor New letter spacing factor
+ * @see getLetterSpacing
+ */ 
+sf.Text.setLetterSpacing
+
+
+/** 
+ * Set the text's style.
+ * 
+ * You can pass a combination of one or more styles, for example sf.TextStyle.Bold | sf.TextStyle.Italic. The default style is sf.TextStyle.Regular.
+ * 
+ * @param style New style
+ * @see getStyle
+ */ 
+sf.Text.setStyle
+
+
+/** 
+ * property text's style.
+ * 
+ * You can pass a combination of one or more styles
+ * {{{
+ * text.style = sf.TextStyle.Bold | sf.TextStyle.Italic
+ * }}}
+ * The default style is sf.TextStyle.Regular.
+ * 
+ */ 
+sf.Text.style
+
+
+/**
+ * Set the fill color of the text.
+ *
+ * By default, the text's fill color is opaque white. Setting the fill color to a transparent color with an outline will cause the outline to be displayed in the fill area of the text.
+ * @param color New fill color of the text 
+ * @see sf.Text.getFillColor
+ */
+sf.Text.setFillColor
+
+
+sf.Text.setOutlineColor
+sf.Text.setOutlineThickness
+
+
+/**
+ * Get the text's string.
+ * 
+ * The returned string is a sf::String, which can automatically be converted to standard string types. So, the following lines of code are all valid:
+ * {{{ 
+ * var str = text.getString();
+ * print(str); 
+ * }}}
+ * @return Text's string
+ * @see sf.Text.setString
+ */
+sf.Text.getString
+
+
+/** 
+ * Get the text's font.
+ * 
+ * If the text has no font attached, a NULL pointer is returned. The returned pointer is const, which means that you cannot modify the font when you get it from this function.
+ * 
+ * @return Pointer to the text's font
+ * @see setFont
+ */
+sf.Text.getFont
+
+
+/**
+ * Get the character size.
+ * 
+ * @return Size of the characters, in pixels
+ * @see setCharacterSize
+ */
+sf.Text.getCharacterSize
+
+/**
+ * Get the size of the letter spacing factor.
+ * 
+ * @return Size of the letter spacing factor
+ * @see setLetterSpacing
+ */
+sf.Text.getLetterSpacing
+
+/** 
+ * Get the size of the line spacing factor.
+ * 
+ * @return Size of the line spacing factor
+ * @see setLineSpacing
+ */
+sf.Text.getLineSpacing
+
+
+/**
+ * Get the text's style.
+ * 
+ * @return Text's style
+ * @see setStyle
+ */ 
+sf.Text.getStyle
+
+
+/** 
+ * Get the fill color of the text.
+ * 
+ * @return Fill color of the text
+ * @see setFillColor
+ */ 
+sf.Text.getFillColor
+
+
+/** 
+ * Get the outline color of the text.
+ * 
+ * @return Outline color of the text
+ * @see setOutlineColor
+ */
+sf.Text.getOutlineColor
+
+
+/** 
+ * Get the outline thickness of the text.
+ * 
+ * @return Outline thickness of the text, in pixels
+ * @see setOutlineThickness
+ */ 
+sf.Text.getOutlineThickness
+
+
+/**
+ * Return the position of the index-th character.
+ * 
+ * This function computes the visual position of a character from its index in the string. The returned position is in global coordinates (translation, rotation, scale and origin are applied). If index is out of range, the position of the end of the string is returned.
+ * 
+ * @param index Index of the character
+ * @return Position of the character
+ */
+sf.Text.findCharacterPos
+
+
+/**
+* Get the local bounding rectangle of the entity.
+* 
+* The returned rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the entity in the entity's coordinate system.
+* 
+* @return Local bounding rectangle of the entity
+*/
+sf.Text.getLocalBounds
+
+
+/**
+* Get the global bounding rectangle of the entity.
+*
+* The returned rectangle is in global coordinates, which means that it takes into account the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the text in the global 2D world's coordinate system.
+* @return Global bounding rectangle of the entity
+*/
+sf.Text.getGlobalBounds

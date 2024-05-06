@@ -64,38 +64,38 @@ namespace sf {
 /* ****************************  VECTOR2-3 Color rect  *************************************/
 
 	[CCode (cname = "sfVector2i", cheader_filename = "SFML/System.h")]
-[SimpleType]
-public struct Vector2i
-{
-int x;
-int y;
-}
-[CCode (cname = "sfVector2u", cheader_filename = "SFML/System.h")]
-[SimpleType]
-public struct Vector2u
-{
-uint x;
-uint y;
-}
-[CCode (cname = "sfVector2f", cheader_filename = "SFML/System.h")]
-[SimpleType]
-public struct Vector2f
-{
-float x;
-float y;
-}
-[CCode (cname = "sfVector3f", cheader_filename = "SFML/System.h")]
-[SimpleType]
-public struct Vector3f
-{
-float x;
-float y;
-float z;
-}
-[CCode (cname = "sfColor", default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
 	[SimpleType]
-public struct Color
-{
+	public struct Vector2i
+	{
+		int x;
+		int y;
+	}
+	[CCode (cname = "sfVector2u", cheader_filename = "SFML/System.h")]
+	[SimpleType]
+	public struct Vector2u
+	{
+		uint x;
+		uint y;
+	}
+	[CCode (cname = "sfVector2f", cheader_filename = "SFML/System.h")]
+	[SimpleType]
+	public struct Vector2f
+	{
+		float x;
+		float y;
+	}
+	[CCode (cname = "sfVector3f", cheader_filename = "SFML/System.h")]
+	[SimpleType]
+	public struct Vector3f
+	{
+		float x;
+		float y;
+		float z;
+	}
+	[CCode (cname = "sfColor", default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
+	[SimpleType]
+	public struct Color
+	{
 		[CCode (cname = "sfColor_fromRGB")]
 		public Color (uint8 red, uint8 green, uint8 blue);
 		[CCode (cname = "sfColor_fromRGB")]
@@ -768,7 +768,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	[Flags]
 	[CCode (cname = "sfTextStyle", cprefix = "sfText")]
 	public enum TextStyle{
-		/** Regular characters, no styl*/
+		/** Regular characters, no style */
 		Regular,
 		/** Bold character*/
 		Bold,
@@ -806,9 +806,9 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfFont_createFromFile")]
 		public Font(string filename);
 		[CCode (cname = "sfFont_createFromFile")]
-		public Font.load_from_file(string filename);
+		public Font.fromFile(string filename);
 		[CCode (cname = "sfFont_createFromMemory")]
-		public Font.load_from_memory(void *data, size_t sizeInBytes);
+		public Font.fromMemory(void *data, size_t sizeInBytes);
 		[CCode (cname = "sfFont_createFromStream")]
 		public Font.fromStream(sf.InputStream stream);
 		public Font copy();
@@ -827,7 +827,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	public class Text {
 
 		[CCode (cname="sfText_create")]
-		public Text();
+		public Text(Font font);
 
 		public Text copy();
 
@@ -885,7 +885,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			[CCode (cname = "sfText_setLetterSpacing")]
 			set;
 		}
-		public uint32 style{
+		public TextStyle style{
 			[CCode (cname = "sfText_getStyle")]
 			get;
 			[CCode (cname = "sfText_setStyle")]
@@ -938,18 +938,20 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public void setCharacterSize(uint size);
 		public void setLineSpacing(float spacingFactor);
 		public void setLetterSpacing(float spacingFactor);
-		public void setStyle(uint32 style);
+		public void setStyle(TextStyle style);
+		[Version (deprecated = true, replacement = "setFillColor")]
 		public void setColor(Color color);
 		public void setFillColor(Color color);
 		public void setOutlineColor(Color color);
 		public void setOutlineThickness(float thickness);
 		public unowned string getString();
-		public uint32* getUnicodeString();
+		public uint32 []getUnicodeString();
 		public unowned Font getFont();
 		public uint getCharacterSize();
 		public float getLetterSpacing();
 		public float getLineSpacing();
-		public uint32 getStyle();
+		public TextStyle getStyle();
+		[Version (deprecated = true, replacement = "getFillColor")]
 		public Color getColor();
 		public Color getFillColor();
 		public Color getOutlineColor();
@@ -1671,7 +1673,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfRenderWindow_create")]
 		public RenderWindow(VideoMode mode, string title, WindowStyle style = WindowStyle.DefaultStyle, ContextSettings? settings = null);
 		[CCode (cname = "sfRenderWindow_createUnicode")]
-		public RenderWindow.createUnicode(VideoMode mode, uint32 []title, uint32 style, ContextSettings? settings = null);
+		public RenderWindow.createUnicode(VideoMode mode, uint32 []title, WindowStyle style, ContextSettings? settings = null);
 		[CCode (cname = "sfRenderWindow_createFromHandle")]
 		public RenderWindow.createFromHandle(WindowHandle handle, ContextSettings? settings = null);
 
@@ -2401,9 +2403,9 @@ public struct ContextSettings
 [CCode (free_function = "sfWindow_destroy", cheader_filename = "SFML/Window.h")]
 public class Window {
 	[CCode (cname = "sfWindow_create")]
-	public Window(VideoMode mode, string title, uint32 style, ContextSettings? settings = null);
+	public Window(VideoMode mode, string title, WindowStyle style, ContextSettings? settings = null);
 	[CCode (cname = "sfWindow_createUnicode")]
-	public Window.withUnicode(VideoMode mode, uint32 []title, uint32 style, ContextSettings? settings = null);
+	public Window.withUnicode(VideoMode mode, uint32 []title, WindowStyle style, ContextSettings? settings = null);
 	[CCode (cname = "isfWindow_createFromHandle")]
 	public Window.fromHandle(WindowHandle handle, ContextSettings? settings = null);
 

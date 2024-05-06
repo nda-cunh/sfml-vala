@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packages>
+<section name="CORE">
+	<package name="sfml" home="https://www.sfml-dev.org/">
+		short description
+	</package>
+</section>
+</packages>
