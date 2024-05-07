@@ -30,7 +30,7 @@ void main()
         }
 
         window.clear();
-        circle.draw(window);
+		window.draw(circle);
         window.display();
     }
 }
