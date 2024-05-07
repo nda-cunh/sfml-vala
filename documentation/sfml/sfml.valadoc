@@ -144,8 +144,261 @@ sf.Image
 
 
 
+/** 
+ * =Class holding a valid drawing context.=
+ * 
+ * If you need to make OpenGL calls without having an active window (like in a thread), you can use an instance of this class to get a valid context.
+ * 
+ * Having a valid context is necessary for every OpenGL call.
+ * 
+ * Note that a context is only active in its current thread, if you create a new thread it will have no valid context by default.
+ * 
+ * To use a sf.Context instance, just construct it and let it live as long as you need a valid context. No explicit activation is needed, all it has to do is to exist. Its destructor will take care of deactivating and freeing all the attached resources.
+ * 
+ * Usage example:
+ * {{{
+ * void threadFunction()
+ * {
+ *    sf.Context context;
+ *    // from now on, you have a valid context
+ *  
+ *    // you can make OpenGL calls
+ *    glClear(GL_DEPTH_BUFFER_BIT);
+ * }
+ * // the context is automatically deactivated and destroyed
+ * // by the sf.Context destructor
+ * }}}
+ */ 
+sf.Context
 
 
+
+
+
+
+/** 
+ * =Streamed music played from an audio file.=
+ * 
+ * Musics are sounds that are streamed rather than completely loaded in memory.
+ * 
+ * This is especially useful for compressed musics that usually take hundreds of MB when they are uncompressed: by streaming it instead of loading it entirely, you avoid saturating the memory and have almost no loading delay. This implies that the underlying resource (file, stream or memory buffer) must remain valid for the lifetime of the sf.Music object.
+ * 
+ * Apart from that, a sf.Music has almost the same features as the sf.SoundBuffer / sf.Sound pair: you can play/pause/stop it, request its parameters (channels, sample rate), change the way it is played (pitch, volume, 3D position, ...), etc.
+ * 
+ * As a sound stream, a music is played in its own thread in order not to block the rest of the program. This means that you can leave the music alone after calling play(), it will manage itself very well.
+ * 
+ * Usage example:
+ * {{{
+ * // Declare a new music
+ * var music = new Music.fromFile("music.ogg");
+ *  
+ * if (music == null)) {
+ *     // error...
+ * }
+ *  
+ * // Change some parameters
+ * music.setPosition(0, 1, 10); // change its 3D position
+ * music.setPitch(2);           // increase the pitch
+ * music.setVolume(50);         // reduce the volume
+ * music.setLoop(true);         // make it loop
+ *  
+ * // Play it
+ * music.play();
+ * }}}
+ * 
+ * @see sf.Sound
+ */
+sf.Music
+
+
+
+
+
+/** 
+ * =Target for off-screen 2D rendering into a texture.=
+ * 
+ * sf.RenderTexture is the little brother of sf.RenderWindow.
+ * 
+ * It implements the same 2D drawing and OpenGL-related functions (see their base class sf.RenderTarget for more details), the difference is that the result is stored in an off-screen texture rather than being show in a window.
+ * 
+ * Rendering to a texture can be useful in a variety of situations:
+ * 
+ * precomputing a complex static texture (like a level's background from multiple tiles)
+ * applying post-effects to the whole scene with shaders
+ * creating a sprite from a 3D object rendered with OpenGL
+ * etc.
+ * Usage example:
+ * 
+ * {{{
+ * // Create a new render-window
+ * var window = new RenderWindow(VideoMode(800, 600), "SFML window");
+ * 
+ * // Create a new render-texture
+ * var texture = new RenderTexture (500, 500);
+ * 
+ * // The main loop
+ * while (window.isOpen())
+ * {
+ *    // Event processing
+ *    // ...
+ * 
+ *    // Clear the whole texture with red color
+ *    texture.clear(sf.Color.Red);
+ * 
+ *    // Draw stuff to the texture
+ *    texture.draw(sprite);  // sprite is a sf.Sprite
+ *    texture.draw(shape);   // shape is a sf.Shape
+ *    texture.draw(text);    // text is a sf.Text
+ * 
+ *    // We're done drawing to the texture
+ *    texture.display();
+ * 
+ *    // Now we start rendering to the window, clear it first
+ *    window.clear();
+ * 
+ *    // Draw the texture
+ *    var sprite = new Sprite () {texture = texture.getTexture};
+ *    window.draw(sprite);
+ * 
+ *    // End the current frame and display its contents on screen
+ *    window.display();
+ * }
+ * }}}
+ * 
+ * Like sf.RenderWindow, sf.RenderTexture is still able to render direct OpenGL stuff. It is even possible to mix together OpenGL calls and regular SFML drawing commands. If you need a depth buffer for 3D rendering, don't forget to request it when calling RenderTexture.create.
+ * 
+ * See also
+ * sf.RenderTarget, sf.RenderWindow, sf.View, sf.Texture
+ */ 
+sf.RenderTexture
+
+
+
+
+
+
+
+/** 
+ * =Regular sound that can be played in the audio environment.=
+ * 
+ * sf.Sound is the class to use to play sounds.
+ * 
+ * It provides:
+ * 
+ * Control (play, pause, stop)
+ * Ability to modify output parameters in real-time (pitch, volume, ...)
+ * 3D spatial features (position, attenuation, ...).
+ * sf.Sound is perfect for playing short sounds that can fit in memory and require no latency, like foot steps or gun shots. For longer sounds, like background musics or long speeches, rather see sf.Music (which is based on streaming).
+ * 
+ * In order to work, a sound must be given a buffer of audio data to play. Audio data (samples) is stored in sf.SoundBuffer, and attached to a sound with the setBuffer() function. The buffer object attached to a sound must remain alive as long as the sound uses it. Note that multiple sounds can use the same sound buffer at the same time.
+ * 
+ * Usage example:
+ * {{{
+ * var buffer = new SoundBuffer.FromFile("sound.wav");
+ * 
+ * var sound = new Sound();
+ * sound.setBuffer(buffer);
+ * sound.play();
+ * }}}
+ *
+ * @see sf.SoundBuffer
+ * @see sf.Music
+ */
+sf.Sound
+
+
+
+
+
+/** 
+ * =Storage for audio samples defining a sound.=
+ * 
+ * A sound buffer holds the data of a sound, which is an array of audio samples.
+ * 
+ * A sample is a 16 bits signed integer that defines the amplitude of the sound at a given time. The sound is then reconstituted by playing these samples at a high rate (for example, 44100 samples per second is the standard rate used for playing CDs). In short, audio samples are like texture pixels, and a sf.SoundBuffer is similar to a sf.Texture.
+ * 
+ * A sound buffer can be loaded from a file (see loadFromFile() for the complete list of supported formats), from memory, from a custom stream (see sf.InputStream) or directly from an array of samples. It can also be saved back to a file.
+ * 
+ * Sound buffers alone are not very useful: they hold the audio data but cannot be played. To do so, you need to use the sf.Sound class, which provides functions to play/pause/stop the sound as well as changing the way it is outputted (volume, pitch, 3D position, ...). This separation allows more flexibility and better performances: indeed a sf.SoundBuffer is a heavy resource, and any operation on it is slow (often too slow for real-time applications). On the other side, a sf.Sound is a lightweight object, which can use the audio data of a sound buffer and change the way it is played without actually modifying that data. Note that it is also possible to bind several sf.Sound instances to the same sf.SoundBuffer.
+ * 
+ * It is important to note that the sf.Sound instance doesn't copy the buffer that it uses, it only keeps a reference to it. Thus, a sf.SoundBuffer must not be destructed while it is used by a sf.Sound (i.e. never write a function that uses a local sf.SoundBuffer instance for loading a sound).
+ * 
+ * Usage example:
+ *
+ * {{{
+ * // Declare a new sound buffer
+ * var buffer = new SoundBuffer.FromFile("sound.wav"))
+ *  
+ * // Load it from a file
+ * if (buffer == null) {
+ *     // error...
+ * }
+ *  
+ * // Create a sound source and bind it to the buffer
+ * var sound1 = new Sound();
+ * sound1.setBuffer(buffer);
+ *  
+ * // Play the sound
+ * sound1.play();
+ *  
+ * // Create another sound source bound to the same buffer
+ * var sound2 = new Sound();
+ * sound2.setBuffer(buffer);
+ *  
+ * // Play it with a higher pitch -- the first sound remains unchanged
+ * sound2.setPitch(2);
+ * sound2.play();
+ * }}}
+ * 
+ * @see sf.Sound
+ * @see sf.SoundBufferRecorder
+ */
+sf.SoundBuffer
+
+
+
+
+
+
+/**
+ * Decomposed transform defined by a position, a rotation and a scale.
+ */
+sf.Transformable
+
+
+
+
+
+
+/** 
+ * =Base class for textured shapes with outline.=
+ * 
+ * sf.Shape is a drawable class that allows to define and display a custom convex shape on a render target.
+ * 
+ * It's only an abstract base, it needs to be specialized for concrete types of shapes (circle, rectangle, convex polygon, star, ...).
+ * 
+ * In addition to the attributes provided by the specialized shape classes, a shape always has the following attributes:
+ * 
+ * a texture
+ * a texture rectangle
+ * a fill color
+ * an outline color
+ * an outline thickness
+ * Each feature is optional, and can be disabled easily:
+ * 
+ * the texture can be null
+ * the fill/outline colors can be sf.Color.Transparent
+ * the outline thickness can be zero
+ * You can write your own derived shape class, there are only two virtual functions to override:
+ * 
+ * getPointCount must return the number of points of the shape
+ * getPoint must return the points of the shape
+ * @see sf.RectangleShape
+ * @see sf.CircleShape
+ * @see sf.ConvexShape
+ * @see sf.Transformable
+ */
+sf.Shape
 
 
 
