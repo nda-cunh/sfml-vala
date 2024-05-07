@@ -608,7 +608,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	[CCode (cname = "sfRenderTexture", free_function = "sfRenderTexture_destroy", cprefix = "sfRenderTexture_")]
 	public class RenderTexture {
 		[CCode (cname = "sfRenderTexture_create")]
-		public RenderTexture(uint width, uint height, bool depthBuffer);
+		public RenderTexture(uint width, uint height, bool depthBuffer = true);
 		[CCode (cname = "sfRenderTexture_createWithSettings")]
 		public RenderTexture.withSettings(uint width, uint height, ContextSettings settings);
 
