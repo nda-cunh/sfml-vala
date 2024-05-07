@@ -10,6 +10,149 @@
 
 sf
 
+
+
+
+
+
+
+
+/** 
+ * =Specialized shape representing a convex polygon=
+ * 
+ * This class inherits all the functions of sf.Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf.Shape (outline, color, texture, ...).
+ * 
+ * It is important to keep in mind that a convex shape must always be... convex, otherwise it may not be drawn correctly. Moreover, the points must be defined in order; using a random order would result in an incorrect shape.
+ * 
+ * Usage example:
+ * {{{
+ * polygon = new ConvexShape();
+ * polygon.setPointCount(3);
+ * polygon.setPoint(0, sf.Vector2f(0, 0));
+ * polygon.setPoint(1, sf.Vector2f(0, 10));
+ * polygon.setPoint(2, sf.Vector2f(25, 5));
+ * polygon.setOutlineColor(sf.Color.Red);
+ * polygon.setOutlineThickness(5);
+ * polygon.setPosition(10, 20);
+ * ...
+ * window.draw(polygon);
+ * }}}
+ * @see sf.Shape
+ * @see sf.RectangleShape
+ * @see sf.CircleShape
+ */ 
+sf.ConvexShape
+
+
+
+
+
+
+
+
+/** 
+ * =Class for loading and manipulating character fonts.=
+ * 
+ * Fonts can be loaded from a file, from memory or from a custom stream, and supports the most common types of fonts.
+ * 
+ * See the loadFromFile function for the complete list of supported formats.
+ * 
+ * Once it is loaded, a sf.Font instance provides three types of information about the font:
+ * 
+ * Global metrics, such as the line spacing
+ * Per-glyph metrics, such as bounding box or kerning
+ * Pixel representation of glyphs
+ * Fonts alone are not very useful: they hold the font data but cannot make anything useful of it. To do so you need to use the sf.Text class, which is able to properly output text with several options such as character size, style, color, position, rotation, etc. This separation allows more flexibility and better performances: indeed a sf.Font is a heavy resource, and any operation on it is slow (often too slow for real-time applications). On the other side, a sf.Text is a lightweight object which can combine the glyphs data and metrics of a sf.Font to display any text on a render target. Note that it is also possible to bind several sf.Text instances to the same sf.Font.
+ * 
+ * It is important to note that the sf.Text instance doesn't copy the font that it uses, it only keeps a reference to it. Thus, a sf.Font must not be destructed while it is used by a sf.Text (i.e. never write a function that uses a local sf.Font instance for creating a text).
+ * 
+ * Usage example:
+ * {{{
+ * // Declare a new font
+ * var font = new Font.fromFile("arial.ttf");
+ *  
+ * if (font == null) {
+ *     // error...
+ * }
+ *  
+ * // Create a text which uses our font
+ * var text1 = new Text();
+ * text1.setFont(font);
+ * text1.setCharacterSize(30);
+ * text1.setStyle(sf.TextStyle.Regular);
+ *  
+ * // Create another text using the same font, but with different parameters
+ * var text2 = new Text();
+ * text2.setFont(font);
+ * text2.setCharacterSize(50);
+ * text2.setStyle(sf.TextStyle.Italic);
+ * }}}
+ * Apart from loading font files, and passing them to instances of sf.Text, you should normally not have to deal directly with this class. However, it may be useful to access the font metrics or rasterized glyphs for advanced usage.
+ * 
+ * Note that if the font is a bitmap font, it is not scalable, thus not all requested sizes will be available to use. This needs to be taken into consideration when using sf.Text. If you need to display text of a certain size, make sure the corresponding bitmap font that supports that size is used.
+ * 
+ * @see sf.Text
+ */
+sf.Font
+
+
+
+
+
+
+
+
+
+/** 
+ * =Class for loading, manipulating and saving images.=
+ * 
+ * sf.Image is an abstraction to manipulate images as bidimensional arrays of pixels.
+ * 
+ * The class provides functions to load, read, write and save pixels, as well as many other useful functions.
+ * 
+ * sf.Image can handle a unique internal representation of pixels, which is RGBA 32 bits. This means that a pixel must be composed of 8 bits red, green, blue and alpha channels – just like a sf.Color. All the functions that return an array of pixels follow this rule, and all parameters that you pass to sf.Image functions (such as loadFromMemory) must use this representation as well.
+ * 
+ * A sf.Image can be copied, but it is a heavy resource and if possible you should always use [const] references to pass or return them to avoid useless copies.
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * // Load an image file from a file
+ * var background = new Image.FromFile("background.jpg");
+ * if (background == null)
+ *     return -1;
+ *  
+ * // Create a 20x20 image filled with black color
+ * var image = new Image.fromColor(20, 20, sf.Color.Black);
+ *  
+ * // Copy image1 on image2 at position (10, 10)
+ * image.copy(background, 10, 10);
+ *  
+ * // Make the top-left pixel transparent
+ * var color = image.getPixel(0, 0);
+ * color.a = 0;
+ * image.setPixel(0, 0, color);
+ *  
+ * // Save the image to a file
+ * if (!image.saveToFile("result.png"))
+ *     return -1;
+ * }}}
+ * 
+ * @see sf.Texture
+ */
+sf.Image
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * = Graphical text that can be drawn to a render target =
  *
@@ -55,11 +198,10 @@ sf.Text.size
  *
  * Note that if the used font is a bitmap font, it is not scalable, thus not all requested sizes will be available to use. This needs to be taken into consideration when setting the character size. If you need to display text of a certain size, make sure the corresponding bitmap font that supports that size is used.
  *
- * @param font the default font
  */
-
-
 sf.Text.Text
+
+
 /**
  * draw the sprite on the window
  * @param window to draw
@@ -1526,3 +1668,1284 @@ sf.RectangleShape
  * @see sf.Window.setMouseCursor
  */ 
 sf.Cursor
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.Transformable.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.Transformable.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.Transformable.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.Transformable.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.Transformable.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.Transformable.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.Transformable.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.Transformable.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.Transformable.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.Transformable.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.Transformable.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.Transformable.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.Transformable.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.Transformable.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.Transformable.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.Transformable.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.Transformable.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.Transformable.getInverseTransform
+
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.RectangleShape.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.RectangleShape.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.RectangleShape.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.RectangleShape.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.RectangleShape.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.RectangleShape.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.RectangleShape.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.RectangleShape.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.RectangleShape.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.RectangleShape.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.RectangleShape.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.RectangleShape.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.RectangleShape.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.RectangleShape.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.RectangleShape.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.RectangleShape.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.RectangleShape.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.RectangleShape.getInverseTransform
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.Shape.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.Shape.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.Shape.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.Shape.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.Shape.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.Shape.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.Shape.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.Shape.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.Shape.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.Shape.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.Shape.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.Shape.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.Shape.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.Shape.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.Shape.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.Shape.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.Shape.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.Shape.getInverseTransform
+
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.CircleShape.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.CircleShape.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.CircleShape.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.CircleShape.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.CircleShape.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.CircleShape.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.CircleShape.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.CircleShape.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.CircleShape.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.CircleShape.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.CircleShape.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.CircleShape.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.CircleShape.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.CircleShape.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.CircleShape.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.CircleShape.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.CircleShape.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.CircleShape.getInverseTransform
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.Text.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.Text.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.Text.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.Text.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.Text.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.Text.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.Text.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.Text.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.Text.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.Text.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.Text.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.Text.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.Text.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.Text.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.Text.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.Text.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.Text.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.Text.getInverseTransform
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.Sprite.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.Sprite.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.Sprite.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.Sprite.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.Sprite.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.Sprite.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.Sprite.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.Sprite.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.Sprite.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.Sprite.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.Sprite.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.Sprite.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.Sprite.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.Sprite.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.Sprite.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.Sprite.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.Sprite.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.Sprite.getInverseTransform
+
+
+
+
+
+
+
+
+
+
+/** 
+ * set the scale factors of the object
+ * 
+ * This function completely overwrites the previous scale. See the scale function to add a factor based on the previous scale instead. The default scale of a transformable object is (1, 1).
+ * 
+ * @param scale New scale factors
+ * @see getScale
+ */ 
+sf.ConvexShape.setScale
+
+
+/**
+ * set the orientation of the object
+ * 
+ * This function completely overwrites the previous rotation. See the rotate function to add an angle based on the previous rotation instead. The default rotation of a transformable object is 0.
+ * 
+ * @param angle New rotation, in degrees
+ * @see rotate
+ * @see getRotation
+ */
+sf.ConvexShape.setRotation
+
+
+/**
+ * set the position of the object
+ * 
+ * This function completely overwrites the previous position. See the move function to apply an offset based on the previous position instead. The default position of a transformable object is (0, 0).
+ * 
+ * @param position New position
+ * @see move
+ * @see getPosition
+*/
+sf.ConvexShape.setPosition
+
+
+/**
+ * property of the position of the object
+ * 
+ * @see move
+ * @see getPosition
+*/
+sf.ConvexShape.position
+
+/** 
+ * set the local origin of the object
+ * 
+ * The origin of an object defines the center point for all transformations (position, scale, rotation). The coordinates of this point must be relative to the top-left corner of the object, and ignore all transformations (position, scale, rotation). The default origin of a transformable object is (0, 0).
+ * 
+ * @param origin New origin
+ * @see getOrigin
+ */
+sf.ConvexShape.setOrigin
+
+/** 
+ * Scale the object.
+ * 
+ * This function multiplies the current scale of the object, unlike setScale which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * sf.Vector2f scale = object.getScale();
+ * object.setScale({scale.x * factor.x, scale.y * factor.y});
+ * }}}
+ * @param factors factorScale 
+ * @see setScale
+ */ 
+sf.ConvexShape.scaling
+
+
+/** 
+ * Rotate the object.
+ * 
+ * This function adds to the current rotation of the object, unlike setRotation which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setRotation(object.getRotation() + angle);
+ * }}}
+ * @param angle Angle of rotation, in degrees
+ */
+sf.ConvexShape.rotate
+
+/** 
+ * Move the object by a given offset.
+ * 
+ * This function adds to the current position of the object, unlike setPosition which overwrites it. Thus, it is equivalent to the following code:
+ * {{{
+ * object.setPosition(object.getPosition() + offset);
+ * }}}
+ * @param offset Offset
+ * See also
+ * @see setPosition
+ */ 
+sf.ConvexShape.move
+
+/**
+ * get the combined transform of the object
+ * 
+ * @return Transform combining the position/rotation/scale/origin of the object
+ * @see getInverseTransform
+ */
+sf.ConvexShape.getTransform
+
+/** 
+ * get the current scale of the object
+ * 
+ * @return Current scale factors
+ * @see setScale
+ */
+sf.ConvexShape.getScale
+
+/** 
+ * property of the current scale of the object
+ * 
+ * @see setScale
+ */
+sf.ConvexShape.scale
+
+
+/**
+ * get the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @return Current rotation, in degrees
+ * @see setRotation
+ */ 
+sf.ConvexShape.getRotation
+
+
+/**
+ * property of the orientation of the object
+ * 
+ * The rotation is always in the range [0, 360].
+ * 
+ * @see setRotation
+ */ 
+sf.ConvexShape.rotation
+
+/**
+ * property of the orientation of the object
+ * 
+ * @see setRotation
+ */ 
+sf.ConvexShape.getRotation
+
+/**
+ * get the position of the object
+ * 
+ * @return Current position
+ * @see setPosition
+ */
+sf.ConvexShape.getPosition
+
+/**
+ * get the local origin of the object
+ * 
+ * @return Current origin
+ * @see setOrigin
+ */
+sf.ConvexShape.getOrigin
+
+/**
+ * property of the local origin of the object
+ * 
+ * @see setOrigin
+ */
+sf.ConvexShape.origin
+
+/** 
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see getTransform
+ */ 
+sf.ConvexShape.getInverseTransform
+
+
