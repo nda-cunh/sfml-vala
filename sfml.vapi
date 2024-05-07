@@ -141,26 +141,26 @@ namespace sf {
 		public uint8 blue {get {return b;} set{b = value;}}
 		public uint8 green {get {return b;} set{g = value;}}
 		public uint8 alpha {get {return b;} set{a = value;}}
-uint8 r;
-uint8 g;
-uint8 b;
-uint8 a;
-}
+		uint8 r;
+		uint8 g;
+		uint8 b;
+		uint8 a;
+	}
 
 
 	[CCode (cname = "sfFloatRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
 	[SimpleType]
-public struct FloatRect
-{
-public float left;
-public float top;
-public float width;
-public float height;
+	public struct FloatRect
+	{
+		public float left;
+		public float top;
+		public float width;
+		public float height;
 
-[CCode (cname = "sfFloatRect_contains")]
-static bool static_contains (FloatRect *rect, float x, float y);
+		[CCode (cname = "sfFloatRect_contains")]
+		static bool static_contains (FloatRect *rect, float x, float y);
 		[CCode (cname = "sfFloatRect_intersects")]
-static bool static_intersects (FloatRect *rect1, FloatRect *rect2, FloatRect? intersection = null);
+		static bool static_intersects (FloatRect *rect1, FloatRect *rect2, FloatRect? intersection = null);
 
 		public inline bool contains (float x, float y) {
 			return FloatRect.static_contains(&this, x, y);
@@ -168,20 +168,20 @@ static bool static_intersects (FloatRect *rect1, FloatRect *rect2, FloatRect? in
 		public inline bool intersects (FloatRect rect, FloatRect? intersection = null) {
 			return FloatRect.static_intersects(&this, &rect, intersection);
 		}
-}
+	}
 
 	[CCode (cname = "sfIntRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
-[SimpleType]
-public struct IntRect
-{
-public int left;
-public int top;
-public int width;
-public int height;
-[CCode (cname = "sfIntRect_contains")]
-static bool static_contains(IntRect *rect, int x, int y);
-[CCode (cname = "sfIntRect_intersects")]
-static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersection = null);
+	[SimpleType]
+	public struct IntRect
+	{
+		public int left;
+		public int top;
+		public int width;
+		public int height;
+		[CCode (cname = "sfIntRect_contains")]
+		static bool static_contains(IntRect *rect, int x, int y);
+		[CCode (cname = "sfIntRect_intersects")]
+		static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersection = null);
 
 		public inline bool contains (int x, int y) {
 			return IntRect.static_contains(&this, x, y);
@@ -190,7 +190,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public inline bool intersects (IntRect rect, IntRect? intersection = null) {
 			return IntRect.static_intersects(&this, &rect, intersection);
 		}
-}
+	}
 
 	public delegate int64 InputStreamReadFunc(void* data, int64 size, void* userData);
 	public delegate int64 InputStreamSeekFunc(int64 position, void* userData);
@@ -299,7 +299,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 	[Compact]
-	[CCode (cname = "sfTransformable", free_function = "sfTransformable_destroy", cprefix= "Transformable_", cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfTransformable", copy_function="sfTransformable_copy", free_function = "sfTransformable_destroy", cprefix= "Transformable_", cheader_filename = "SFML/Graphics.h")]
 	public class Transformable {
 		[CCode (cname = "sfTransformable_create")]
 		public Transformable();
@@ -349,7 +349,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 	[Compact]
-	[CCode (cname = "sfCircleShape", free_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfCircleShape", copy_function="sfCircleShape_copy", free_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class CircleShape : Shape {
 		[CCode (cname = "sfCircleShape_create")]
 		public CircleShape();
@@ -483,7 +483,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 	[Compact]
-	[CCode (cname = "sfConvexShape", free_function = "sfConvexShape_destroy", cprefix = "sfConvexShape_")]
+	[CCode (cname = "sfConvexShape", copy_function="sfConvexShape_copy", free_function = "sfConvexShape_destroy", cprefix = "sfConvexShape_")]
 	public class ConvexShape : Shape {
 		[CCode (cname = "sfConvexShape_create")]
 		public ConvexShape();
@@ -582,7 +582,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 
 	[Compact]
-	[CCode (cname = "sfView", free_function = "sfView_destroy", cprefix = "sfView_")]
+	[CCode (cname = "sfView", copy_function="sfView_copy", free_function = "sfView_destroy", cprefix = "sfView_")]
 	public class View {
 		[CCode (cname = "sfView_create")]
 		public View();
@@ -615,22 +615,17 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public Vector2u getSize();
 		public bool setActive(bool active);
 		public void display();
-		public void clear(Color color);
+		public void clear(Color color = Color.Black);
 		public void setView(View view);
 		public unowned View getView();
 		public unowned View getDefaultView();
 		public IntRect getViewport(View view);
 		public Vector2f mapPixelToCoords(Vector2i point, View view);
 		public Vector2i mapCoordsToPixel(Vector2f point, View view);
-		public void drawSprite(Sprite object, RenderStates states);
-		public void drawText(Text object, RenderStates states);
-		public void drawShape(Shape object, RenderStates states);
-		public void drawCircleShape(CircleShape object, RenderStates states);
-		public void drawConvexShape(ConvexShape object, RenderStates states);
-		public void drawVertexArray(VertexArray object, RenderStates states);
-		public void drawVertexBuffer(VertexBuffer object, RenderStates states);
-		public void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates states);
-		public void drawPrimitives(Vertex vertices, size_t vertexCount,PrimitiveType type, RenderStates states);
+		[CCode (cname = "sfRenderTexture_drawShape")]
+		public void draw(Shape object, RenderStates? states = null);
+		public void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates? states = null);
+		public void drawPrimitives(Vertex vertices, size_t vertexCount,PrimitiveType type, RenderStates? states = null);
 		public void pushGLStates();
 		public void popGLStates();
 		public void resetGLStates();
@@ -646,7 +641,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 	/* *****************************     RECTANGLESHAPE     ************************************************/
 	[Compact]
-	[CCode (free_function = "sfRectangleShape_destroy", cheader_filename = "SFML/Graphics.h")]
+	[CCode (free_function = "sfRectangleShape_destroy", copy_function="sfRectangleShape_copy", cheader_filename = "SFML/Graphics.h")]
 	public class RectangleShape : Shape {
 		[CCode (destroy_function = "sfRectangleShape_destroy", cname = "sfRectangleShape_create")]
 		public RectangleShape();
@@ -808,7 +803,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 	[Compact]
-	[CCode (cname = "sfFont", free_function = "sfFont_destroy", cprefix = "sfFont_")]
+	[CCode (cname = "sfFont", copy_function="sfFont_copy", free_function = "sfFont_destroy", cprefix = "sfFont_")]
 	public class Font {
 
 		[CCode (cname = "sfFont_createFromFile")]
@@ -1001,7 +996,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 
 	[Compact]
-	[CCode (cname = "sfShape", free_function = "sfShape_destroy", cprefix="sfShape_", cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfShape", free_function = "sfShape_destroy", copy_function="sfShape_copy", cprefix="sfShape_", cheader_filename = "SFML/Graphics.h")]
 	public class Shape : Transformable {
 		[CCode (cname = "sfShapeGetPointCountCallback")]
 		public delegate size_t GetPointCountDelegate (void* data);
@@ -1101,7 +1096,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 /* *****************************     SPRITE     ************************************************/
 	[Compact]
-	[CCode (cname = "sfSprite", free_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfSprite", copy_function="sfSprite_copy", free_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class Sprite : Shape {
 		[CCode (cname = "sfSprite_create")]
 		public Sprite();
@@ -1432,8 +1427,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public void scale(float scaleX, float scaleY);
 		public void scaleWithCenter(float scaleX, float scaleY, float centerX, float centerY);
 		public bool equal(Transform left, Transform right);
-
-
 	}
 
 	[CCode (cname = "sfVertex")]
@@ -1449,7 +1442,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 	[Compact]
-[CCode (free_function = "sfVertexArray_destroy", cprefix="sfVertexArray_", cheader_filename = "SFML/Graphics.h")]
+	[CCode (free_function = "sfVertexArray_destroy", copy_function = "sfVertexArray_copy", cprefix="sfVertexArray_", cheader_filename = "SFML/Graphics.h")]
 	public class VertexArray {
 		[CCode (cname = "sfVertexArray_create")]
 		public VertexArray();
@@ -1477,13 +1470,13 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 	[Compact]
-[CCode (free_function = "sfVertexBuffer_destroy", cprefix="sfVertexBuffer_", cheader_filename = "SFML/Graphics.h")]
+	[CCode (free_function = "sfVertexBuffer_destroy", copy_function="sfVertexBuffer_copy", cprefix="sfVertexBuffer_", cheader_filename = "SFML/Graphics.h")]
 	public class VertexBuffer {
-
 		public VertexBuffer(uint vertexCount, PrimitiveType type, VertexBufferUsage usage);
 		public VertexBuffer copy();
-		public void destroy();
 		public uint getVertexCount();
+		[CCode (cname = "sfRenderWindow_drawVertexBuffer", instance_pos = 1.2)]
+		public void draw(RenderWindow window, RenderStates? state = null);
 		public bool update(Vertex vertices, uint vertexCount, uint offset);
 		public bool updateFromVertexBuffer(VertexBuffer other);
 		public void swap(VertexBuffer source);
@@ -1657,16 +1650,8 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public IntRect getViewport(View view);
 		public Vector2f mapPixelToCoords(Vector2i point, View view);
 		public Vector2i mapCoordsToPixel(Vector2f point, View view);
-		public void draw (Shape drawable, sf.RenderStates? state = null) {
-			drawable.draw(this, state);
-		}
-		public void drawSprite(Sprite object, RenderStates? states = null);
-		public void drawText(Text object, RenderStates? states = null);
-		public void drawShape(Shape object, RenderStates? states = null);
-		public void drawCircleShape(CircleShape object, RenderStates? states = null);
-		public void drawConvexShape(ConvexShape object, RenderStates? states = null);
-		public void drawRectangleShape(RectangleShape object, RenderStates? states = null);
-		public void drawVertexArray(VertexArray object, RenderStates? states = null);
+		[CCode (cname = "sfRenderWindow_drawShape")]
+		public void draw (Shape drawable, sf.RenderStates? state = null);
 		public void drawVertexBuffer(VertexBuffer object, RenderStates? states = null);
 		public void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates? states = null);
 		public void drawPrimitives(Vertex vertices, size_t vertexCount, PrimitiveType type, RenderStates? states = null);
