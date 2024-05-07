@@ -2,6 +2,9 @@
 
 vala binding of project SFML
 
+[the documentation is here:](https://nda-cunh.gitlab.io/sfml-vala-binding/sfml/sf.html)
+
+[https://nda-cunh.gitlab.io/sfml-vala-binding/sfml/sf.html](https://nda-cunh.gitlab.io/sfml-vala-binding/sfml/sf.html)
 
 Exemple:
 
