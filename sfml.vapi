@@ -350,7 +350,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 	[Compact]
 	[CCode (cname = "sfCircleShape", free_function = "sfCircleShape_destroy", cheader_filename = "SFML/Graphics.h")]
-	public class CircleShape{
+	public class CircleShape : Shape {
 		[CCode (cname = "sfCircleShape_create")]
 		public CircleShape();
 		[CCode (cname = "sfCircleShape_copy")]
@@ -484,7 +484,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 	[Compact]
 	[CCode (cname = "sfConvexShape", free_function = "sfConvexShape_destroy", cprefix = "sfConvexShape_")]
-	public class ConvexShape{
+	public class ConvexShape : Shape {
 		[CCode (cname = "sfConvexShape_create")]
 		public ConvexShape();
 
@@ -647,7 +647,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	/* *****************************     RECTANGLESHAPE     ************************************************/
 	[Compact]
 	[CCode (free_function = "sfRectangleShape_destroy", cheader_filename = "SFML/Graphics.h")]
-	public class RectangleShape{
+	public class RectangleShape : Shape {
 		[CCode (destroy_function = "sfRectangleShape_destroy", cname = "sfRectangleShape_create")]
 		public RectangleShape();
 		[CCode (cname = "sfRectangleShape_copy")]
@@ -832,10 +832,10 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	[Compact]
 	[Immutable]
 	[CCode (cname = "sfText", copy_function="sfText_copy", free_function = "sfText_destroy", cprefix = "sfText_")]
-	public class Text {
+	public class Text : Shape {
 
 		[CCode (cname="sfText_create")]
-		public Text(Font font);
+		public Text();
 
 		public Text copy();
 
@@ -1002,7 +1002,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 
 	[Compact]
 	[CCode (cname = "sfShape", free_function = "sfShape_destroy", cprefix="sfShape_", cheader_filename = "SFML/Graphics.h")]
-	public class Shape{
+	public class Shape : Transformable {
 		[CCode (cname = "sfShapeGetPointCountCallback")]
 		public delegate size_t GetPointCountDelegate (void* data);
 		[CCode (cname = "sfShapeGetPointCallback")]
@@ -1102,7 +1102,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 /* *****************************     SPRITE     ************************************************/
 	[Compact]
 	[CCode (cname = "sfSprite", free_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
-	public class Sprite{
+	public class Sprite : Shape {
 		[CCode (cname = "sfSprite_create")]
 		public Sprite();
 		/**
@@ -1113,9 +1113,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfSprite_copy")]
 		public Sprite copy();
 
-		/**
-		* Get or set the position of the Sprite object.
-		*/
 		public Vector2f position{
 			[CCode (cname = "sfSprite_getPosition")]
 			get;
@@ -1123,9 +1120,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			set;
 		}
 
-		/**
-		* Get or set the orientation of the Sprite object.
-		*/
 		public float rotation{
 			[CCode (cname = "sfSprite_getRotation")]
 			get;
@@ -1133,27 +1127,18 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			set;
 		}
 
-		/**
-		* Get or set the current scale of the Sprite object.
-		*/
 		public Vector2f scale{
 			[CCode (cname = "sfSprite_getScale")]
 			get;
 			[CCode (cname = "sfSprite_setScale")]
 			set;
 		}
-		/**
-		* Get or set the origin of the Sprite object.
-		*/
 		public Vector2f origin{
 			[CCode (cname = "sfSprite_getOrigin")]
 			get;
 			[CCode (cname = "sfSprite_setOrigin")]
 			set;
 		}
-		/**
-		* Get or set the textureRect of the Sprite object.
-		*/
 		public IntRect textureRect{
 			[CCode (cname = "sfSprite_getTextureRect")]
 				get;
@@ -1166,27 +1151,18 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			[CCode (cname = "sfSprite_setColor")]
 			set;
 		}
-		/**
-		* Get or set the localbounds of the Sprite object.
-		*/
 		public FloatRect localBounds{
 			[CCode (cname = "sfSprite_getLocalBounds")]
 			get;
 			[CCode (cname = "sfSprite_setLocalBounds")]
 			set;
 		}
-		/**
-		* Get or set the globalbounds of the Sprite object.
-		*/
 		public FloatRect globalBounds{
 			[CCode (cname = "sfSprite_getGlobalBounds")]
 			get;
 			[CCode (cname = "sfSprite_setGlobalBounds")]
 			set;
 		}
-		/**
-		* Get or set the texture of the Sprite object.
-		*/
 		public unowned Texture texture{
 			[CCode (cname = "sfSprite_getTexture")]
 			get;
@@ -1194,9 +1170,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 				setTexture(value);
 			}
 		}
-		/**
-		* Get or set the angle of the Sprite object.
-		*/
 		public float angle{
 			[CCode (cname = "sfSprite_setRotation")]
 			set;
@@ -1221,107 +1194,42 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfRenderWindow_drawSprite", instance_pos = 1.2)]
 		public void draw(RenderWindow window, RenderStates? state = null);
 
-		/**
-		* Set the position of the sprite.
-		*
-		* @param position The new position of the sprite.
-		*/
 		[CCode (cname = "sfSprite_setPosition")]
 		public void setPosition(Vector2f position);
 
-		/**
-		* Set the rotation of the sprite.
-		*
-		* @param angle The new rotation of the sprite, in degrees.
-		*/
 		[CCode (cname = "sfSprite_setRotation")]
 		public void setRotation(float angle);
 
-		/**
-		* Set the scale of the sprite.
-		*
-		* @param scale The new scale of the sprite.
-		*/
 		[CCode (cname = "sfSprite_setScale")]
 		public void setScale(Vector2f scale);
 
-		/**
-		* Set the origin of the sprite.
-		*
-		* @param origin The new origin of the sprite.
-		*/
 		[CCode (cname = "sfSprite_setOrigin")]
 		public void setOrigin(Vector2f origin);
 
-		/**
-		* Get the position of the sprite.
-		*
-		* @return The position of the sprite, or null if the sprite has no position.
-		*/
 		[CCode (cname = "sfSprite_getPosition")]
-		public Vector2f ?getPosition();
+		public Vector2f getPosition();
 
-		/**
-		* Get the rotation of the sprite.
-		*
-		* @return The rotation of the sprite, in degrees.
-		*/
 		[CCode (cname = "sfSprite_getRotation")]
 		public float getRotation();
 
-		/**
-		* Get the scale of the sprite.
-		*
-		* @return The scale of the sprite, or null if the sprite has no scale.
-		*/
 		[CCode (cname = "sfSprite_getScale")]
-		public Vector2f ?getScale();
+		public Vector2f getScale();
 
-		/**
-		* Get the origin of the sprite.
-		*
-		* @return The origin of the sprite, or null if the sprite has no origin.
-		*/
 		[CCode (cname = "sfSprite_getOrigin")]
-		public Vector2f ?getOrigin();
+		public Vector2f getOrigin();
 
-		/**
-		* Move the sprite by a given offset.
-		*
-		* @param offset The offset to move the sprite by.
-		*/
 		[CCode (cname = "sfSprite_move")]
 		public void move(Vector2f offset);
 
-		/**
-		* Rotate the sprite by a given angle.
-		*
-		* @param angle The angle to rotate the sprite by, in degrees.
-		*/
 		[CCode (cname = "sfSprite_rotate")]
 		public void rotate(float angle);
 
-		/**
-		* Scale the sprite by a given set of factors.
-		*
-		* @param factors The factors to scale the sprite by.
-		*/
 		[CCode (cname = "sfSprite_scale")]
 		public void scaling(Vector2f factors);
 
-		/**
-		* Get the transform of the sprite.
-		*
-		* @return The transform of the sprite.
-		*/
 		[CCode (cname = "sfSprite_getTransform")]
 		public Transform getTransform();
 
-		/**
-		* Get the inverse transform of the sprite.
-		*
-		* @return The inverse transform of the sprite.
-		*/
 		[CCode (cname = "sfSprite_getInverseTransform")]
 		public Transform getInverseTransform();
 
@@ -1749,6 +1657,9 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public IntRect getViewport(View view);
 		public Vector2f mapPixelToCoords(Vector2i point, View view);
 		public Vector2i mapCoordsToPixel(Vector2f point, View view);
+		public void draw (Shape drawable, sf.RenderStates? state = null) {
+			drawable.draw(this, state);
+		}
 		public void drawSprite(Sprite object, RenderStates? states = null);
 		public void drawText(Text object, RenderStates? states = null);
 		public void drawShape(Shape object, RenderStates? states = null);
