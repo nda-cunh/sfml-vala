@@ -1,3 +1,14 @@
+/** 
+ * =SFML is multi-media=
+ *
+ * SFML provides a simple interface to the various components of your PC, to ease the development of games and multimedia applications. It is composed of five modules: system, window, graphics, audio and network.
+ * 
+ * you need CSFML to compile
+ * 
+ * valac main.vala sfml.vapi -X -lcsfml-graphics
+ */ 
+
+sf
 
 /**
  * = Graphical text that can be drawn to a render target =
@@ -1381,3 +1392,137 @@ sf.View.getRotation
  * @see setCenter
  */
 sf.View.getCenter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * Specialized shape representing a circle.
+ * 
+ * This class inherits all the functions of sf.Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf.Shape (outline, color, texture, ...).
+ * 
+ * Usage example:
+ * 
+ * === Color ===
+ *
+ * {{images/graphics-shape-color.png}}
+ * {{{
+ * var circle = new CircleShape () {
+ * 	radius = 50.0f,
+ * 	outlineColor = Color(100, 250, 50)
+ * };
+ * }}}
+ * 
+ * === Outline ===
+ *
+ * {{images/graphics-shape-outline.png}}
+ * 
+ * {{{
+ * var circle = new CircleShape () {
+ * 	radius = 50.0f,
+ * 	fillColor = Color(150, 50, 250),
+ * 	outlineColor = Color(250, 150, 100),
+ * 	OutlineThickness = Color(250, 150, 100)
+ * };
+ * }}}
+ * 
+ * === Texture ===
+ *
+ * {{images/graphics-shape-texture.png}}
+ * 
+ * {{{
+ * var circle = new CircleShape() {
+ * 	radius = 50.0f
+ * };
+ * 
+ * // map a 100x100 textured rectangle to the shape
+ * shape.setTexture(texture); // texture is a sf.Texture
+ * shape.setTextureRect(IntRect(10, 10, 100, 100));
+ * }}}
+ * 
+ * Since the graphics card can't draw perfect circles, we have to fake them with multiple triangles connected to each other. The "points count" property of sf.CircleShape defines how many of these triangles to use, and therefore defines the quality of the circle.
+ * 
+ * The number of points can also be used for another purpose; with small numbers you can create any regular polygon shape: equilateral triangle, square, pentagon, hexagon, ...
+ * 
+ * @see sf.Shape
+ * @see sf.RectangleShape
+ * @see sf.ConvexShape
+ */
+sf.CircleShape
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * ==Specialized shape representing a rectangle.==
+ * 
+ * This class inherits all the functions of sf.Transformable (position, rotation, scale, bounds, ...) as well as the functions of sf.Shape (outline, color, texture, ...).
+ * 
+ * Usage example:
+ * 
+ * {{images/graphics-shape-rectangle.png}}
+ * 
+ * {{{
+ * var rectangle = new RectangleShape() {
+ * 	size = Vector2f(120.f, 50.f))
+ * };
+ * 
+ * // change the size to 100x100
+ * rectangle.setSize(Vector2f(100.f, 100.f));
+ * }}}
+ */
+sf.RectangleShape
+
+
+
+
+
+
+
+
+
+
+/** 
+ * Cursor defines the appearance of a system cursor.
+ * 
+ * Warning
+ * Features related to Cursor are not supported on iOS and Android.
+ * This class abstracts the operating system resources associated with either a native system cursor or a custom cursor.
+ * 
+ * After loading the cursor the graphical appearance with either fromPixels() or fromSystem(), the cursor can be changed with sf.Window.setMouseCursor().
+ * 
+ * The behaviour is undefined if the cursor is destroyed while in use by the window.
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * var window = new Window(......);
+ * 
+ * // ... create window as usual ...
+ *  
+ * Cursor cursor;
+ * if (cursor = Cursor.fromSystem(sf.CursorType.Hand))
+ *     window.setMouseCursor(cursor);
+ * }}}
+ * @see sf.Window.setMouseCursor
+ */ 
+sf.Cursor
