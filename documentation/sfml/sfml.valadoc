@@ -1,17 +1,22 @@
 
 /**
- * Graphical text that can be drawn to a render target
+ * = Graphical text that can be drawn to a render target =
  *
- *
+ * To draw text, you will be using the sf.Text class. It's very simple to use:
  *
  * {{images/graphics-text-draw.png}}
  *
  * {{{
- * var font = new Font.fromFile("../data/Arial.ttf");
+ * var font = new Font.fromFile("../data/Arial.ttf"); //simple font
  * var text = new Text(font) {
- *     string = "Hello !",
- *     color = Color.Red;
+ *     string = "Hello world",
  * };
+ *
+ * // set the color
+ * text.setCharacterSize(24); // in pixels, not points!
+ * 
+ * // set the text style
+ * text.setStyle(TextSyle.Bold | TextStyle.Underlined);
  *
  * text.draw (window);
  *
@@ -19,6 +24,12 @@
  *
  */
 sf.Text
+
+/**
+ * Simple copy function
+ * @return a copy of this Text
+ */
+sf.Text.copy
 
 /**
  * propery for character size.
@@ -283,3 +294,1090 @@ sf.Text.getLocalBounds
 * @return Global bounding rectangle of the entity
 */
 sf.Text.getGlobalBounds
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * = Class representing a sprite, which is an object that can be drawn to the screen =
+ *
+ * A sprite is a graphical object that can be drawn to the screen. It has a texture 
+ * which is the image that is displayed, and a position, which determines where the 
+ * sprite is drawn. Sprites can also be rotated, scaled, and have their color changed.
+ * 
+ *
+ * Most (if not all) of you are already familiar with these two very common objects, so let's define them very briefly.
+ * 
+ * A texture is an image. But we call it "texture" because it has a very specific role: being mapped to a 2D entity.
+ * 
+ * A sprite is nothing more than a textured rectangle.
+ * 
+ * {{images/graphics-sprites-definition.png}}
+ * 
+ * Ok, that was short but if you really don't understand what sprites and textures are, then you'll find a much better description on Wikipedia.
+ * 
+ * {{{
+ * // Declare and load a texture
+ * var texture = new texture.fromFile("texture.png");
+ * 
+ * // Create a sprite
+ * var sprite = new Sprite();
+ * sprite.setTexture(texture);
+ * sprite.setTextureRect(IntRect(10, 10, 50, 30));
+ * sprite.setColor(Color(255, 255, 255, 200));
+ * sprite.setPosition(100, 25);
+ * 
+ * // Draw it
+ * sprite.draw(window);
+ * }}}
+ */
+sf.Sprite
+
+
+
+/**
+ * Create a copy of the current Sprite object.
+ *
+ * @return A copy of the current Sprite object.
+ */
+sf.Sprite.copy
+
+/** 
+ * Set the global color of the sprite.
+ * 
+ * This color is modulated (multiplied) with the sprite's texture. It can be used to colorize the sprite, or change its global opacity. By default, the sprite's color is opaque white.
+ *
+ * {{images/graphics-sprites-color.png}}
+ * 
+ * @param color New color of the sprite
+ * @see getColor
+ */ 
+sf.Sprite.setColor
+  
+/** 
+ * property to change global color of the sprite.
+ * 
+ * This color is modulated (multiplied) with the sprite's texture. It can be used to colorize the sprite, or change its global opacity. By default, the sprite's color is opaque white.
+ * 
+ *
+ * {{images/graphics-sprites-color.png}}
+ * 
+ * @see getColor
+ * @see setColor
+ */ 
+sf.Sprite.color
+
+/** 
+ * Get the global color of the sprite.
+ * 
+ *
+ * {{images/graphics-sprites-color.png}}
+ * 
+ * @return Global color of the sprite
+ * @see setColor
+ */
+sf.Sprite.getColor
+
+
+
+
+
+
+
+
+
+/** 
+ * = Texture stores pixels that can be drawn, with a sprite for example. =
+ * 
+ * A texture lives in the graphics card memory, therefore it is very fast to draw a texture to a render target, or copy a render target to a texture (the graphics card can access both directly).
+ * 
+ * Being stored in the graphics card memory has some drawbacks. A texture cannot be manipulated as freely as a sf.Image, you need to prepare the pixels first and then upload them to the texture in a single operation (see Texture.update).
+ * 
+ * sf.Texture makes it easy to convert from/to sf.Image, but keep in mind that these calls require transfers between the graphics card and the central memory, therefore they are slow operations.
+ * 
+ * A texture can be loaded from an image, but also directly from a file/memory/stream. The necessary shortcuts are defined so that you don't need an image first for the most common cases. However, if you want to perform some modifications on the pixels before creating the final texture, you can load your file to a sf.Image, do whatever you need with the pixels, and then call Texture.fromImage.
+ * 
+ * Since they live in the graphics card memory, the pixels of a texture cannot be accessed without a slow copy first. And they cannot be accessed individually. Therefore, if you need to read the texture's pixels (like for pixel-perfect collisions), it is recommended to store the collision information separately, for example in an array of booleans sf.Texture stores pixels that can be drawn, with a sprite for example.
+ * 
+ * A texture lives in the graphics card memory, therefore it is very fast to draw a texture to a render target, or copy a render target to a texture (the graphics card can access both directly).
+ * 
+ * Being stored in the graphics card memory has some drawbacks. A texture cannot be manipulated as freely as a sf.Image, you need to prepare the pixels first and then upload them to the texture in a single operation (see Texture.update).
+ * 
+ * sf.Texture makes it easy to convert from/to sf.Image, but keep in mind that these calls require transfers between the graphics card and the central memory, therefore they are slow operations.
+ * 
+ * A texture can be loaded from an image, but also directly from a file/memory/stream. The necessary shortcuts are defined so that you don't need an image first for the most common cases. However, if you want to perform some modifications on the pixels before creating the final texture, you can load your file to a sf.Image, do whatever you need with the pixels, and then call Texture.fromImage.
+ * 
+ * Since they live in the graphics card memory, the pixels of a texture cannot be accessed without a slow copy first. And they cannot be accessed individually. Therefore, if you need to read the texture's pixels (like for pixel-perfect collisions), it is recommended to store the collision information separately, for example in an array of booleans
+ * 
+ * {{{
+ * // This example shows the most common use of sf.Texture:
+ * // drawing a sprite
+ * 
+ * // Load a texture from a file
+ * Texture texture = new Texture.fromFile("texture.png");
+ * if (texture == null)
+ *     return -1;
+ * 
+ * // Assign it to a sprite
+ * var sprite = new Sprite ();
+ * sprite.setTexture(texture);
+ * 
+ * // Draw the textured sprite
+ * sprite.draw(window);
+ * }}}
+ * /
+ */ 
+sf.Texture
+
+
+/** 
+ * Return the size of the texture.
+ * 
+ * @return Size in pixels
+ */ 
+sf.Texture.getSize
+
+
+/**
+ * Copy the texture pixels to an image.
+ * 
+ * This function performs a slow operation that downloads the texture's pixels from the graphics card and copies them to a new image, potentially applying transformations to pixels if necessary (texture may be padded or flipped).
+ * 
+ * @return Image containing the texture's pixels
+ * @see Texture.fromImage
+ */
+sf.Texture.copyToImage
+
+/** 
+ * Update the whole texture from an array of pixels.
+ * 
+ * The pixel array is assumed to have the same size as the area rectangle, and to contain 32-bits RGBA pixels.
+ * 
+ * No additional check is performed on the size of the pixel array, passing invalid arguments will lead to an undefined behavior.
+ * 
+ * This function does nothing if pixels is null or if the texture was not previously created.
+ * 
+ * @param pixels Array of pixels to copy to the texture
+ */
+sf.Texture.updateFromPixels
+
+
+sf.Texture.updateFromTexture
+sf.Texture.updateFromImage
+sf.Texture.updateFromWindow
+sf.Texture.updateFromRenderWindow
+
+/** 
+ * Enable or disable the smooth filter.
+ * 
+ * When the filter is activated, the texture appears smoother so that pixels are less noticeable. However if you want the texture to look exactly the same as its source file, you should leave it disabled. The smooth filter is disabled by default.
+ * 
+ * {{images/graphics-sprites-smooth.png}}
+ *
+ * @param smooth True to enable smoothing, false to disable it
+ * @see isSmooth
+ */
+sf.Texture.setSmooth
+
+
+/** 
+ * Tell whether the smooth filter is enabled or not.
+ * 
+ * @return True if smoothing is enabled, false if it is disabled
+ * @see setSmooth
+ */
+sf.Texture.isSmooth
+
+
+/** 
+ * Tell whether the texture source is converted from sRGB or not.
+ * 
+ * @return True if the texture source is converted from sRGB, false if not
+ */ 
+sf.Texture.isSrgb
+
+/** 
+ * Tell whether the texture is repeated or not.
+ * 
+ * {{images/graphics-sprites-repeated.png}}
+ * @return True if repeat mode is enabled, false if it is disabled
+ * @see setRepeated
+ */
+sf.Texture.isRepeated
+
+/** 
+ * Enable or disable repeating.
+ * 
+ * Repeating is involved when using texture coordinates outside the texture rectangle [0, 0, width, height]. In this case, if repeat mode is enabled, the whole texture will be repeated as many times as needed to reach the coordinate (for example, if the X texture coordinate is 3 * width, the texture will be repeated 3 times). If repeat mode is disabled, the "extra space" will instead be filled with border pixels. Warning: on very old graphics cards, white pixels may appear when the texture is repeated. With such cards, repeat mode can be used reliably only if the texture has power-of-two dimensions (such as 256x128). Repeating is disabled by default.
+ *
+ * {{images/graphics-sprites-repeated.png}}
+ * 
+ * @param repeated True to repeat the texture, false to disable repeating
+ * @see isRepeated
+ */ 
+sf.Texture.setRepeated
+
+
+/** 
+ * Generate a mipmap using the current texture data.
+ * 
+ * Mipmaps are pre-computed chains of optimized textures. Each level of texture in a mipmap is generated by halving each of the previous level's dimensions. This is done until the final level has the size of 1x1. The textures generated in this process may make use of more advanced filters which might improve the visual quality of textures when they are applied to objects much smaller than they are. This is known as minification. Because fewer texels (texture elements) have to be sampled from when heavily minified, usage of mipmaps can also improve rendering performance in certain scenarios.
+ * 
+ * Mipmap generation relies on the necessary OpenGL extension being available. If it is unavailable or generation fails due to another reason, this function will return false. Mipmap data is only valid from the time it is generated until the next time the base level image is modified, at which point this function will have to be called again to regenerate it.
+ * 
+ * return True if mipmap generation was successful, false if unsuccessful
+ */
+sf.Texture.generateMipmap
+
+
+/** 
+ * Swap the contents of this texture with those of another.
+ * 
+ * @param right Instance to swap with
+ */
+sf.Texture.swap
+
+
+/** 
+ * Get the underlying OpenGL handle of the texture.
+ * 
+ * You shouldn't need to use this function, unless you have very specific stuff to implement that SFML doesn't support, or implement a temporary workaround until a bug is fixed.
+ * 
+ * return OpenGL handle of the texture or 0 if not yet created
+ */ 
+sf.Texture.getNativeHandle
+
+/** 
+ * Get the maximum texture size allowed.
+ * 
+ * This maximum size is defined by the graphics driver. You can expect a value of 512 pixels for low-end graphics card, and up to 8192 pixels or more for newer hardware.
+ * 
+ * @return Maximum size allowed for textures, in pixels
+ */ 
+sf.Texture.getMaximumSize();
+
+
+/** 
+ * = Give access to the real-time state of the touches. =
+ * 
+ * sf.Touch provides an interface to the state of the touches.
+ * 
+ * It only contains static functions, so it's not meant to be instantiated.
+ * 
+ * This class allows users to query the touches state at any time and directly, without having to deal with a window and its events. Compared to the TouchBegan, TouchMoved and TouchEnded events, sf.Touch can retrieve the state of the touches at any time (you don't need to store and update a boolean on your side in order to know if a touch is down), and you always get the real state of the touches, even if they happen when your window is out of focus and no event is triggered.
+ * 
+ * The getPosition function can be used to retrieve the current position of a touch. There are two versions: one that operates in global coordinates (relative to the desktop) and one that operates in window coordinates (relative to a specific window).
+ * 
+ * Touches are identified by an index (the "finger"), so that in multi-touch events, individual touches can be tracked correctly. As long as a finger touches the screen, it will keep the same index even if other fingers start or stop touching the screen in the meantime. As a consequence, active touch indices may not always be sequential (i.e. touch number 0 may be released while touch number 1 is still down).
+ * {{{
+ * if (sf.Touch.isDown(0))
+ * {
+ *     // touch 0 is down
+ * }
+ *  
+ * // get global position of touch 1
+ * var globalPos = sf.Touch.getPosition(1);
+ *  
+ * // get position of touch 1 relative to a window
+ * var relativePos = sf.Touch.getPosition(1, window);
+ * }}}
+ */
+sf.Touch
+
+/** 
+ * Get the current position of a touch in window coordinates.
+ * 
+ * This function returns the current touch position relative to the given window.
+ * 
+ * @param finger Finger index
+ * @param relativeTo Reference window
+ * return Current position of finger, or undefined if it's not down
+ */ 
+sf.Touch.getPosition
+
+
+/** 
+ * Check if a touch event is currently down.
+ * 
+ * @param finger Finger index
+ * @return True if finger is currently touching the screen, false otherwise
+ */ 
+sf.Touch.isDown
+
+
+
+
+
+
+
+
+
+
+/** 
+ * Give access to the real-time state of the mouse.
+ * 
+ * sf.Mouse provides an interface to the state of the mouse.
+ * 
+ * It only contains static functions (a single mouse is assumed), so it's not meant to be instantiated.
+ * 
+ * This class allows users to query the mouse state at any time and directly, without having to deal with a window and its events. Compared to the MouseMoved, MouseButtonPressed and MouseButtonReleased events, sf.Mouse can retrieve the state of the cursor and the buttons at any time (you don't need to store and update a boolean on your side in order to know if a button is pressed or released), and you always get the real state of the mouse, even if it is moved, pressed or released when your window is out of focus and no event is triggered.
+ * 
+ * The setPosition and getPosition functions can be used to change or retrieve the current position of the mouse pointer. There are two versions: one that operates in global coordinates (relative to the desktop) and one that operates in window coordinates (relative to a specific window).
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * if (sf.Mouse.isButtonPressed(Left))
+ * {
+ *     // left click...
+ * }
+ *  
+ * // get global mouse position
+ * var position = sf.Mouse.getPosition();
+ *  
+ * // set mouse position relative to a window
+ * sf.Mouse.setPosition(Vector2i(100, 200), window);
+ * }}}
+ * 
+ * @see sf.Joystick
+ * @see sf.Keyboard
+ * @see sf.Touch
+ *
+ */
+sf.Mouse
+
+
+/** 
+ * Get the current position of the mouse in window coordinates.
+ * 
+ * This function returns the current position of the mouse cursor, relative to the given window.
+ * 
+ * @param relativeTo Reference window
+ * @return Current position of the mouse
+ */ 
+sf.Mouse.getPosition
+
+
+/** 
+ * Set the current position of the mouse in desktop coordinates.
+ * 
+ * This function sets the global position of the mouse cursor on the desktop.
+ * 
+ * @param position New position of the mouse
+ * @param relativeTo Reference window
+ */
+sf.Mouse.setPosition
+
+/** 
+ * Check if a mouse button is pressed.
+ * 
+ * Warning
+ * Checking the state of buttons Mouse::XButton1 and Mouse::XButton2 is not supported on Linux with X11.
+ * @param button Button to check
+ * @return True if the button is pressed, false otherwise
+ */ 
+sf.Mouse.isButtonPressed
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * =Give access to the real-time state of the keyboard.=
+ * 
+ * sf.Keyboard provides an interface to the state of the keyboard.
+ * 
+ * It only contains static functions (a single keyboard is assumed), so it's not meant to be instantiated.
+ * 
+ * This class allows users to query the keyboard state at any time and directly, without having to deal with a window and its events. Compared to the KeyPressed and KeyReleased events, sf.Keyboard can retrieve the state of a key at any time (you don't need to store and update a boolean on your side in order to know if a key is pressed or released), and you always get the real state of the keyboard, even if keys are pressed or released when your window is out of focus and no event is triggered.
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * if (sf.Keyboard.isKeyPressed(sf.Keycode.Left))
+ * {
+ *     // move left...
+ * }
+ * else if (sf.Keyboard.isKeyPressed(sf.Keycode.Right))
+ * {
+ *     // move right...
+ * }
+ * else if (sf.Keyboard.isKeyPressed(sf.Keycode.Escape))
+ * {
+ *     // quit...
+ * }
+ * else if (sf.Keyboard.isKeyPressed(sf.Keycode.Scan.Grave))
+ * {
+ *     // open in-game command line (if it's not already open)
+ * }
+ * }}}
+ * @see sf.Joystick
+ * @see sf.Mouse
+ * @see sf.Touch
+ */
+sf.Keyboard
+
+/** 
+ * Check if a key is pressed.
+ * 
+ * @param key Scancode to check
+ * @return True if the physical key is pressed, false otherwise
+ */ 
+sf.Keyboard.isKeyPressed
+
+/** 
+ * Show or hide the virtual keyboard.
+ * 
+ * Warning
+ * The virtual keyboard is not supported on all systems. It will typically be implemented on mobile OSes (Android, iOS) but not on desktop OSes (Windows, Linux, ...).
+ * If the virtual keyboard is not available, this function does nothing.
+ * 
+ * @param visible True to show, false to hide
+ */ 
+sf.Keyboard.setVirtualKeyboardVisible
+
+
+
+
+
+
+
+
+/** 
+ * =Give access to the real-time state of the sensors.=
+ * 
+ * sf.Sensor provides an interface to the state of the various sensors that a device provides.
+ * 
+ * It only contains static functions, so it's not meant to be instantiated.
+ * 
+ * This class allows users to query the sensors values at any time and directly, without having to deal with a window and its events. Compared to the SensorChanged event, sf.Sensor can retrieve the state of a sensor at any time (you don't need to store and update its current value on your side).
+ * 
+ * Depending on the OS and hardware of the device (phone, tablet, ...), some sensor types may not be available. You should always check the availability of a sensor before trying to read it, with the sf.Sensor.isAvailable function.
+ * 
+ * You may wonder why some sensor types look so similar, for example Accelerometer and Gravity / UserAcceleration. The first one is the raw measurement of the acceleration, and takes into account both the earth gravity and the user movement. The others are more precise: they provide these components separately, which is usually more useful. In fact they are not direct sensors, they are computed internally based on the raw acceleration and other sensors. This is exactly the same for Gyroscope vs Orientation.
+ * 
+ * Because sensors consume a non-negligible amount of current, they are all disabled by default. You must call sf.Sensor.setEnabled for each sensor in which you are interested.
+ * 
+ * Usage example:
+ * {{{
+ * if (sf.Sensor.isAvailable(sf.SensorType.Gravity))
+ * {
+ *     // gravity sensor is available
+ * }
+ *  
+ * // enable the gravity sensor
+ * sf.Sensor.setEnabled(sf.SensorType.Gravity, true);
+ *  
+ * // get the current value of gravity
+ * sf.Vector3f gravity = sf.Sensor.getValue(sf.SensorType.Gravity);
+ * }}}
+ */ 
+sf.Sensor
+
+/**
+ * Check if a sensor is available on the underlying platform.
+ * 
+ * @param sensor Sensor to check
+ * @return True if the sensor is available, false otherwise
+ */ 
+sf.Sensor.isAvailable
+
+/** 
+ * Enable or disable a sensor.
+ * 
+ * All sensors are disabled by default, to avoid consuming too much battery power. Once a sensor is enabled, it starts sending events of the corresponding type.
+ * 
+ * This function does nothing if the sensor is unavailable.
+ * 
+ * @param sensor Sensor to enable
+ * @param enabled True to enable, false to disable
+ */ 
+sf.Sensor.setEnabled
+
+/** 
+ * Get the current sensor value.
+ * 
+ * @param sensor Sensor to read
+ * @return The current sensor value
+ */ 
+sf.Sensor.getValue
+
+
+
+
+
+
+
+
+/** 
+ * =Give access to the real-time state of the joysticks.=
+ * 
+ * sf.Joystick provides an interface to the state of the joysticks.
+ * 
+ * It only contains static functions, so it's not meant to be instantiated. Instead, each joystick is identified by an index that is passed to the functions of this class.
+ * 
+ * This class allows users to query the state of joysticks at any time and directly, without having to deal with a window and its events. Compared to the JoystickMoved, JoystickButtonPressed and JoystickButtonReleased events, sf.Joystick can retrieve the state of axes and buttons of joysticks at any time (you don't need to store and update a boolean on your side in order to know if a button is pressed or released), and you always get the real state of joysticks, even if they are moved, pressed or released when your window is out of focus and no event is triggered.
+ * 
+ * SFML supports:
+ * 
+ * 8 joysticks (sf.Joystick.Count)
+ * 32 buttons per joystick (sf.Joystick.ButtonCount)
+ * 8 axes per joystick (sf.Joystick.AxisCount)
+ * Unlike the keyboard or mouse, the state of joysticks is sometimes not directly available (depending on the OS), therefore an update() function must be called in order to update the current state of joysticks. When you have a window with event handling, this is done automatically, you don't need to call anything. But if you have no window, or if you want to check joysticks state before creating one, you must call sf.Joystick.update explicitly.
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * // Is joystick #0 connected?
+ * bool connected = sf.Joystick.isConnected(0);
+ *  
+ * // How many buttons does joystick #0 support?
+ * uint buttons = sf.Joystick.getButtonCount(0);
+ *  
+ * // Does joystick #0 define a X axis?
+ * bool hasX = sf.Joystick.hasAxis(0, sf.JoystickAxis.X);
+ *  
+ * // Is button #2 pressed on joystick #0?
+ * bool pressed = sf.Joystick.isButtonPressed(0, 2);
+ *  
+ * // What's the current position of the Y axis on joystick #0?
+ * float position = sf.Joystick.getAxisPosition(0, sf.JoystickAxis.Y);
+ * }}}
+ * 
+ * @see sf.Keyboard
+ * @see sf.Mouse
+ */ 
+sf.Joystick
+
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ * Give access to the system clipboard.
+ * 
+ * sf.Clipboard provides an interface for getting and setting the contents of the system clipboard.
+ * 
+ * It is important to note that due to limitations on some operating systems, setting the clipboard contents is only guaranteed to work if there is currently an open window for which events are being handled.
+ * 
+ * Usage example:
+ * 
+ * {{{
+ * // get the clipboard content as a string
+ * var string = sf.Clipboard.getString();
+ * 
+ * // or use it in the event loop
+ * sf.Event event;
+ * while(window.pollEvent(event))
+ * {
+ *     if(event.type == sf.EventType.Closed)
+ *         window.close();
+ *     if(event.type == sf.EventType.KeyPressed)
+ *     {
+ *         // Using Ctrl + V to paste a string into SFML
+ *         if(event.key.control && event.key.code == sf.KeyCode.V)
+ *             string = sf.Clipboard.getString();
+ * 
+ *         // Using Ctrl + C to copy a string out of SFML
+ *         if(event.key.control && event.key.code == sf.KeyCode.C)
+ *             sf.Clipboard.setString("Hello World!");
+ *     }
+ * }
+ * }}}
+ * @see sf.Event
+ */
+sf.ClipBoard
+
+/** 
+ * Get the content of the clipboard as string data.
+ * 
+ * This function returns the content of the clipboard as a string. If the clipboard does not contain string it returns an empty string object.
+ * 
+ * @return Clipboard contents as string
+ */ 
+sf.ClipBoard.getString
+
+
+/** 
+ * Set the content of the clipboard as string data.
+ * 
+ * This function sets the content of the clipboard as a string.
+ * 
+ * Warning
+ * Due to limitations on some operating systems, setting the clipboard contents is only guaranteed to work if there is currently an open window for which events are being handled.
+ * @param text string containing the data to be sent to the clipboard
+ */
+sf.ClipBoard.setString
+
+
+
+
+
+
+
+/** 
+ * =Window that serves as a target for OpenGL rendering.=
+ * 
+ * sf.Window is the main class of the Window module.
+ * 
+ * It defines an OS window that is able to receive an OpenGL rendering.
+ * 
+ * A sf.Window can create its own new window, or be embedded into an already existing control using the create(handle) function. This can be useful for embedding an OpenGL rendering area into a view which is part of a bigger GUI with existing windows, controls, etc. It can also serve as embedding an OpenGL rendering area into a window created by another (probably richer) GUI library like Qt or wxWidgets.
+ * 
+ * The sf.Window class provides a simple interface for manipulating the window: move, resize, show/hide, control mouse cursor, etc. It also provides event handling through its pollEvent() and waitEvent() functions.
+ * 
+ * Note that OpenGL experts can pass their own parameters (antialiasing level, bits for the depth and stencil buffers, etc.) to the OpenGL context attached to the window, with the sf.ContextSettings structure which is passed as an optional argument when creating the window.
+ * 
+ * {{{
+ * void main()
+ * {
+ *     var window = new Window(VideoMode(800, 600), "My window");
+ * 
+ * 	//...
+ * }
+ * }}}
+ */ 
+sf.Window
+
+
+
+
+
+
+/** 
+ * =Window that can serve as a target for 2D drawing.=
+ * 
+ * sf.RenderWindow is the main class of the Graphics module.
+ * 
+ * It defines an OS window that can be painted using the other classes of the graphics module.
+ * 
+ * sf.RenderWindow is derived from sf.Window, thus it inherits all its features: events, window management, OpenGL rendering, etc. See the documentation of sf.Window for a more complete description of all these features, as well as code examples.
+ * 
+ * On top of that, sf.RenderWindow adds more features related to 2D drawing with the graphics module (see its base class sf.RenderTarget for more details). Here is a typical rendering and event loop with a sf.RenderWindow:
+ * 
+ * {{readme/sfml.png}}
+ * {{{
+ * using sf;
+ * 
+ * void main()
+ * {
+ *     var window = new RenderWindow(VideoMode(200, 200), "SFML works!");
+ *     var circle = new CircleShape();
+ *     circle.setFillColor(Color.Green);
+ *     circle.setRadius(100);
+ * 
+ *     while (window.isOpen())
+ *     {
+ *         Event event;
+ *         while (window.pollEvent(out event))
+ *         {
+ *             if (event.type == EventType.Closed)
+ *                 window.close();
+ *         }
+ * 
+ *         window.clear();
+ *         circle.draw(window);
+ *         window.display();
+ *     }
+ * }
+ * }}}
+ */
+sf.RenderWindow
+
+
+/** 
+ * Close the window and destroy all the attached resources.
+ */
+sf.RenderWindow.close
+
+
+/** 
+ * Clear the entire target with a single color.
+ * 
+ * This function is usually called once every frame, to clear the previous contents of the target.
+ * 
+ * @param color Fill color to use to clear the render target
+ */ 
+sf.RenderWindow.clear
+
+
+/** 
+ * Change the current active view.
+ * 
+ * The view is like a 2D camera, it controls which part of the 2D scene is visible, and how it is viewed in the render target. The new view will affect everything that is drawn, until another view is set. The render target keeps its own copy of the view object, so it is not necessary to keep the original one alive after calling this function. To restore the original view of the target, you can pass the result of getDefaultView() to this function.
+ * 
+ * @param view New view to use
+ * @see getView
+ * @see getDefaultView
+ */ 
+sf.RenderWindow.setView
+
+/** 
+ * Get the view currently in use in the render target.
+ * 
+ * @return The view object that is currently used
+ * @see setView
+ * @see getDefaultView
+ */ 
+sf.RenderWindow.getView
+
+/** 
+ * Return the size of the rendering region of the target.
+ * 
+ * @return Size in pixels
+ */
+sf.RenderWindow.getSize
+
+/** 
+ * Get the default view of the render target.
+ * 
+ * The default view has the initial size of the render target, and never changes after the target has been created.
+ * 
+ * @return The default view of the render target
+ * @see setView
+ * @see getView
+ */
+sf.RenderWindow.getDefaultView
+
+/** 
+ * Change the position of the window on screen.
+ * 
+ * This function only works for top-level windows (i.e. it will be ignored for windows created from the handle of a child window/control).
+ * 
+ * @param position New position, in pixels
+ * @see getPosition
+ */ 
+sf.RenderWindow.setPosition
+
+/** 
+ * Get the position of the window.
+ * 
+ * @return Position of the window, in pixels
+ * @see setPosition
+ */
+sf.RenderWindow.getPosition
+
+/** 
+ * Change the window's icon.
+ * 
+ * pixels must be an array of width x height pixels in 32-bits RGBA format.
+ * 
+ * The OS default icon is used by default.
+ * 
+ * @param width Icon's width, in pixels
+ * @param height Icon's height, in pixels
+ * @param pixels Pointer to the array of pixels in memory. The pixels are copied, so you need not keep the source alive after calling this function.
+ * @see setTitle
+ */
+sf.RenderWindow.setIcon
+
+/** 
+ * Change the title of the window.
+ * 
+ * @param title New title
+ * @see setIcon
+ */ 
+sf.RenderWindow.setTitle
+
+/** 
+ * return the title of the window.
+ * 
+ * return the string title of the window
+ * @see setIcon
+ */ 
+sf.RenderWindow.getTitle
+
+/** 
+ * Change the size of the rendering region of the window.
+ * 
+ * @param size New size, in pixels
+ * @see getSize
+ */ 
+sf.RenderWindow.setSize
+
+/** 
+ * Show or hide the window.
+ * 
+ * The window is shown by default.
+ * 
+ * @param visible True to show the window, false to hide it
+ */ 
+sf.RenderWindow.setVisible
+
+
+/** 
+ * Get the settings of the OpenGL context of the window.
+ * 
+ * Note that these settings may be different from what was passed to the constructor or the create() function, if one or more settings were not supported. In this case, SFML chose the closest match.
+ * 
+ * @return Structure containing the OpenGL context settings
+ */
+sf.RenderWindow.getSettings
+
+
+/** 
+ * Tell whether or not the window is open.
+ * 
+ * This function returns whether or not the window exists. Note that a hidden window (setVisible(false)) is open (therefore this function would return true).
+ * 
+ * @return True if the window is open, false if it has been closed
+ */
+sf.RenderWindow.isOpen
+
+
+/** 
+ * Activate or deactivate the render target for rendering.
+ * 
+ * This function makes the render target's context current for future OpenGL rendering operations (so you shouldn't care about it if you're not doing direct OpenGL stuff). A render target's context is active only on the current thread, if you want to make it active on another thread you have to deactivate it on the previous thread first if it was active. Only one context can be current in a thread, so if you want to draw OpenGL geometry to another render target don't forget to activate it again. Activating a render target will automatically deactivate the previously active context (if any).
+ * 
+ * @param active True to activate, false to deactivate
+ * @return True if operation was successful, false otherwise
+ */ 
+sf.RenderWindow.setActive
+
+
+
+
+
+
+/** 
+ * 2D camera that defines what region is shown on screen
+ * 
+ * sf.View defines a camera in the 2D scene.
+ * 
+ * This is a very powerful concept: you can scroll, rotate or zoom the entire scene without altering the way that your drawable objects are drawn.
+ * 
+ * A view is composed of a source rectangle, which defines what part of the 2D scene is shown, and a target viewport, which defines where the contents of the source rectangle will be displayed on the render target (window or texture).
+ * 
+ * The viewport allows to map the scene to a custom part of the render target, and can be used for split-screen or for displaying a minimap, for example. If the source rectangle doesn't have the same size as the viewport, its contents will be stretched to fit in.
+ * 
+ * To apply a view, you have to assign it to the render target. Then, objects drawn in this render target will be affected by the view until you use another view.
+ *
+ * {{images/graphics-view-initial.png}}
+ *
+ * now the same view but is rotate
+ *
+ * {{images/graphics-view-rotated.png}}
+ *
+ * 
+ * using a viewport, it is straightforward to split the screen for multiplayer games:
+ * 
+ * 
+ * {{{
+ * // player 1 (left side of the screen)
+ * player1View.setViewport(FloatRect(0.f, 0.f, 0.5f, 1.f));
+ * 
+ * // player 2 (right side of the screen)
+ * player2View.setViewport(FloatRect(0.5f, 0.f, 0.5f, 1.f));
+ * }}}
+ * 
+ * {{images/graphics-view-split-screen.png}}
+ * 
+ * view can create a mini-map
+ * {{{
+ * // the game view (full window)
+ * gameView.setViewport(FloatRect(0.f, 0.f, 1.f, 1.f));
+ * 
+ * // mini-map (upper-right corner)
+ * minimapView.setViewport(FloatRect(0.75f, 0.f, 0.25f, 0.25f));
+ * }}}
+ * 
+ * {{images/graphics-view-minimap.png}}
+ * 
+ * 
+ * Usage example:
+ * {{{
+ * var window = new RenderWindow({500, 500}, "title");
+ * var view = new View();
+ *  
+ * // Initialize the view to a rectangle located at (100, 100) and with a size of 400x200
+ * view.reset(FloatRect(100, 100, 400, 200));
+ *  
+ * // Rotate it by 45 degrees
+ * view.rotate(45);
+ *  
+ * // Set its target viewport to be half of the window
+ * view.setViewport(FloatRect(0.f, 0.f, 0.5f, 1.f));
+ *  
+ * // Apply it
+ * window.setView(view);
+ *  
+ * // Render stuff
+ * window.draw(someSprite);
+ *  
+ * // Set the default view back
+ * window.setView(window.getDefaultView());
+ *  
+ * // Render stuff not affected by the view
+ * window.draw(someText);
+ * See also the note on coordinates and undistorted rendering in sf.Transformable.
+ * }}}
+ * 
+ * @see sf.RenderWindow
+ * @see sf.RenderTexture
+ * 
+ */
+sf.View
+
+/** 
+ * Default constructor.
+ * 
+ * This constructor creates a default view of (0, 0, 1000, 1000)
+ */ 
+sf.View.View
+
+/** 
+ * Resize the view rectangle relatively to its current size.
+ * 
+ * Resizing the view simulates a zoom, as the zone displayed on screen grows or shrinks. factor is a multiplier:
+ * 
+ * 1 keeps the size unchanged
+ * > 1 makes the view bigger (objects appear smaller)
+ * < 1 makes the view smaller (objects appear bigger)
+ * @param factor Zoom factor to apply
+ * @see setSize
+ * @see move
+ * @see rotate
+ */ 
+sf.View.zoom
+
+
+/**
+ * Set the target viewport.
+ * 
+ * The viewport is the rectangle into which the contents of the view are displayed, expressed as a factor (between 0 and 1) of the size of the RenderTarget to which the view is applied. For example, a view which takes the left side of the target would be defined with View.setViewport(sf::FloatRect(0, 0, 0.5, 1)). By default, a view has a viewport which covers the entire target.
+ * 
+ * @param viewport New viewport rectangle
+ * @see getViewport
+ */
+sf.View.setViewport
+
+
+/**
+ * Set the size of the view.
+ * 
+ * @param size New size
+ * @see setCenter
+ * @see getCenter
+ */ 
+sf.View.setSize
+
+/** 
+ * Set the orientation of the view.
+ * 
+ * The default rotation of a view is 0 degree.
+ * 
+ * @param angle New angle, in degrees
+ * @see getRotation
+ */ 
+sf.View.setRotation
+ 
+
+/** 
+ * Set the center of the view.
+ * 
+ * @param center New center
+ * @see setSize
+ * @see getCenter
+ */ 
+sf.View.setCenter
+ 
+ 
+/** 
+ * Rotate the view relatively to its current orientation.
+ * 
+ * @param angle Angle to rotate, in degrees
+ * @see setRotation
+ * @see move
+ * @see zoom
+ */
+sf.View.rotate
+ 
+/** 
+ * Reset the view to the given rectangle.
+ * 
+ * Note that this function resets the rotation angle to 0.
+ * 
+ * @param rectangle Rectangle defining the zone to display
+ * @see setCenter
+ * @see setSize
+ * @see setRotation
+ */ 
+sf.View.reset
+ 
+
+/**
+ * Move the view relatively to its current position.
+ * 
+ * @param offset Move offset
+ * @see setCenter
+ * @see rotate
+ * @see zoom
+ */
+sf.View.move
+ 
+ 
+/** 
+ * Get the target viewport rectangle of the view.
+ * 
+ * @return Viewport rectangle, expressed as a factor of the target size
+ * @see setViewport
+ */ 
+sf.View.getViewport
+
+/** 
+ * Get the projection transform of the view.
+ * 
+ * This function is meant for internal use only.
+ * 
+ * @return Projection transform defining the view
+ * @see getInverseTransform
+ */ 
+sf.View.getTransform
+
+/** 
+ * Get the size of the view.
+ * 
+ * @return Size of the view
+ * @see getCenter
+ * @see setSize
+ */ 
+sf.View.getSize
+
+/** 
+ * Get the current orientation of the view.
+ * 
+ * @return Rotation angle of the view, in degrees
+ * @see setRotation
+ */ 
+sf.View.getRotation
+
+/** 
+ * Get the center of the view.
+ * 
+ * @return Center of the view
+ * @see getSize
+ * @see setCenter
+ */
+sf.View.getCenter
