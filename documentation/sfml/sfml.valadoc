@@ -476,25 +476,25 @@ sf.Text.getTransform
 
 
 /**
-* get the inverse of the combined transform of the object
-* 
-* @return Inverse of the combined transformations applied to the object
-* @see sf.Text.getTransform
-*/
+ * get the inverse of the combined transform of the object
+ * 
+ * @return Inverse of the combined transformations applied to the object
+ * @see sf.Text.getTransform
+ */
 sf.Text.getInverseTransform
 
 
 /**
-* Set the text's string.
-* 
-* {{{
-* var text = new Text(font);
-* text.setString("hello");
-* }}}
-* 
-* @param str new string
-* @see sf.Text.getString
-*/ 
+ * Set the text's string.
+ * 
+ * {{{
+ * var text = new Text(font);
+ * text.setString("hello");
+ * }}}
+ * 
+ * @param str new string
+ * @see sf.Text.getString
+ */ 
 sf.Text.setString
 
 
@@ -684,21 +684,21 @@ sf.Text.findCharacterPos
 
 
 /**
-* Get the local bounding rectangle of the entity.
-* 
-* The returned rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the entity in the entity's coordinate system.
-* 
-* @return Local bounding rectangle of the entity
-*/
+ * Get the local bounding rectangle of the entity.
+ * 
+ * The returned rectangle is in local coordinates, which means that it ignores the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the entity in the entity's coordinate system.
+ * 
+ * @return Local bounding rectangle of the entity
+ */
 sf.Text.getLocalBounds
 
 
 /**
-* Get the global bounding rectangle of the entity.
-*
-* The returned rectangle is in global coordinates, which means that it takes into account the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the text in the global 2D world's coordinate system.
-* @return Global bounding rectangle of the entity
-*/
+ * Get the global bounding rectangle of the entity.
+ *
+ * The returned rectangle is in global coordinates, which means that it takes into account the transformations (translation, rotation, scale, ...) that are applied to the entity. In other words, this function returns the bounds of the text in the global 2D world's coordinate system.
+ * @return Global bounding rectangle of the entity
+ */
 sf.Text.getGlobalBounds
 
 
@@ -766,7 +766,7 @@ sf.Sprite.copy
  * @see getColor
  */ 
 sf.Sprite.setColor
-  
+
 /** 
  * property to change global color of the sprite.
  * 
@@ -1403,7 +1403,7 @@ sf.Window
  *         }
  * 
  *         window.clear();
- *         circle.draw(window);
+ *         window.draw(circle);
  *         window.display();
  *     }
  * }
@@ -1638,12 +1638,12 @@ sf.RenderWindow.setActive
  * // Render stuff not affected by the view
  * window.draw(someText);
  * See also the note on coordinates and undistorted rendering in sf.Transformable.
- * }}}
- * 
- * @see sf.RenderWindow
- * @see sf.RenderTexture
- * 
- */
+* }}}
+* 
+* @see sf.RenderWindow
+* @see sf.RenderTexture
+* 
+*/
 sf.View
 
 /** 
@@ -1698,7 +1698,7 @@ sf.View.setSize
  * @see getRotation
  */ 
 sf.View.setRotation
- 
+
 
 /** 
  * Set the center of the view.
@@ -1708,8 +1708,8 @@ sf.View.setRotation
  * @see getCenter
  */ 
 sf.View.setCenter
- 
- 
+
+
 /** 
  * Rotate the view relatively to its current orientation.
  * 
@@ -1719,7 +1719,7 @@ sf.View.setCenter
  * @see zoom
  */
 sf.View.rotate
- 
+
 /** 
  * Reset the view to the given rectangle.
  * 
@@ -1731,7 +1731,7 @@ sf.View.rotate
  * @see setRotation
  */ 
 sf.View.reset
- 
+
 
 /**
  * Move the view relatively to its current position.
@@ -1742,8 +1742,8 @@ sf.View.reset
  * @see zoom
  */
 sf.View.move
- 
- 
+
+
 /** 
  * Get the target viewport rectangle of the view.
  * 
@@ -1963,7 +1963,7 @@ sf.Transformable.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.Transformable.setPosition
 
 
@@ -1972,7 +1972,7 @@ sf.Transformable.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.Transformable.position
 
 /** 
@@ -2147,7 +2147,7 @@ sf.RectangleShape.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.RectangleShape.setPosition
 
 
@@ -2156,7 +2156,7 @@ sf.RectangleShape.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.RectangleShape.position
 
 /** 
@@ -2327,7 +2327,7 @@ sf.Shape.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.Shape.setPosition
 
 
@@ -2336,7 +2336,7 @@ sf.Shape.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.Shape.position
 
 /** 
@@ -2508,7 +2508,7 @@ sf.CircleShape.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.CircleShape.setPosition
 
 
@@ -2517,7 +2517,7 @@ sf.CircleShape.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.CircleShape.position
 
 /** 
@@ -2694,7 +2694,7 @@ sf.Text.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.Text.setPosition
 
 
@@ -2703,7 +2703,7 @@ sf.Text.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.Text.position
 
 /** 
@@ -2877,7 +2877,7 @@ sf.Sprite.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.Sprite.setPosition
 
 
@@ -2886,7 +2886,7 @@ sf.Sprite.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.Sprite.position
 
 /** 
@@ -3059,7 +3059,7 @@ sf.ConvexShape.setRotation
  * @param position New position
  * @see move
  * @see getPosition
-*/
+ */
 sf.ConvexShape.setPosition
 
 
@@ -3068,7 +3068,7 @@ sf.ConvexShape.setPosition
  * 
  * @see move
  * @see getPosition
-*/
+ */
 sf.ConvexShape.position
 
 /** 
@@ -3201,4 +3201,40 @@ sf.ConvexShape.origin
  */ 
 sf.ConvexShape.getInverseTransform
 
+
+
+
+/**
+ * =Utility class for manipulating RGBA colors.=
+ *
+ * sf.Color is a simple color class composed of 4 components:
+ * 
+ *  * Red
+ *  * Green
+ *  * Blue
+ *  * Alpha (opacity)
+ *
+ * Each component is a public member, an unsigned integer in the range [0, 255]. Thus, colors can be constructed and manipulated very easily:
+ * 
+ * {{{
+ * var color = Color(255, 0, 0); // red
+ * color.r = 0;                // make it black
+ * color.b = 128;              // make it dark blue
+ * }}}
+ * The fourth component of colors, named "alpha", represents the opacity of the color. A color with an alpha value of 255 will be fully opaque, while an alpha value of 0 will make a color fully transparent, whatever the value of the other components is.
+ * 
+ * The most common colors are already defined as static variables:
+ * {{{
+ * var black       = sf.Color.Black;
+ * var white       = sf.Color.White;
+ * var red         = sf.Color.Red;
+ * var green       = sf.Color.Green;
+ * var blue        = sf.Color.Blue;
+ * var yellow      = sf.Color.Yellow;
+ * var magenta     = sf.Color.Magenta;
+ * var cyan        = sf.Color.Cyan;
+ * var transparent = sf.Color.Transparent;
+ * }}}
+ */
+sf.Color
 
