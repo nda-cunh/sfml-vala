@@ -23,6 +23,18 @@ public inline sf.VideoMode VideoMode(int width, int height){
 	return {width, height};
 }
 
+public inline sf.IntRect IntRect(int left, int top, int width, int height){
+	return {left, top, width, height};
+}
+
+public inline sf.FloatRect FloatRect(float left, float top, float width, float height){
+	return {left, top, width, height};
+}
+
+public inline sf.Color Color(uint8 red = 255, uint8 green = 255, uint8 blue = 255, uint8 alpha = 255){
+	return sf.Color.from_RGBA (red, green, blue, alpha);
+}
+
 [CCode (cheader_filename = "SFML/Graphics.h,SFML/System.h")]
 namespace sf {
 
@@ -270,22 +282,22 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			get;
 		}
 
-		Vector2u getSize();
-		Image copyToImage();
-		void updateFromPixels(uint8 []pixels, uint width, uint height, uint x, uint y);
-		void updateFromTexture(Texture source, uint x, uint y);
-		void updateFromImage(Image image, uint x, uint y);
-		void updateFromWindow(Window window, uint x, uint y);
-		void updateFromRenderWindow(RenderWindow renderWindow, uint x, uint y);
-		void setSmooth(bool smooth);
-		bool isSmooth();
-		bool isSrgb();
-		bool isRepeated();
-		void setRepeated(bool repeated);
-		bool generateMipmap();
-		void swap(Texture with);
-		uint getNativeHandle();
-		void bind(TextureCoordinateType type);
+		public Vector2u getSize();
+		public Image copyToImage();
+		public void updateFromPixels(uint8 []pixels, uint width, uint height, uint x, uint y);
+		public void updateFromTexture(Texture source, uint x, uint y);
+		public void updateFromImage(Image image, uint x, uint y);
+		public void updateFromWindow(Window window, uint x, uint y);
+		public void updateFromRenderWindow(RenderWindow renderWindow, uint x, uint y);
+		public void setSmooth(bool smooth);
+		public bool isSmooth();
+		public bool isSrgb();
+		public bool isRepeated();
+		public void setRepeated(bool repeated);
+		public bool generateMipmap();
+		public void swap(Texture right);
+		public uint getNativeHandle();
+		public void bind(TextureCoordinateType type);
 		[CCode (cname = "sfTexture_getMaximumSize")]
 		public static uint getMaximumSize();
 	}
@@ -580,20 +592,20 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		public View();
 		[CCode (cname = "sfView_createFromRect")]
 		public View.fromRect(FloatRect rectangle);
-		View copy();
+		public View copy();
 
-		void setCenter(Vector2f center);
-		void setSize(Vector2f size);
-		void setRotation(float angle);
-		void setViewport(FloatRect viewport);
-		void reset(FloatRect rectangle);
-		Vector2f getCenter();
-		Vector2f getSize();
-		float getRotation();
-		FloatRect getViewport();
-		void move(Vector2f offset);
-		void rotate(float angle);
-		void zoom(float factor);
+		public void setCenter(Vector2f center);
+		public void setSize(Vector2f size);
+		public void setRotation(float angle);
+		public void setViewport(FloatRect viewport);
+		public void reset(FloatRect rectangle);
+		public Vector2f getCenter();
+		public Vector2f getSize();
+		public float getRotation();
+		public FloatRect getViewport();
+		public void move(Vector2f offset);
+		public void rotate(float angle);
+		public void zoom(float factor);
 	}
 
 	[Compact]
@@ -604,35 +616,35 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfRenderTexture_createWithSettings")]
 		public RenderTexture.withSettings(uint width, uint height, ContextSettings settings);
 
-		Vector2u getSize();
-		bool setActive(bool active);
-		void display();
-		void clear(Color color);
-		void setView(View view);
-		unowned View getView();
-		unowned View getDefaultView();
-		IntRect getViewport(View view);
-		Vector2f mapPixelToCoords(Vector2i point, View view);
-		Vector2i mapCoordsToPixel(Vector2f point, View view);
-		void drawSprite(Sprite object, RenderStates states);
-		void drawText(Text object, RenderStates states);
-		void drawShape(Shape object, RenderStates states);
-		void drawCircleShape(CircleShape object, RenderStates states);
-		void drawConvexShape(ConvexShape object, RenderStates states);
-		void drawVertexArray(VertexArray object, RenderStates states);
-		void drawVertexBuffer(VertexBuffer object, RenderStates states);
-		void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates states);
-		void drawPrimitives(Vertex vertices, size_t vertexCount,PrimitiveType type, RenderStates states);
-		void pushGLStates();
-		void popGLStates();
-		void resetGLStates();
-		unowned Texture getTexture();
-		uint getMaximumAntialiasingLevel();
-		void setSmooth(bool smooth);
-		bool isSmooth();
-		void setRepeated(bool repeated);
-		bool isRepeated();
-		bool generateMipmap();
+		public Vector2u getSize();
+		public bool setActive(bool active);
+		public void display();
+		public void clear(Color color);
+		public void setView(View view);
+		public unowned View getView();
+		public unowned View getDefaultView();
+		public IntRect getViewport(View view);
+		public Vector2f mapPixelToCoords(Vector2i point, View view);
+		public Vector2i mapCoordsToPixel(Vector2f point, View view);
+		public void drawSprite(Sprite object, RenderStates states);
+		public void drawText(Text object, RenderStates states);
+		public void drawShape(Shape object, RenderStates states);
+		public void drawCircleShape(CircleShape object, RenderStates states);
+		public void drawConvexShape(ConvexShape object, RenderStates states);
+		public void drawVertexArray(VertexArray object, RenderStates states);
+		public void drawVertexBuffer(VertexBuffer object, RenderStates states);
+		public void drawVertexBufferRange(VertexBuffer object, size_t firstVertex, size_t vertexCount, RenderStates states);
+		public void drawPrimitives(Vertex vertices, size_t vertexCount,PrimitiveType type, RenderStates states);
+		public void pushGLStates();
+		public void popGLStates();
+		public void resetGLStates();
+		public unowned Texture getTexture();
+		public uint getMaximumAntialiasingLevel();
+		public void setSmooth(bool smooth);
+		public bool isSmooth();
+		public void setRepeated(bool repeated);
+		public bool isRepeated();
+		public bool generateMipmap();
 	}
 
 
@@ -867,7 +879,7 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			[CCode (cname = "sfText_setFont")]
 			set;
 		}
-		public uint size{
+		public uint size {
 			[CCode (cname = "sfText_getCharacterSize")]
 			get;
 			[CCode (cname = "sfText_setCharacterSize")]
@@ -1092,19 +1104,9 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 	}
 
 /* *****************************     SPRITE     ************************************************/
-/**
-* Class representing a sprite, which is an object that can be drawn to the screen
-*
-* A sprite is a graphical object that can be drawn to the screen. It has a texture,
-* which is the image that is displayed, and a position, which determines where the
-* sprite is drawn. Sprites can also be rotated, scaled, and have their color changed.
-*/
 	[Compact]
 	[CCode (cname = "sfSprite", free_function = "sfSprite_destroy", cheader_filename = "SFML/Graphics.h")]
 	public class Sprite{
-		/**
-		* Construct a new Sprite object.
-		*/
 		[CCode (cname = "sfSprite_create")]
 		public Sprite();
 		/**
@@ -1162,9 +1164,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 			[CCode (cname = "sfSprite_setTextureRect")]
 				set;
 		}
-		/**
-		* Get or set the color of the Sprite object.
-		*/
 		public Color color{
 			[CCode (cname = "sfSprite_getColor")]
 			get;
@@ -1338,11 +1337,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfSprite_setTextureRect")]
 		public void setTextureRect(IntRect rectangle);
 
-		/**
-		* Set the color of the sprite.
-		*
-		* @param color The new color of the sprite.
-		*/
 		[CCode (cname = "sfSprite_setColor")]
 		public void setColor(Color color);
 
@@ -1362,11 +1356,6 @@ static bool static_intersects(IntRect* rect1, IntRect* rect2, IntRect? intersect
 		[CCode (cname = "sfSprite_getTextureRect")]
 		public IntRect getTextureRect();
 
-		/**
-		* Get the color of the sprite.
-		*
-		* @return The color of the sprite.
-		*/
 		[CCode (cname = "sfSprite_getColor")]
 		public Color getColor();
 
