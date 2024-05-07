@@ -31,10 +31,6 @@ public inline sf.FloatRect FloatRect(float left, float top, float width, float h
 	return {left, top, width, height};
 }
 
-public inline sf.Color Color(uint8 red = 255, uint8 green = 255, uint8 blue = 255, uint8 alpha = 255){
-	return sf.Color.from_RGBA (red, green, blue, alpha);
-}
-
 [CCode (cheader_filename = "SFML/Graphics.h,SFML/System.h")]
 namespace sf {
 
