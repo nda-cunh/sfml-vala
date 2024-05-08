@@ -3238,3 +3238,70 @@ sf.ConvexShape.getInverseTransform
  */
 sf.Color
 
+
+/** 
+ * =Defines a system event and its parameters.=
+ * 
+ * sf.Event holds all the informations about a system event that just happened.
+ * 
+ * Events are retrieved using the sf.Window.pollEvent and sf.Window.waitEvent functions.
+ * 
+ * A sf.Event instance contains the type of the event (mouse moved, key pressed, window closed, ...) as well as the details about this particular event. Please note that the event parameters are defined in a union, which means that only the member matching the type of the event will be properly filled; all other members will have undefined values and must not be read if the type of the event doesn't match. For example, if you received a KeyPressed event, then you must read the event.key member, all other members such as event.mouseMove or event.text will have undefined values.
+ * 
+ * Usage example:
+ * {{{
+ * sf.Event event;
+ * while (window.pollEvent(event))
+ * {
+ *     // Request for closing the window
+ *     if (event.type == sf.EventType.Closed)
+ *         window.close();
+ * 
+ *     // The escape key was pressed
+ *     if ((event.type == sf.EventType.KeyPressed) && (event.key.code == sf.KeyCode.Escape))
+ *         window.close();
+ * 
+ *     // The window was resized
+ *     if (event.type == sf.EventType.Resized)
+ *         doSomethingWithTheNewSize(event.size.width, event.size.height);
+ * 
+ *     // etc ...
+ * }
+ * }}}
+ */
+sf.Event
+
+
+/** 
+ * =Define a 3x3 transform matrix.=
+ * 
+ * A sf.Transform specifies how to translate, rotate, scale, shear, project, whatever things.
+ * 
+ * In mathematical terms, it defines how to transform a coordinate system into another.
+ * 
+ * For example, if you apply a rotation transform to a sprite, the result will be a rotated sprite. And anything that is transformed by this rotation transform will be rotated the same way, according to its initial position.
+ * 
+ * Transforms are typically used for drawing. But they can also be used for any computation that requires to transform points between the local and global coordinate systems of an entity (like collision detection).
+ * 
+ * Example:
+ * {{{
+ * // define a translation transform
+ * sf.Transform translation = {};
+ * translation.translate(20, 50);
+ * 
+ * // define a rotation transform
+ * sf.Transform rotation = {};
+ * rotation.rotate(45);
+ * 
+ * // combine them
+ * var transform = translation.combine(rotation);
+ * 
+ * // use the result to transform stuff...
+ * var point = transform.transformPoint(10, 20);
+ * var rect = transform.transformRect(sf.FloatRect(0, 0, 10, 100));
+ * }}}
+ * 
+ * @see sf.Transformable
+ * @see sf.RenderStates
+ */ 
+sf.Transform
