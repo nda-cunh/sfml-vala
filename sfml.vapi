@@ -1430,7 +1430,7 @@ namespace sf {
 	}
 
 	[CCode (cname = "sfVertex")]
-[SimpleType]
+	[SimpleType]
 	public struct Vertex
 	{
 		/** Position of the vertex*/
@@ -1443,14 +1443,15 @@ namespace sf {
 
 	[Compact]
 	[CCode (free_function = "sfVertexArray_destroy", copy_function = "sfVertexArray_copy", cprefix="sfVertexArray_", cheader_filename = "SFML/Graphics.h")]
-	public class VertexArray {
+	public class VertexArray : Shape {
 		[CCode (cname = "sfVertexArray_create")]
 		public VertexArray();
 
 		public VertexArray copy();
-		public void destroy();
 		public size_t getVertexCount();
-		public Vertex getVertex(size_t index);
+		public Vertex* getVertex(size_t index);
+		[CCode(cname="sfVertexArray_getVertex")]
+		public Vertex* get(size_t index);
 		public void clear();
 		public void resize(size_t vertexCount);
 		public void append(Vertex vertex);
