@@ -1,28 +1,3 @@
-/** Vector2f constructor */
-public inline sf.Vector2f Vector2f(float x, float y){
-	return {x, y};
-}
-
-/** Vector2i constructor */
-public inline sf.Vector2i Vector2i(int x, int y){
-	return {x, y};
-}
-
-/** Vector2u constructor */
-public inline sf.Vector2u Vector2u(uint x, uint y){
-	return {x, y};
-}
-
-/** Vector3f constructor */
-public inline sf.Vector3f Vector3f(float x, float y, float z){
-	return {x, y, z};
-}
-
-/** VideoMode constructor */
-public inline sf.VideoMode VideoMode(int width, int height){
-	return {width, height};
-}
-
 public inline sf.IntRect IntRect(int left, int top, int width, int height){
 	return {left, top, width, height};
 }
@@ -34,72 +9,6 @@ public inline sf.FloatRect FloatRect(float left, float top, float width, float h
 [CCode (cheader_filename = "SFML/Graphics.h,SFML/System.h")]
 namespace sf {
 
-	/*******************************************************************************************\
-	|*******************************************************************************************|
-	|*****************                        [System]                        ******************|
-	|*******************************************************************************************|
-	\*******************************************************************************************/
-
-	/** Represents a time value */
-	[CCode (cname = "sfTime", cprefix = "sfTime_")]
-	[SimpleType]
-	public struct Time
-	{
-		[CCode (cname = "microseconds")]
-		public int64 microseconds;
-
-		public float asSeconds();
-		public int32 asMilliseconds();
-		public int64 asMicroseconds();
-
-		/** Construct a time value from a number of seconds.*/
-		[CCode (cname = "sfSeconds")]
-		public static Time Seconds(float amount);
-
-		/** Construct a time value from a number of milliseconds.*/
-		[CCode (cname = "sfMilliseconds")]
-		public static Time Milliseconds(int32 amount);
-
-		/** Construct a time value from a number of microseconds.*/
-		[CCode (cname = "sfMicroseconds")]
-		public static Time Microseconds(int64 amount);
-
-		/** Sets the time value to zero.*/
-		[CCode (cname = "sfTime_Zero")]
-		public const Time Zero;
-	}
-
-/* ****************************  VECTOR2-3 Color rect  *************************************/
-
-	[CCode (cname = "sfVector2i", cheader_filename = "SFML/System.h")]
-	[SimpleType]
-	public struct Vector2i
-	{
-		int x;
-		int y;
-	}
-	[CCode (cname = "sfVector2u", cheader_filename = "SFML/System.h")]
-	[SimpleType]
-	public struct Vector2u
-	{
-		uint x;
-		uint y;
-	}
-	[CCode (cname = "sfVector2f", cheader_filename = "SFML/System.h")]
-	[SimpleType]
-	public struct Vector2f
-	{
-		float x;
-		float y;
-	}
-	[CCode (cname = "sfVector3f", cheader_filename = "SFML/System.h")]
-	[SimpleType]
-	public struct Vector3f
-	{
-		float x;
-		float y;
-		float z;
-	}
 	[CCode (cname = "sfColor", default_value ="{0,0,0,255}", cheader_filename = "SFML/Graphics.h")]
 	[SimpleType]
 	public struct Color
@@ -110,6 +19,23 @@ namespace sf {
 		public Color.from_RGB (uint8 red, uint8 green, uint8 blue);
 		[CCode (cname = "sfColor_fromRGBA")]
 		public Color.from_RGBA (uint8 red, uint8 green, uint8 blue, uint8 alpha);
+		[CCode (cname = "sfColor_fromInteger")]
+		public Color.fromInteger (uint32 color);
+
+		[CCode (cname = "sfColor_toInteger")]
+		public uint32 toInteger();
+
+		[CCode (cname = "sfColor_add")]
+		public Color add (Color right);
+
+		[CCode (cname = "sfColor_subtract")]
+		public Color subtract (Color right);
+		
+		[CCode (cname = "sfColor_modulate")]
+		public Color modulate (Color right);
+
+
+
 		/** White predefined color*/
 		[CCode (cname = "sfBlack")]
 		public const Color Black;
@@ -137,6 +63,7 @@ namespace sf {
 		/** Transparent (black) predefined color.*/
 		[CCode (cname = "sfTransparent")]
 		public const Color Transparent;
+
 		public uint8 red {get {return r;} set {r = value;}}
 		public uint8 blue {get {return b;} set{b = value;}}
 		public uint8 green {get {return b;} set{g = value;}}
@@ -190,26 +117,6 @@ namespace sf {
 		public inline bool intersects (IntRect rect, IntRect? intersection = null) {
 			return IntRect.static_intersects(&this, &rect, intersection);
 		}
-	}
-
-	public delegate int64 InputStreamReadFunc(void* data, int64 size, void* userData);
-	public delegate int64 InputStreamSeekFunc(int64 position, void* userData);
-	public delegate int64 InputStreamTellFunc(void* userData);
-	public delegate int64 InputStreamGetSizeFunc(void* userData);
-
-	[CCode (cname = "sfInputStream")]
-	public struct InputStream
-	{
-		/** Function to read data from the stream*/
-		InputStreamReadFunc		read;
-		/** Function to set the current read position*/
-		InputStreamSeekFunc		seek;
-		/** Function to get the current read position*/
-		InputStreamTellFunc		tell;
-		/** Function to get the total number of bytes in the stream*/
-		InputStreamGetSizeFunc	getSize;
-		/** User data that will be passed to the callbacks*/
-		void*					userData;
 	}
 
 	[CCode (cname = "sfPrimitiveType", cprefix = "sf")]
@@ -1274,11 +1181,13 @@ namespace sf {
 		[CCode (cname = "sfSprite_getGlobalBounds")]
 		public unowned FloatRect getGlobalBounds();
 	}
+
 	[CCode (cname = "sfGlslVec2")]
 	public struct GlslVec2{
 		float x;
 		float y;
 	}
+
 	[CCode (cname = "sfGlslIvec2")]
 	public struct GlslIvec2{
 		int x;
@@ -1300,6 +1209,7 @@ namespace sf {
 		float y;
 		float z;
 	}
+
 	[CCode (cname = "sfGlslIvec3")]
 	[SimpleType]
 	public struct GlslIvec3
@@ -1308,6 +1218,7 @@ namespace sf {
 		int y;
 		int z;
 	}
+
 	[CCode (cname = "sfGlslBvec3")]
 	[SimpleType]
 	public struct GlslBvec3
@@ -1316,6 +1227,7 @@ namespace sf {
 		bool y;
 		bool z;
 	}
+
 	[CCode (cname = "sfGlslVec4")]
 	[SimpleType]
 	public struct GlslVec4
@@ -1325,6 +1237,7 @@ namespace sf {
 		float z;
 		float w;
 	}
+
 	[CCode (cname = "sfGlslIvec4")]
 	[SimpleType]
 	public struct GlslIvec4
@@ -1334,6 +1247,7 @@ namespace sf {
 		int z;
 		int w;
 	}
+
 	[CCode (cname = "sfGlslBvec4")]
 	[SimpleType]
 	public struct GlslBvec4
@@ -1552,10 +1466,24 @@ namespace sf {
 		public BlendFactor alphaDstFactor;
 		/** Blending equation for the alpha channel*/
 		public BlendEquation alphaEquation;
+
+
+		[CCode (cname = "sfBlendAlpha")]
+		public const BlendMode Alpha;    ///< Blend source and dest according to dest alpha
+		[CCode (cname = "sfBlendAdd")]
+		public const BlendMode Add;      ///< Add source to dest
+		[CCode (cname = "sfBlendMultiply")]
+		public const BlendMode Multiply; ///< Multiply source and dest
+		[CCode (cname = "sfBlendMin")]
+		public const BlendMode Min;      ///< Take minimum between source and dest
+		[CCode (cname = "sfBlendMax")]
+		public const BlendMode Max;      ///< Take maximum between source and dest
+		[CCode (cname = "sfBlendNone")]
+		public const BlendMode None;     ///< Overwrite dest with source
 	}
 
 	[Compact]
-[CCode (free_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h,SFML/Graphics.h", cprefix = "sfRenderWindow_")]
+	[CCode (free_function = "sfRenderWindow_destroy", cheader_filename = "SFML/Window.h,SFML/Graphics.h", cprefix = "sfRenderWindow_")]
 	public class RenderWindow {
 		[CCode (cname = "sfRenderWindow_create")]
 		public RenderWindow(VideoMode mode, string title, WindowStyle style = WindowStyle.DefaultStyle, ContextSettings? settings = null);
@@ -1663,843 +1591,12 @@ namespace sf {
 		public Image capture();
 	}
 
-
-	/*******************************************************************************************\
-	|*******************************************************************************************|
-	|*****************                        [Window]                        ******************|
-	|*******************************************************************************************|
-	\*******************************************************************************************/
-
-	[CCode (cprefix="sfClipboard_", cheader_filename = "SFML/Window.h")]
-	namespace ClipBoard{
-		public string getString();
-		public uint32 []getUnicodeString();
-		public void setString(string text);
-		public void setUnicodeString(uint32 []text);
-	}
-
-	[Compact]
-	[CCode (free_function = "sfContext_destroy", cprefix="sfContext_", cheader_filename = "SFML/Window.h")]
-	public class Context {
-		[CCode (cname = "sfContext_create")]
-		public Context();
-
-		public delegate void GlFunctionPointer();
-
-		public static bool isExtensionAvailable(string name);
-		public static unowned GlFunctionPointer getFunction(string name);
-		public static uint64 getActiveContextId();
-		public bool setActive(bool active);
-		public unowned ContextSettings getSettings();
-	}
-
-	[CCode (cname = "sfCursorType", cprefix = "sfCursor")]
-	public enum CursorType {
-		/** Arrow cursor (default)*/
-		Arrow,
-		/** Busy arrow cursor*/
-		ArrowWait,
-		/** Busy cursor*/
-		Wait,
-		/** I-beam, cursor when hovering over a field allowing text entry*/
-		Text,
-		/** Pointing hand cursor*/
-		Hand,
-		/** Horizontal double arrow cursor*/
-		SizeHorizontal,
-		/** Vertical double arrow cursor*/
-		SizeVertical,
-		/** Double arrow cursor going from top-left to bottom-right*/
-		SizeTopLeftBottomRight,
-		/** Double arrow cursor going from bottom-left to top-right*/
-		SizeBottomLeftTopRight,
-		/** Combination of SizeHorizontal and SizeVertical*/
-		SizeAll,
-		/** Crosshair cursor*/
-		Cross,
-		/** Help cursor*/
-		Help,
-		/** Action not allowed cursor*/
-		NotAllowed
-	}
-
-	[Compact]
-[CCode (free_function = "sfCursor_destroy", cheader_filename = "SFML/Window.h")]
-	public class Cursor {
-		[CCode (cname = "sfCursor_createFromPixels")]
-		public Cursor.fromPixels(uint8 []pixels, Vector2u size, Vector2u hotspot);
-		[CCode (cname = "sfCursor_createFromSystem")]
-		public Cursor.fromSystem(CursorType type);
-	}
-
-
-
-	///////////////////////////////////////////////////////////////
-	//							EVENT							//
-	/////////////////////////////////////////////////////////////
-
-
-	[CCode (cname = "sfEventType", cprefix = "sfEvt")]
-	public enum EventType {
-		/** The window requested to be closed (no data)*/
-		Closed,
-		/** The window was resized (data in event.size)*/
-		Resized,
-		/** The window lost the focus (no data)*/
-		LostFocus,
-		/** The window gained the focus (no data)*/
-		GainedFocus,
-		/** A character was entered (data in event.text)*/
-		TextEntered,
-		/** A key was pressed (data in event.key)*/
-		KeyPressed,
-		/** A key was released (data in event.key)*/
-		KeyReleased,
-		/** The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)*/
-		MouseWheelMoved,
-		/** The mouse wheel was scrolled (data in event.mouseWheelScroll)*/
-		MouseWheelScrolled,
-		/** A mouse button was pressed (data in event.mouseButton)*/
-		MouseButtonPressed,
-		/** A mouse button was released (data in event.mouseButton)*/
-		MouseButtonReleased,
-		/** The mouse cursor moved (data in event.mouseMove)*/
-		MouseMoved,
-		/** The mouse cursor entered the area of the window (no data)*/
-		MouseEntered,
-		/** The mouse cursor left the area of the window (no data)*/
-		MouseLeft,
-		/** A joystick button was pressed (data in event.joystickButton)*/
-		JoystickButtonPressed,
-		/** A joystick button was released (data in event.joystickButton)*/
-		JoystickButtonReleased,
-		/** The joystick moved along an axis (data in event.joystickMove)*/
-		JoystickMoved,
-		/** A joystick was connected (data in event.joystickConnect)*/
-		JoystickConnected,
-		/** A joystick was disconnected (data in event.joystickConnect)*/
-		JoystickDisconnected,
-		/** A touch event began (data in event.touch)*/
-		TouchBegan,
-		/** A touch moved (data in event.touch)*/
-		TouchMoved,
-		/** A touch event ended (data in event.touch)*/
-		TouchEnded,
-		/** A sensor value changed (data in event.sensor)*/
-		SensorChanged,
-	}
-
-[CCode (cname = "sfKeyEvent")]
-[SimpleType]
-public struct	KeyEvent{
-		EventType	type;
-KeyCode		code;
-		bool		alt;
-bool		control;
-bool		shift;
-bool		system;
-}
-
-[CCode (cname = "sfTextEvent")]
-[SimpleType]
-public struct TextEvent{
-EventType	type;
-		uint32		unicode;
-	}
-
-	[CCode (cname = "sfMouseMoveEvent")]
-	[SimpleType]
-	public struct MouseMoveEvent{
-		sf.EventType	type;
-		int				x;
-		int				y;
-	}
-
-	[CCode (cname = "sfMouseButtonEvent")]
-	[SimpleType]
-	public struct MouseButtonEvent
+	[CCode (cname = "sfContextAttribute", cprefix = "sfContext")]
+	public enum ContextAttribute
 	{
-		EventType	type;
-		MouseButton	button;
-		int			x;
-		int			y;
+		Default,
+		Core,
+		Debug
 	}
 
-	[CCode (cname = "sfMouseWheelEvent")]
-	[SimpleType]
-	public struct MouseWheelEvent
-	{
-		EventType	type;
-		int			delta;
-		int			x;
-		int			y;
-	}
-
-[CCode (cname = "sfMouseWheelScrollEvent")]
-[SimpleType]
-public struct MouseWheelScrollEvent
-{
-EventType 	type;
-MouseWheel	wheel;
-float		delta;
-int			x;
-int			y;
-}
-
-	[CCode (cname = "sfJoystickMoveEvent")]
-	[SimpleType]
-	public struct JoystickMoveEvent
-	{
-		EventType		type;
-		uint			joystickId;
-		JoystickAxis	axis;
-		float			position;
-	}
-
-	[CCode (cname = "sfJoystickButtonEvent")]
-	[SimpleType]
-	public struct JoystickButtonEvent
-	{
-		EventType	type;
-		uint		joystickId;
-		uint		button;
-	}
-
-[CCode (cname = "sfJoystickConnectEvent")]
-[SimpleType]
-public struct JoystickConnectEvent
-{
-	EventType		type;
-	uint			joystickId;
-}
-
-[CCode (cname = "sfSizeEvent")]
-[SimpleType]
-public struct SizeEvent
-{
-	EventType type;
-	uint width;
-	uint height;
-}
-
-[CCode (cname = "sfTouchEvent")]
-[SimpleType]
-public struct TouchEvent
-{
-	EventType	type;
-	uint		finger;
-	int			x;
-	int			y;
-}
-
-[CCode (cname = "sfSensorEvent")]
-[SimpleType]
-public struct SensorEvent
-{
-	EventType	type;
-	SensorType	sensorType;
-	float		 x;
-	float		 y;
-	float		 z;
-}
-
-[CCode (cname = "sfEvent", cprefix="sf", default_value ="{-42}")]
-[SimpleType]
-public struct Event{
-	/** Type of the event*/
-	EventType             type;
-	/** Size event parameters*/
-	SizeEvent             size;
-	/** Key event parameters*/
-	KeyEvent              key;
-	/** Text event parameters*/
-	TextEvent             text;
-	/** Mouse move event parameters*/
-	MouseMoveEvent        mouseMove;
-	/** Mouse button event parameters*/
-	MouseButtonEvent      mouseButton;
-	/** Mouse wheel event parameters (deprecated)*/
-	MouseWheelEvent       mouseWheel;
-	/** Mouse wheel event parameters*/
-	MouseWheelScrollEvent mouseWheelScroll;
-	/** Joystick move event parameters*/
-	JoystickMoveEvent     joystickMove;
-	/** Joystick button event parameters*/
-	JoystickButtonEvent   joystickButton;
-	/** Joystick (dis)connect event parameters*/
-	JoystickConnectEvent  joystickConnect;
-	/** Touch events parameters*/
-	TouchEvent            touch;
-	/** Sensor event parameters*/
-	SensorEvent           sensor;
-}
-[CCode (cname = "sfJoystickCount")]
-public const int JoystickCount;
-[CCode (cname = "sfJoystickButtonCount")]
-public const int JoystickButtonCount;
-[CCode (cname = "sfJoystickAxisCount")]
-public const int JoystickAxisCount;
-[CCode (cname = "sfJoystickAxis", cprefix = "sfJoystick")]
-public enum JoystickAxis
-{
-	/** The X axis*/
-	X,
-	/** The Y axis*/
-	Y,
-	/** The Z axis*/
-	Z,
-	/** The R axis*/
-	R,
-	/** The U axis*/
-	U,
-	/** The V axis*/
-	V,
-	/** The X axis of the point-of-view hat*/
-	PovX,
-	/** The Y axis of the point-of-view hat*/
-	PovY
-}
-[CCode (cprefix = "sfKeyboard_")]
-namespace Keyboard {
-	public bool isKeyPressed(KeyCode key);
-	public void setVirtualKeyboardVisible(bool visible);
-}
-
-[CCode (cprefix = "sfJoystick_")]
-namespace Joystick {
-	public bool isConnected(uint joystick);
-	public uint getButtonCount(uint joystick);
-	public bool hasAxis(uint joystick, JoystickAxis axis);
-	public bool isButtonPressed(uint joystick, uint button);
-	public float getAxisPosition(uint joystick, JoystickAxis axis);
-	public JoystickIdentification getIdentification(uint joystick);
-	public void update();
-}
-
-[CCode (cname = "sfJoystickIdentification")]
-public struct JoystickIdentification
-{
-	string	name;
-	uint	vendorId;
-	uint	productId;
-}
-
-[CCode (cname = "sfKeyCode", cprefix = "sfKey")]
-public enum KeyCode
-{
-	/** Unhandled*/
-	Unknown = -1,
-	A,
-	B,
-	C,
-	D,
-	E,
-	F,
-	G,
-	H,
-	I,
-	J,
-	K,
-	L,
-	M,
-	N,
-	O,
-	P,
-	Q,
-	R,
-	S,
-	T,
-	U,
-	V,
-	W,
-	X,
-	Y,
-	Z,
-	/** Number 0*/
-	Num0,
-	/** Number 1*/
-	Num1,
-	/** Number 2*/
-	Num2,
-	/** Number 3*/
-	Num3,
-	/** Number 4*/
-	Num4,
-	/** Number 5*/
-	Num5,
-	/** Number 6*/
-	Num6,
-	/** Number 7*/
-	Num7,
-	/** Number 8*/
-	Num8,
-	/** Number 9*/
-	Num9,
-	/** Escape [Esc]*/
-	Escape,
-	/** The left Control*/
-	LControl,
-	/** The left Shift*/
-	LShift,
-	/** The left Alt*/
-	LAlt,
-	/** The left OS specific : window (Windows and Linux), apple (MacOS X), ..*/
-	LSystem,
-	/** The right Control*/
-	RControl,
-	/** The right Shift*/
-	RShift,
-	/** The right Alt*/
-	RAlt,
-	/** The right OS specific : window (Windows and Linux), apple (MacOS X), ..*/
-	RSystem,
-	/** The Menu*/
-	Menu,
-	/** The [*/
-	LBracket,
-	/** The ]*/
-	RBracket,
-	/** The ;*/
-	Semicolon,
-	/** The ,*/
-	Comma,
-	/** The .*/
-	Period,
-	/** The '*/
-	Quote,
-	/** The '/'*/
-	Slash,
-	/** The '\'*/
-	Backslash,
-	/** The ~*/
-	Tilde,
-	/** The =*/
-	Equal,
-	/** The -  (hyphen)*/
-	Hyphen,
-	/** The Space*/
-	Space,
-	/** The Enter/Return*/
-	Enter,
-	/** The Backspace*/
-	Backspace,
-	/** The Tabulation*/
-	Tab,
-	/** The Page up*/
-	PageUp,
-	/** The Page down*/
-	PageDown,
-	/** The End*/
-	End,
-	/** The Home*/
-	Home,
-	/** The Insert*/
-	Insert,
-	/** The Delete*/
-	Delete,
-	/** The +*/
-	Add,
-	/** The -  (minus, usually from numpad)*/
-	Subtract,
-	/** The '*'*/
-	Multiply,
-	/** The '/'*/
-	Divide,
-	/** Left arro*/
-	Left,
-	/** Right arro*/
-	Right,
-	/** Up arro*/
-	Up,
-	/** Down arro*/
-	Down,
-	/** The numpad 0*/
-	Numpad0,
-	/** The numpad 1*/
-	Numpad1,
-	/** The numpad 2*/
-	Numpad2,
-	/** The numpad 3*/
-	Numpad3,
-	/** The numpad 4*/
-	Numpad4,
-	/** The numpad 5*/
-	Numpad5,
-	/** The numpad 6*/
-	Numpad6,
-	/** The numpad 7*/
-	Numpad7,
-	/** The numpad 8*/
-	Numpad8,
-	/** The numpad 9*/
-	Numpad9,
-	F1,
-	F2,
-	F3,
-	F4,
-	F5,
-	F6,
-	F7,
-	F8,
-	F9,
-	F10,
-	F11,
-	F12,
-	F13,
-	F14,
-	F15,
-	Pause,
-	Count,
-	[Version (deprecated = true, replacement = "Hyphen")]
-	/** Deprecated Hyphen '-' */
-	Dash,
-	[Version (deprecated = true, replacement = "Backspace")]
-	/** Deprecated Backspace */
-	Back,
-	[Version (deprecated = true, replacement = "Backslash")]
-	/** Deprecated Backslash '\'*/
-	BackSlash,
-	[Version (deprecated = true, replacement = "Semicolon")]
-	/** Deprecated Semicolon ','*/
-	SemiColon,
-	[Version (deprecated = true, replacement = "Enter")]
-	/** Deprecated Enter */
-	Return
-}
-
-[CCode (cname = "sfMouseButton", cprefix = "sfMouse")]
-public enum MouseButton
-{
-	/** The left mouse button*/
-	Left,
-	/** The right mouse button*/
-	Right,
-	/** The middle (wheel) mouse button*/
-	Middle,
-	/** The first extra mouse button*/
-	Button1,
-	/** The second extra mouse button*/
-	Button2,
-	/** Keep last -- the total number of mouse buttons*/
-	ButtonCount
-}
-
-[CCode (cname = "sfMouseWheel", cprefix = "sfMouse")]
-public enum MouseWheel
-{
-	Vertical,
-	Horizontal
-}
-
-[CCode (cprefix = "sfMouse_")]
-namespace Mouse {
-	public bool isButtonPressed(MouseButton button);
-	public Vector2i getPosition(RenderWindow relativeTo);
-	public void setPosition(Vector2i position, RenderWindow relativeTo);
-}
-
-[CCode (cname = "sfSensorType", cprefix = "sfSensor")]
-public enum SensorType
-{
-	/** Measures the raw acceleration (m/s^2)*/
-	Accelerometer,
-	/** Measures the raw rotation rates (degrees/s)*/
-	Gyroscope,
-	/** Measures the ambient magnetic field (micro-teslas)*/
-	Magnetometer,
-	/** Measures the direction and intensity of gravity, independent of device acceleration (m/s^2)*/
-	Gravity,
-	/** Measures the direction and intensity of device acceleration, independent of the gravity (m/s^2)*/
-	UserAcceleration,
-	/** Measures the absolute 3D orientation (degrees)*/
-	Orientation,
-	/** Keep last -- the total number of sensor types*/
-	Count
-}
-
-[CCode (cprefix = "sfSensor_")]
-namespace Sensor {
-	public bool isAvailable(SensorType sensor);
-	public void setEnabled(SensorType sensor, bool enabled);
-	public Vector3f getValue(SensorType sensor);
-}
-
-[CCode (cprefix = "sfTouch_")]
-namespace Touch {
-	public bool isDown(uint finger);
-	public Vector2i getPosition(uint finger, RenderWindow relativeTo);
-}
-
-[CCode (cname = "sfVideoMode", cheader_filename = "SFML/Window.h")]
-[SimpleType]
-public struct VideoMode{
-	uint width;
-	uint height;
-	uint bitsPerPixel;
-	[CCode (cname = "sfVideoMode_getDesktopMode")]
-	public VideoMode getDesktopMode();
-	[CCode (cname = "sfVideoMode_getFullscreenModes")]
-	public unowned VideoMode getFullscreenModes(ref size_t count);
-	[CCode (cname = "sfVideoMode_isValid")]
-	public bool isValid(VideoMode mode);
-
-}
-
-[CCode (cname = "sfWindowStyle", cprefix = "sf")]
-public enum WindowStyle
-{
-	None,
-	Titlebar,
-	Resize,
-	Close,
-	Fullscreen,
-	DefaultStyle
-}
-[CCode (cname = "sfContextAttribute", cprefix = "sfContext")]
-public enum ContextAttribute
-{
-	Default,
-	Core,
-	Debug
-}
-[CCode (cname = "sfContextSettings")]
-public struct ContextSettings
-{
-	/** Bits of the depth buffer*/
-	uint depthBits;
-	/** Bits of the stencil buffer*/
-	uint stencilBits;
-	/** Level of antialiasing*/
-	uint antialiasingLevel;
-	/** Major number of the context version to create*/
-	uint majorVersion;
-	/** Minor number of the context version to create*/
-	uint minorVersion;
-	/** The attribute flags to create the context with*/
-	uint32 attributeFlags;
-	/** Whether the context framebuffer is sRGB capable*/
-	bool sRgbCapable;
-}
-
-[Compact]
-[CCode (free_function = "sfWindow_destroy", cheader_filename = "SFML/Window.h")]
-public class Window {
-	[CCode (cname = "sfWindow_create")]
-	public Window(VideoMode mode, string title, WindowStyle style, ContextSettings? settings = null);
-	[CCode (cname = "sfWindow_createUnicode")]
-	public Window.withUnicode(VideoMode mode, uint32 []title, WindowStyle style, ContextSettings? settings = null);
-	[CCode (cname = "isfWindow_createFromHandle")]
-	public Window.fromHandle(WindowHandle handle, ContextSettings? settings = null);
-
-	public void destroy();
-	public void close();
-	public bool isOpen();
-	public unowned ContextSettings getSettings();
-	public bool pollEvent(out Event event);
-	public bool waitEvent(out Event event);
-	public Vector2i getPosition();
-	public void setPosition(Vector2i position);
-	public Vector2u getSize();
-	public void setSize(Vector2u size);
-	public void setTitle(string title);
-	public void setUnicodeTitle(uint32 []title);
-	public void setIcon(uint width, uint height, uint8* pixels);
-	public void setVisible(bool visible);
-	public void setVerticalSyncEnabled(bool enabled);
-	public void setMouseCursorVisible(bool visible);
-	public void setMouseCursorGrabbed(bool grabbed);
-	public void setMouseCursor(Cursor cursor);
-	public void setKeyRepeatEnabled(bool enabled);
-	public void setFramerateLimit(uint limit);
-	public void setJoystickThreshold(float threshold);
-	public bool setActive(bool active);
-	public void requestFocus();
-	public bool hasFocus();
-	public void display();
-	public WindowHandle getSystemHandle();
-}
-[CCode (cname = "sfWindowHandle")]
-[SimpleType]
-public struct WindowHandle {
-}
-
-
-/*******************************************************************************************\
-|*******************************************************************************************|
-|*****************                         [Audio]                        ******************|
-|*******************************************************************************************|
-|*******************************************************************************************|
-\*******************************************************************************************/
-
-
-
-[CCode (cprefix = "sfListener_")]
-namespace Listener {
-	void setGlobalVolume(float volume);
-	float getGlobalVolume();
-	void setPosition(Vector3f position);
-	Vector3f getPosition();
-	void setDirection(Vector3f direction);
-	Vector3f getDirection();
-	void setUpVector(Vector3f upVector);
-	Vector3f getUpVector();
-}
-
-
-
-[CCode (cname = "sfTimeSpan")]
-public struct TimeSpan
-{
-	Time offset;
-	Time length;
-}
-
-[Compact]
-[CCode (free_function = "sfMusic_destroy", cprefix="sfMusic_", cheader_filename = "SFML/Audio.h")]
-public class Music {
-	[CCode (cname = "sfMusic_createFromFile")]
-	public Music.fromFile(string filename);
-
-	[CCode (cname = "sfMusic_createFromMemory")]
-	public Music.fromMemory(void *data, size_t sizeInBytes);
-
-	[CCode (cname = "sfMusic_createFromStream")]
-	public Music.fromStream(InputStream stream);
-
-	public void setLoop(bool loop);
-	public bool getLoop();
-	public Time getDuration();
-	public TimeSpan getLoopPoints();
-	public void setLoopPoints(TimeSpan timePoints);
-	public void play();
-	public void pause();
-	public void stop();
-	public uint getChannelCount();
-	public uint getSampleRate();
-	public SoundStatus getStatus();
-	public Time getPlayingOffset();
-	public void setPitch(float pitch);
-	public void setVolume(float volume);
-	public void setPosition(Vector3f position);
-	public void setRelativeToListener(bool relative);
-	public void setMinDistance(float distance);
-	public void setAttenuation(float attenuation);
-	public void setPlayingOffset(Time timeOffset);
-	public float getPitch();
-	public float getVolume();
-	public Vector3f getPosition();
-	public bool isRelativeToListener();
-	public float getMinDistance();
-	public float getAttenuation();
-}
-
-[Compact]
-[CCode (free_function = "sfSound_destroy", cprefix="sfSound_", cheader_filename = "SFML/Audio.h")]
-public class Sound
-{
-	[CCode (cname = "sfSound_create")]
-	public Sound();
-
-	public Sound copy();
-	public void play();
-	public void pause();
-	public void stop();
-	public void setBuffer(SoundBuffer buffer);
-	public unowned SoundBuffer getBuffer();
-	public void setLoop(bool loop);
-	public bool getLoop();
-	public SoundStatus getStatus();
-	public void setPitch(float pitch);
-	public void setVolume(float volume);
-	public void setPosition(Vector3f position);
-	public void setRelativeToListener(bool relative);
-	public void setMinDistance(float distance);
-	public void setAttenuation(float attenuation);
-	public void setPlayingOffset(Time timeOffset);
-	public float getPitch();
-	public float getVolume();
-	public Vector3f getPosition();
-	public bool isRelativeToListener();
-	public float getMinDistance();
-	public float getAttenuation();
-	public Time getPlayingOffset();
-}
-
-[Compact]
-[CCode (free_function = "sfSoundBuffer_destroy", cprefix="sfSoundBuffer_", cheader_filename = "SFML/Audio.h")]
-public class SoundBuffer {
-	[CCode (cname = "createFromFile")]
-	public SoundBuffer.fromFile(string filename);
-
-	[CCode (cname = "createFromMemory")]
-	public SoundBuffer.fromMemory(void* data, size_t sizeInBytes);
-
-	[CCode (cname = "createFromStream")]
-	public SoundBuffer.fromStream(InputStream stream);
-
-	[CCode (cname = "createFromSamples")]
-	public SoundBuffer.fromSamples(int16 []samples, uint64 sampleCount, uint channelCount, uint sampleRate);
-
-
-	public SoundBuffer copy();
-	public bool saveToFile(string filename);
-	public int16 []getSamples();
-	public uint64 getSampleCount();
-	public uint getSampleRate();
-	public uint getChannelCount();
-	public Time getDuration();
-}
-
-
-[Compact]
-[CCode (free_function = "sfSoundBufferRecorder_destroy", cprefix="sfSoundBufferRecorder_", cheader_filename = "SFML/Audio.h")]
-public class SoundBufferRecorder {
-	[CCode (cname = "sfSoundBufferRecorder_create")]
-	public SoundBufferRecorder();
-
-	bool start(uint sampleRate);
-	void stop();
-	uint getSampleRate();
-	unowned SoundBuffer getBuffer();
-	bool setDevice(string name);
-	string getDevice();
-}
-
-[Compact]
-[CCode (free_function = "sfSoundRecorder_destroy", cprefix="sfSoundRecorder_", cheader_filename = "SFML/Audio.h")]
-public class SoundRecorder {
-
-	[CCode (cname = "sfSoundRecorder_create")]
-	SoundRecorder(StartCallback? onStart = null, ProcessCallback onProcess, StopCallback? onStop = null, void* userData);
-
-	public static string []getAvailableDevices(size_t []count);
-	public static string getDefaultDevice();
-	public static bool isAvailable();
-
-	public bool start(uint sampleRate);
-	public void stop();
-	public uint getSampleRate(SoundRecorder soundRecorder);
-	public void setProcessingInterval(Time interval);
-	public bool setDevice(string name);
-	public string getDevice();
-	public void setChannelCount(uint channelCount);
-	public uint getChannelCount(SoundRecorder soundRecorder);
-
-	[CCode (cname = "sfSoundRecorderStartCallback")]
-	public delegate bool StartCallback(void* todo1);
-	[CCode (cname = "SoundRecorderProcessCallback")]
-	public delegate bool ProcessCallback(int16[] todo1, size_t todo2, void* todo3);
-	[CCode (cname = "SoundRecorderStopCallback")]
-	public delegate void StopCallback(void* todo1);
-}
-[CCode (cname = "sfSoundStatus", cprefix = "sf")]
-public enum SoundStatus
-{
-	/** music is not playing*/
-	Stopped,
-	/** music is paused*/
-	Paused,
-	/** music is playing*/
-	Playing
-}
 }

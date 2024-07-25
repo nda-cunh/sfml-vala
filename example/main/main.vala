@@ -1,4 +1,4 @@
-//valac main.vala --pkg=sfml --vapidir=../../ -X -lcsfml-graphics
+//valac main.vala --vapidir=../../ --pkg=csfml-graphics
 
 using sf;
 
