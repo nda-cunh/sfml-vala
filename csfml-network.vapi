@@ -1,3 +1,4 @@
+[CCode (cheader_filename="SFML/Network.h")]
 namespace sf {
 
 	[CCode (cname="HttpMethod", cprefix="sfHttp")]

@@ -1,11 +1,3 @@
-public inline sf.IntRect IntRect(int left, int top, int width, int height){
-	return {left, top, width, height};
-}
-
-public inline sf.FloatRect FloatRect(float left, float top, float width, float height){
-	return {left, top, width, height};
-}
-
 [CCode (cheader_filename = "SFML/Graphics.h,SFML/System.h")]
 namespace sf {
 
@@ -75,7 +67,7 @@ namespace sf {
 	}
 
 
-	[CCode (cname = "sfFloatRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfFloatRect")]
 	[SimpleType]
 	public struct FloatRect
 	{
@@ -97,7 +89,7 @@ namespace sf {
 		}
 	}
 
-	[CCode (cname = "sfIntRect", has_type_id = false, cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname = "sfIntRect")]
 	[SimpleType]
 	public struct IntRect
 	{
@@ -138,14 +130,6 @@ namespace sf {
 		Quads
 	}
 
-	/*******************************************************************************************\
-	|*******************************************************************************************|
-	|*****************                       [Graphics]                       ******************|
-	|*******************************************************************************************|
-	\*******************************************************************************************/
-
-
-/* *****************************     TEXTURE     ************************************************/
 	[CCode (cname = "sfTextureCoordinateType", cprefix = "sfTexture")]
 	public enum TextureCoordinateType
 	{
@@ -157,7 +141,7 @@ namespace sf {
 
 	[Compact]
 	[Immutable]
-[CCode (cname="sfTexture", copy_function="sfTexture_copy", free_function = "sfTexture_destroy", cprefix="sfTexture_", cheader_filename = "SFML/Graphics.h")]
+	[CCode (cname="sfTexture", copy_function="sfTexture_copy", free_function = "sfTexture_destroy", cprefix="sfTexture_")]
 	public class Texture{
 		[CCode (cname = "sfTexture_copy")]
 		Texture copy();
@@ -1600,3 +1584,12 @@ namespace sf {
 	}
 
 }
+
+public inline sf.IntRect IntRect(int left, int top, int width, int height){
+	return {left, top, width, height};
+}
+
+public inline sf.FloatRect FloatRect(float left, float top, float width, float height){
+	return {left, top, width, height};
+}
+

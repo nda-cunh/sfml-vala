@@ -1,14 +1,4 @@
-/*******************************************************************************************\
-|*******************************************************************************************|
-|*****************                        [Window]                        ******************|
-|*******************************************************************************************|
-\*******************************************************************************************/
-
-/** VideoMode constructor */
-public inline sf.VideoMode VideoMode(int width, int height) {
-	return {width, height};
-}
-
+[CCode (cheader_filename = "SFML/Window.h")]
 namespace sf {
 
 	[Compact]
@@ -728,3 +718,9 @@ namespace sf {
 		DefaultStyle
 	}
 }
+
+/** VideoMode constructor */
+public inline sf.VideoMode VideoMode(int width, int height) {
+	return {width, height};
+}
+
