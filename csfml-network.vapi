@@ -1,3 +1,30 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2024 SFML VAPI Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Authors:
+ *  Hydral (Nathan) <nathan.dacunha.nd@gmail.com>
+ */
+
 [CCode (cheader_filename="SFML/Network.h")]
 namespace sf {
 
@@ -223,6 +250,130 @@ namespace sf {
 		public SocketStatus accept(out TcpSocket[] connected);
 	}
 
-	// TODO FTP
+	[CCode(cname="sfFtpTransferMode", cprefix="sfFtp")]
+	public enum FtpTransferMode
+	{
+		Binary, ///< Binary mode (file is transfered as a sequence of bytes)
+		Ascii,  ///< Text mode using ASCII encoding
+		Ebcdic  ///< Text mode using EBCDIC encoding
+	} 
+
+	[CCode(cname="sfFtpStatus", cprefix="sfFtp")]
+	public enum FtpStatus
+	{
+		// 1xx: the requested action is being initiated,
+		// expect another reply before proceeding with a new command
+		RestartMarkerReply, ///< Restart marker reply
+		ServiceReadySoon, ///< Service ready in N minutes
+		DataConnectionAlreadyOpened, ///< Data connection already opened, transfer starting
+		OpeningDataConnection, ///< File status ok, about to open data connection
+
+		// 2xx: the requested action has been successfully completed
+		Ok, ///< Command ok
+		PointlessCommand, ///< Command not implemented
+		SystemStatus, ///< System status, or system help reply
+		DirectoryStatus, ///< Directory status
+		FileStatus, ///< File status
+		HelpMessage, ///< Help message
+		SystemType, ///< NAME system type, where NAME is an official system name from the list in the Assigned Numbers document
+		ServiceReady, ///< Service ready for new user
+		ClosingConnection, ///< Service closing control connection
+		DataConnectionOpened, ///< Data connection open, no transfer in progress
+		ClosingDataConnection, ///< Closing data connection, requested file action successful
+		EnteringPassiveMode, ///< Entering passive mode
+		LoggedIn, ///< User logged in, proceed. Logged out if appropriate
+		FileActionOk, ///< Requested file action ok
+		DirectoryOk, ///< PATHNAME created
+
+		// 3xx: the command has been accepted, but the requested action
+		// is dormant, pending receipt of further information
+		NeedPassword, ///< User name ok, need password
+		NeedAccountToLogIn, ///< Need account for login
+		NeedInformation, ///< Requested file action pending further information
+
+		// 4xx: the command was not accepted and the requested action did not take place,
+		// but the error condition is temporary and the action may be requested again
+		ServiceUnavailable, ///< Service not available, closing control connection
+		DataConnectionUnavailable, ///< Can't open data connection
+		TransferAborted, ///< Connection closed, transfer aborted
+		FileActionAborted, ///< Requested file action not taken
+		LocalError, ///< Requested action aborted, local error in processing
+		InsufficientStorageSpace, ///< Requested action not taken; insufficient storage space in system, file unavailable
+
+		// 5xx: the command was not accepted and
+		// the requested action did not take place
+		CommandUnknown, ///< Syntax error, command unrecognized
+		ParametersUnknown, ///< Syntax error in parameters or arguments
+		CommandNotImplemented, ///< Command not implemented
+		BadCommandSequence, ///< Bad sequence of commands
+		ParameterNotImplemented, ///< Command not implemented for that parameter
+		NotLoggedIn, ///< Not logged in
+		NeedAccountToStore, ///< Need account for storing files
+		FileUnavailable, ///< Requested action not taken, file unavailable
+		PageTypeUnknown, ///< Requested action aborted, page type unknown
+		NotEnoughMemory, ///< Requested file action aborted, exceeded storage allocation
+		FilenameNotAllowed, ///< Requested action not taken, file name not allowed
+
+		// 10xx: SFML custom codes
+		InvalidResponse, ///< Response is not a valid FTP one
+		ConnectionFailed, ///< Connection with server failed
+		ConnectionClosed, ///< Connection with server closed
+		InvalidFile ///< Invalid file to upload / download
+	}
+	
+	[CCode (cname="sfFtpListingResponse", free_function="sfFtpListingResponse_destroy", cprefix="sfFtpListingResponse_")]
+	[Compact]
+	public class FtpListingResponse{
+		public bool isOk();
+		public FtpStatus getStatus();
+		public unowned string getMessage();
+		public size_t getCount();
+		public unowned string getName(size_t index);
+	}
+
+	[CCode (cname="sfFtpDirectoryResponse", free_function="sfFtpDirectoryResponse_destroy", cprefix="sfFtpDirectoryResponse_")]
+	[Compact]
+	public class FtpDirectoryResponse{
+		public bool isOk();
+		public FtpStatus getStatus();
+		public unowned string getMessage();
+		public unowned string getDirectory();
+		public uint32[] getDirectoryUnicode();
+	}
+
+	[CCode (cname="sfFtpResponse", free_function="sfFtpResponse_destroy", cprefix="sfFtpResponse_")]
+	[Compact]
+	public class FtpResponse{
+		[CCode(cname="sfFtp_createDirectory")]
+		public FtpResponse(Ftp ftp, string name);
+		public bool isOk();
+		public FtpStatus getStatus();
+		public unowned string getMessage();
+	}
+
+	[CCode (cname="sfFtp", free_function="sfFtp_destroy", cprefix="sfFtp_")]
+	[Compact]
+	public class Ftp{
+
+		[CCode(cname="sfFtp_create")]
+		public Ftp();
+
+		public FtpResponse connect(IpAddress server, ushort port, Time timeout);
+		public FtpResponse loginAnonymous();
+		public FtpResponse login(string name, string password);
+		public FtpResponse disconnect();
+		public FtpResponse keepAlive();
+		public FtpDirectoryResponse getWorkingDirectory();
+		public FtpListingResponse getDirectoryListing(string directory);
+		public FtpResponse changeDirectory(string directory);
+		public FtpResponse parentDirectory();
+		public FtpResponse createDirectory(string name);
+		public FtpResponse deleteDirectory(string name);
+		public FtpResponse renameFile(string file, string newName);
+		public FtpResponse deleteFile(string name);
+		public FtpResponse download(string remoteFile, string localPath, FtpTransferMode mode);
+		public FtpResponse upload(string localFile, string remotePath, FtpTransferMode mode, bool append);
+		public FtpResponse sendCommand(string command, string parameter);
+	}
 
 }
