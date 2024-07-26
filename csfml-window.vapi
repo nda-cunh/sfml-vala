@@ -1,17 +1,43 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2024 SFML VAPI Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Authors:
+ *  Hydral (Nathan) <nathan.dacunha.nd@gmail.com>
+ */
+
 [CCode (cheader_filename = "SFML/Window.h")]
 namespace sf {
 
+	[CCode (free_function = "sfWindow_destroy", cheader_filename = "SFML/Window.h", cprefix = "sfWindow_")]
 	[Compact]
-	[CCode (free_function = "sfWindow_destroy", cheader_filename = "SFML/Window.h")]
-	public class Window : WindowBase {
+	public class Window: WindowBase {
 		[CCode (cname = "sfWindow_create")]
-		public Window(VideoMode mode, string title, WindowStyle style, ContextSettings? settings = null);
+		public Window(VideoMode mode, string title, WindowStyle style = WindowStyle.DefaultStyle, ContextSettings? settings = null);
 		[CCode (cname = "sfWindow_createUnicode")]
 		public Window.withUnicode(VideoMode mode, uint32 []title, WindowStyle style, ContextSettings? settings = null);
 		[CCode (cname = "isfWindow_createFromHandle")]
 		public Window.fromHandle(WindowHandle handle, ContextSettings? settings = null);
 
-		public void destroy();
 		public void close();
 		public bool isOpen();
 		public unowned ContextSettings getSettings();
@@ -40,7 +66,7 @@ namespace sf {
 		public Vector2i getMousePosition();
 		[CCode (cname="sfMouse_setPosition", instance_pos=0.1)]
 		public void setMousePosition(Vector2i position);
-		public WindowHandle getSystemHandle();
+		public WindowHandle* getSystemHandle();
 	}
 
 	[CCode (cname = "sfWindowHandle")]
@@ -669,6 +695,7 @@ namespace sf {
 	}
 
 	[CCode (cname = "sfWindowBase", free_function="sfWindowBase_destroy", cprefix = "sfWindowBase_")]
+	[Compact]
 	public class WindowBase {
 		[CCode (cname = "sfWindowBase_create")]
 		public WindowBase(VideoMode mode,  char* title, WindowStyle style);
@@ -698,7 +725,7 @@ namespace sf {
 		public void setJoystickThreshold(float threshold);
 		public void requestFocus();
 		public bool hasFocus();
-		public unowned WindowHandle getNativeHandle();
+		public WindowHandle* getNativeHandle();
 		public bool createVulkanSurface(Vulkan.VkInstance instance, Vulkan.VkSurfaceKHR surface, Vulkan.VkAllocationCallbacks allocator);
 
 		[CCode (cname="sfMouse_getPositionWindowBase")]

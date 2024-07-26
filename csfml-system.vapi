@@ -1,23 +1,30 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2024 SFML VAPI Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Authors:
+ *  Hydral (Nathan) <nathan.dacunha.nd@gmail.com>
+ */
 
-/** Vector2f constructor */
-public inline sf.Vector2f Vector2f(float x, float y){
-	return {x, y};
-}
-
-/** Vector2i constructor */
-public inline sf.Vector2i Vector2i(int x, int y){
-	return {x, y};
-}
-
-/** Vector2u constructor */
-public inline sf.Vector2u Vector2u(uint x, uint y){
-	return {x, y};
-}
-
-/** Vector3f constructor */
-public inline sf.Vector3f Vector3f(float x, float y, float z){
-	return {x, y, z};
-}
 namespace sf {
 /* ****************************  VECTOR2-3 Color rect  *************************************/
 
@@ -115,7 +122,6 @@ namespace sf {
 	[CCode (cname = "sfSleep", cheader_filename = "SFML/System/Time.h")]
 	public void sleep(Time duration);
 	
-
 	public delegate int64 InputStreamReadFunc(void* data, int64 size, void* userData);
 	public delegate int64 InputStreamSeekFunc(int64 position, void* userData);
 	public delegate int64 InputStreamTellFunc(void* userData);
@@ -135,4 +141,24 @@ namespace sf {
 		/** User data that will be passed to the callbacks*/
 		void*					userData;
 	}
+}
+
+/** Vector2f constructor */
+public inline sf.Vector2f Vector2f(float x, float y){
+	return {x, y};
+}
+
+/** Vector2i constructor */
+public inline sf.Vector2i Vector2i(int x, int y){
+	return {x, y};
+}
+
+/** Vector2u constructor */
+public inline sf.Vector2u Vector2u(uint x, uint y){
+	return {x, y};
+}
+
+/** Vector3f constructor */
+public inline sf.Vector3f Vector3f(float x, float y, float z){
+	return {x, y, z};
 }
