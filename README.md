@@ -6,9 +6,7 @@ vala binding of project SFML
 
 [https://nda-cunh.gitlab.io/sfml-vala-binding/sfml/sf.html](https://nda-cunh.gitlab.io/sfml-vala-binding/sfml/sf.html)
 
-Exemple:
-
-<img src="readme/sfml.png">
+Example:
 
 ```vala
 using sf;
@@ -37,8 +35,10 @@ void main()
 }
 ```
 
+<img src="readme/sfml.png">
 
-simple snake in sfml-vala here:
-https://gitlab.com/nda-cunh/snake-sfml
+simple flappy-bird in sfml-vala here:
 
-<img src="readme/snake.png">
+https://gitlab.com/nda-cunh/flappyvala
+
+<img src="readme/flappy.png">
