@@ -49,7 +49,7 @@ namespace sf {
 
 		[CCode (cname = "sfColor_subtract")]
 		public Color subtract (Color right);
-		
+	
 		[CCode (cname = "sfColor_modulate")]
 		public Color modulate (Color right);
 
@@ -169,7 +169,7 @@ namespace sf {
 	[Compact]
 	[Immutable]
 	[CCode (cname="sfTexture", copy_function="sfTexture_copy", free_function = "sfTexture_destroy", cprefix="sfTexture_")]
-	public class Texture{
+	public class Texture {
 		[CCode (cname = "sfTexture_copy")]
 		Texture copy();
 		[CCode (cname = "sfTexture_create")]
@@ -196,6 +196,37 @@ namespace sf {
 			get;
 		}
 
+		public uint w {
+			get {
+				return size.x;
+			}
+		}
+
+		public uint h {
+			get {
+				return size.y;
+			}
+		}
+
+		public bool smooth {
+			[CCode (cname = "sfTexture_isSmooth")]
+			get;
+			[CCode (cname = "sfTexture_setSmooth")]
+			set;
+		}
+
+		public bool srgb {
+			[CCode (cname = "sfTexture_isSrgb")]
+			get;
+		}
+
+		public bool repeated {
+			[CCode (cname = "sfTexture_isRepeated")]
+			get;
+			[CCode (cname = "sfTexture_setRepeated")]
+			set;
+		}
+		
 		public Vector2u getSize();
 		public Image copyToImage();
 		public void updateFromPixels(uint8 []pixels, uint width, uint height, uint x, uint y);
@@ -231,6 +262,25 @@ namespace sf {
 			[CCode (cname = "sfTransformable_setPosition")]
 			set;
 		}
+
+		public float x {
+			get {
+				return position.x;
+			}
+			set {
+				position.x = value;
+			}
+		}
+
+		public float y {
+			get {
+				return position.y;
+			}
+			set {
+				position.y = value;
+			}
+		}
+
 		public Vector2f origin {
 			[CCode (cname = "sfTransformable_getOrigin")]
 			get;
@@ -280,6 +330,7 @@ namespace sf {
 			[CCode (cname = "sfCircleShape_setPosition")]
 			set;
 		}
+
 		public Vector2f origin {
 			[CCode (cname = "sfCircleShape_getOrigin")]
 			get;
@@ -508,6 +559,45 @@ namespace sf {
 		public View.fromRect(FloatRect rectangle);
 		public View copy();
 
+		public float rotation {
+			[CCode (cname = "sfView_getRotation")]
+			get;
+			[CCode (cname = "sfView_setRotation")]
+			set;
+		}
+
+		public Vector2f center {
+			[CCode (cname = "sfView_getCenter")]
+			get;
+			[CCode (cname = "sfView_setCenter")]
+			set;
+		}
+
+		public Vector2f size {
+			[CCode (cname = "sfView_getSize")]
+			get;
+			[CCode (cname = "sfView_setSize")]
+			set;
+		}
+
+		public float w {
+			get {
+				return size.x;
+			}
+			set {
+				size.x = value;
+			}
+		}
+
+		public float h {
+			get {
+				return size.y;
+			}
+			set {
+				size.y = value;
+			}
+		}
+
 		public void setCenter(Vector2f center);
 		public void setSize(Vector2f size);
 		public void setRotation(float angle);
@@ -529,6 +619,27 @@ namespace sf {
 		public RenderTexture(uint width, uint height, bool depthBuffer = true);
 		[CCode (cname = "sfRenderTexture_createWithSettings")]
 		public RenderTexture.withSettings(uint width, uint height, ContextSettings settings);
+
+		public unowned View view {
+			[CCode (cname = "sfRenderTexture_getView")]
+			get;
+			[CCode (cname = "sfRenderTexture_setView")]
+			set;
+		}
+
+		public bool smooth {
+			[CCode (cname = "sfRenderTexture_isSmooth")]
+			get;
+			[CCode (cname = "sfRenderTexture_setSmooth")]
+			set;
+		}
+
+		public bool repeated {
+			[CCode (cname = "sfRenderTexture_isRepeated")]
+			get;
+			[CCode (cname = "sfRenderTexture_setRepeated")]
+			set;
+		}
 
 		public Vector2u getSize();
 		public bool setActive(bool active);
@@ -567,55 +678,55 @@ namespace sf {
 		public RectangleShape* copy();
 
 		// Attribut
-		public Vector2f size{
+		public Vector2f size {
 			[CCode (cname = "sfRectangleShape_getSize")]
 			get;
 			[CCode (cname = "sfRectangleShape_setSize")]
 			set;
 		}
-		public Vector2f position{
+		public Vector2f position {
 			[CCode (cname = "sfRectangleShape_getPosition")]
 			get;
 			[CCode (cname = "sfRectangleShape_setPosition")]
 			set;
 		}
-		public float rotation{
+		public float rotation {
 			[CCode (cname = "sfRectangleShape_getRotation")]
 			get;
 			[CCode (cname = "sfRectangleShape_setRotation")]
 			set;
 		}
-		public Vector2f scale{
+		public Vector2f scale {
 			[CCode (cname = "sfRectangleShape_getScale")]
 			get;
 			[CCode (cname = "sfRectangleShape_setScale")]
 			set;
 		}
-		public Vector2f origin{
+		public Vector2f origin {
 			[CCode (cname = "sfRectangleShape_getOrigin")]
 			get;
 			[CCode (cname = "sfRectangleShape_setOrigin")]
 			set;
 		}
-		public IntRect textureRect{
+		public IntRect textureRect {
 			[CCode (cname = "sfRectangleShape_getTextureRect")]
 			get;
 			[CCode (cname = "sfRectangleShape_setTextureRect")]
 			set;
 		}
-		public Color color{
+		public Color color {
 			[CCode (cname = "sfRectangleShape_getFillColor")]
 			get;
 			[CCode (cname = "sfRectangleShape_setFillColor")]
 			set;
 		}
-		public FloatRect localBounds{
+		public FloatRect localBounds {
 			[CCode (cname = "sfRectangleShape_getLocalBounds")]
 			get;
 			[CCode (cname = "sfRectangleShape_setLocalBounds")]
 			set;
 		}
-		public FloatRect globalBounds{
+		public FloatRect globalBounds {
 			[CCode (cname = "sfRectangleShape_getGlobalBounds")]
 			get;
 			[CCode (cname = "sfRectangleShape_setGlobalBounds")]
@@ -929,49 +1040,87 @@ namespace sf {
 			[CCode (cname = "sfShape_setSize")]
 			set;
 		}
+
+		public float w {
+			get {
+				return size.x;
+			}
+			set {
+				size = {value, size.y};
+			}
+		}
+
+		public float h {
+			get {
+				return size.y;
+			}
+			set {
+				size = {size.x, value};
+			}
+		}
+
 		public Vector2f position{
 			[CCode (cname = "sfShape_getPosition")]
 			get;
 			[CCode (cname = "sfShape_setPosition")]
 			set;
 		}
-		public float rotation{
+
+		public float x {
+			get {
+				return position.x;
+			}
+			set {
+				position = {value, position.y};
+			}
+		}
+
+		public float y {
+			get {
+				return position.y;
+			}
+			set {
+				position = {position.x, value};
+			}
+		}
+
+		public float rotation {
 			[CCode (cname = "sfShape_getRotation")]
 			get;
 			[CCode (cname = "sfShape_setRotation")]
 			set;
 		}
-		public Vector2f scale{
+		public Vector2f scale {
 			[CCode (cname = "sfShape_getScale")]
 			get;
 			[CCode (cname = "sfShape_setScale")]
 			set;
 		}
-		public Vector2f origin{
+		public Vector2f origin {
 			[CCode (cname = "sfShape_getOrigin")]
 			get;
 			[CCode (cname = "sfShape_setOrigin")]
 			set;
 		}
-		public IntRect textureRect{
+		public IntRect textureRect {
 			[CCode (cname = "sfShape_getTextureRect")]
 			get;
 			[CCode (cname = "sfShape_setTextureRect")]
 			set;
 		}
-		public Color color{
+		public Color color {
 			[CCode (cname = "sfShape_getColor")]
 			get;
 			[CCode (cname = "sfShape_setColor")]
 			set;
 		}
-		public FloatRect localBounds{
+		public FloatRect localBounds {
 			[CCode (cname = "sfShape_getLocalBounds")]
 			get;
 			[CCode (cname = "sfShape_setLocalBounds")]
 			set;
 		}
-		public FloatRect globalBounds{
+		public FloatRect globalBounds {
 			[CCode (cname = "sfShape_getGlobalBounds")]
 			get;
 			[CCode (cname = "sfShape_setGlobalBounds")]

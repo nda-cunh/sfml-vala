@@ -236,7 +236,7 @@ namespace sf {
 
 	[CCode (cname = "sfKeyEvent")]
 	[SimpleType]
-	public struct	KeyEvent{
+	public struct	KeyEvent {
 		EventType	type;
 		KeyCode		code;
 		bool		alt;
@@ -247,7 +247,7 @@ namespace sf {
 
 	[CCode (cname = "sfTextEvent")]
 	[SimpleType]
-	public struct TextEvent{
+	public struct TextEvent {
 		EventType	type;
 		uint32		unicode;
 	}
@@ -350,7 +350,7 @@ namespace sf {
 
 	[CCode (cname = "sfEvent", cprefix="sf", default_value ="{-42}")]
 	[SimpleType]
-	public struct Event{
+	public struct Event {
 		/** Type of the event*/
 		EventType             type;
 		/** Size event parameters*/
