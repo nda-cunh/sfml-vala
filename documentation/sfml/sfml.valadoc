@@ -1295,7 +1295,7 @@ sf.Joystick
  * 
  * // or use it in the event loop
  * sf.Event event;
- * while(window.pollEvent(event))
+ * while(window.pollEvent(out event))
  * {
  *     if(event.type == sf.EventType.Closed)
  *         window.close();
@@ -3251,7 +3251,7 @@ sf.Color
  * Usage example:
  * {{{
  * sf.Event event;
- * while (window.pollEvent(event))
+ * while (window.pollEvent(out event))
  * {
  *     // Request for closing the window
  *     if (event.type == sf.EventType.Closed)
